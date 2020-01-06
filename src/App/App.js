@@ -1,26 +1,80 @@
 import React from 'react';
-import logo from './logo.svg';
+import Button from '../components/Button/Button'
+import Terminal from "../components/Terminal/Terminal";
+import LastVisited from "../components/LastVisited/LastVisited";
 import './App.scss';
-import Button from './components/Button'
-import Terminal from "./components/Terminal";
+import barry from './barry.jpg';
+import github from './github.png';
+import linkedin from './linkedin.png';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <div>
-          <h1>Barry</h1>
-          <h1>McAndrews</h1>
-          <h3>Software Engineer</h3>
-        </div>
-      </header>
-      <div>
-        <Button>Value</Button>
+      <div className="container">
+        <LastVisited/>
+        <header className="App-header">
+          <div><img className="App-image" src={barry} width="200px" alt="Barry"/></div>
+          <div className="header-text">
+            <h1>Barry</h1><br/>
+            <h1>McAndrews</h1><br/>
+            <h2>Software Engineer</h2>
+          </div>
+        </header>
+
+        <section className="text-center">
+          <h3>Hi, I'm Barry</h3>
+          <p>I'm a software engineer with a passion for technology.</p>
+          <Button href="/">Download Resume</Button>
+        </section>
+
+        <section className="flex m-5">
+          <div>
+            <code>$ open https://www.linkedin.com/in/barry-mcandrews/</code>
+            <h4>LinkedIn</h4>
+            <p className="mw-300">
+              For more information about me check out my
+              LinkedIn page. There you can find my most
+              up-to-date employment information. Feel free
+              to send me a message!
+            </p>
+            <Button href="https://www.linkedin.com/in/barry-mcandrews/">See More</Button>
+          </div>
+          <img className="mobile-hide" src={linkedin} width="100px" alt="LinkedIn Logo"/>
+        </section>
+
+        <section className="flex m-5">
+          <div>
+            <code>$ open https://github.com/barrymcandrews</code>
+            <h4>GitHub</h4>
+            <p className="mw-300">
+              Most of my personal projects are hosted on
+              GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
+              my house’s LED lights.
+            </p>
+            <Button href="https://github.com/barrymcandrews">See More</Button>
+          </div>
+          <img className="mobile-hide" src={github} width="100px" alt="GitHub Logo"/>
+        </section>
+
+        <section className="text-center m-5">
+          <code>$ mail bmcandrews@pitt.edu</code>
+          <h3>Send me an email!</h3>
+          <p>
+            Most of my personal
+            Whether it’s a job, side project, or anything else, I’m always looking
+            to explore new ideas and opportunities.
+          </p>
+          <Button href="mailto:bmcandrews@pitt.edu">Contact Me</Button>
+        </section>
       </div>
-        <div>
-            {/*<Terminal></Terminal>*/}
+
+      <section className="bg-dark">
+        <div className="container">
+          <div className="m-5">
+            <Terminal/>
+          </div>
         </div>
+      </section>
     </div>
   );
 }

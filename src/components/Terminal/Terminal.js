@@ -1,23 +1,17 @@
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
-// import PropTypes from 'prop-types';
-// import 'xterm/dist/addons/fit/fit.js';
+// import './Terminal.module.scss';
+import 'xterm/css/xterm.css'
+import styles from './Terminal.module.scss'
 import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
 
 
 export default class Terminal extends Component {
-    // static propTypes = {
-    //     socketURL: PropTypes.string.isRequired,
-    //     onError: PropTypes.func,
-    //     onClose: PropTypes.func,
-    //     title: PropTypes.string,
-    // };
 
     constructor(props) {
-        super();
-        // super(props);
+        super(props);
         this.fitAddon = new FitAddon();
         this.webLinksAddon = new WebLinksAddon();
         this.term = new XTerm({
@@ -26,37 +20,30 @@ export default class Terminal extends Component {
             convertEol: true,
             fontSize: 12,
             rendererType: 'dom',
-            disableStdin: false,
 
+            theme: {
+                background: "#2F2F2F",
+                cursorAccent: "#2F2F2F",
+                foreground: "#9D9D9D",
+                cursor: "#9D9D9D",
+            },
         });
-        this.handleResize = this.handleResize.bind(this);
+        this.input = '';
     }
 
-    handleResize() {
-        this.fitAddon.fit();
+    onData(data) {
+        const code = data.charCodeAt(0);
+        if (code === 13) { // CR
+            this.term.write("\r\ncommand not found: " + this.input + "\r\n");
+            this.term.write("$ ");
+            this.input = "";
+        } else if (code < 32 || code === 127) { // Control
+            return;
+        } else { // Visible
+            this.term.write(data);
+            this.input += data;
+        }
     }
-
-    close() {
-        this.term.destroy();
-        // this.socket.close();
-    }
-
-    // componentWillMount() {
-    //     const {onClose, socketURL} = this.props;
-    //     if (!socketURL) {
-    //         onClose && onClose();
-    //         this.close();
-    //     }
-    // }
-
-    // createSocket(socketURL: string) {
-    //     this.socket = new WebSocket(`${socketURL}?dim=${this.cols}|${this.rows}`);
-    //     this.socket.onopen = () => {
-    //         this.term.write(this.props.title);
-    //         this.term.csphereAttach(this.socket);
-    //         this.term.fit();
-    //     }
-    // }
 
     componentDidMount() {
         const terminalContainer = findDOMNode(this);
@@ -64,36 +51,19 @@ export default class Terminal extends Component {
         this.term.loadAddon(this.webLinksAddon);
         this.term.open(terminalContainer);
         this.fitAddon.fit();
-        this.term.write(this.props.title);
-
-        // const {cols, rows} = this.term.proposeGeometry();
-        // this.cols = cols;
-        // this.rows = rows;
-        // this.createSocket(this.props.socketURL);
-        window.addEventListener('resize', this.handleResize);
+        this.term.write("$ ");
+        this.term.onData((d) => this.onData(d));
+        window.addEventListener('resize',  this.fitAddon.fit());
     }
 
     componentWillUnmount() {
-        this.close();
-        window.removeEventListener('resize', this.handleResize);
-    }
-
-    componentWillReceiveProps(nextProps) {
-        // const {socketURL} = this.props;
-        // if (socketURL !== nextProps.socketURL) {
-        //     this.socket.close();
-            this.term.reset();
-            // this.createSocket(nextProps.socketURL);
-        // }
+        this.term.dispose();
+        window.removeEventListener('resize',  this.fitAddon.fit());
     }
 
     render() {
         return (
-            <div id="terminal-container" />
+            <div className={styles.terminalContainer} id="terminal-container" />
         );
     }
 }
-
-Terminal.defaultProps = {
-    title: '\x1b[32mWelcome to use online terminal!\x1b[m\r\n'
-};
