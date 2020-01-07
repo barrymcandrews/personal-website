@@ -2,7 +2,7 @@ name: Deploy Website to S3
 
 on:
   push:
-    branches: 
+    branches:
       - "master"
 
 jobs:
@@ -15,10 +15,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: 12.x
-    - name: Yarn Build
-      run: |
-            yarn install
-            yarn build
+    - name: Yarn install
+      run: yarn install
+    - name: Yarn build
+      run:  yarn build
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
@@ -29,4 +29,4 @@ jobs:
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         AWS_REGION: 'us-east-1'
         SOURCE_DIR: 'build'
-      
+
