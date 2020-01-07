@@ -24,7 +24,7 @@ function App() {
         <section className="text-center">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <Button href="/">Download Resume</Button>
+          <Button href="https://www.bmcandrews.com/Barry_McAndrews_4-28-19.docx">Download Resume</Button>
         </section>
 
         <section className="flex m-5">
@@ -60,7 +60,6 @@ function App() {
           <code>$ mail bmcandrews@pitt.edu</code>
           <h3>Send me an email!</h3>
           <p>
-            Most of my personal
             Whether it’s a job, side project, or anything else, I’m always looking
             to explore new ideas and opportunities.
           </p>
