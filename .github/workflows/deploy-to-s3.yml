@@ -16,7 +16,9 @@ jobs:
       with:
         node-version: 12.x
     - name: Yarn Build
-      run: yarn build
+      run: |
+            yarn install
+            yarn build
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
