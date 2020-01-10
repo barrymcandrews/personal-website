@@ -5,8 +5,7 @@
   width: 130px;
   border-radius: 50%;
   pointer-events: none;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin: 30px 30px;
 }
 
 .App-header {
@@ -20,7 +19,6 @@
 
 .header-text {
   text-align: left;
-  margin-left: 30px;
   h1, h2, h3 {
     display: inline;
   }
@@ -52,7 +50,9 @@
 }
 
 .mw-300 {
-  max-width: 300px;
+  @media only screen and (min-width: 600px) {
+    max-width: 300px;
+  }
 }
 
 .mobile-hide {
