@@ -21,7 +21,7 @@ function App() {
           </div>
         </header>
 
-        <section className="text-center">
+        <section className="text-center m-5">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
           <Button href="https://www.bmcandrews.com/Barry_McAndrews_4-28-19.docx">Download Resume</Button>
