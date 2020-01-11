@@ -6,6 +6,7 @@ import styles from './Terminal.module.scss'
 import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
+import Shell from './Shell';
 
 
 export default class Terminal extends Component {
@@ -14,13 +15,14 @@ export default class Terminal extends Component {
         super(props);
         this.fitAddon = new FitAddon();
         this.webLinksAddon = new WebLinksAddon();
+        this.shell = new Shell();
         this.term = new XTerm({
             cursorBlink: true,
             fontFamily: `"Source Code Pro", monospace`,
             convertEol: true,
             fontSize: 12,
             rendererType: 'dom',
-
+            bellStyle: 'sound',
             theme: {
                 background: "#2F2F2F",
                 cursorAccent: "#2F2F2F",
@@ -28,21 +30,6 @@ export default class Terminal extends Component {
                 cursor: "#9D9D9D",
             },
         });
-        this.input = '';
-    }
-
-    onData(data) {
-        const code = data.charCodeAt(0);
-        if (code === 13) { // CR
-            this.term.write("\r\ncommand not found: " + this.input + "\r\n");
-            this.term.write("$ ");
-            this.input = "";
-        } else if (code < 32 || code === 127) { // Control
-            return;
-        } else { // Visible
-            this.term.write(data);
-            this.input += data;
-        }
     }
 
     componentDidMount() {
@@ -52,7 +39,11 @@ export default class Terminal extends Component {
         this.term.open(terminalContainer);
         this.fitAddon.fit();
         this.term.write("$ ");
-        this.term.onData((d) => this.onData(d));
+
+        // Connect shell to terminal
+        this.term.onData((d) => this.shell.handleData(d));
+        this.shell.onWrite((d) => this.term.write(d));
+
         window.addEventListener('resize',  this.fitAddon.fit());
     }
 
