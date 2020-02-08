@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
 import {findDOMNode} from 'react-dom';
-// import './Terminal.module.scss';
 import 'xterm/css/xterm.css'
 import styles from './Terminal.module.scss'
 import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
-import Shell from './Shell';
+import Shell from '../../shell/Shell';
 
 
 export default class Terminal extends Component {
