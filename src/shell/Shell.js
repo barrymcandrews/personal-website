@@ -1,5 +1,6 @@
 import * as Ansi from './Ansi';
 import * as Ascii from './Ascii';
+import {commands} from "./commands";
 
 const  PREFIX = '$ ';
 
@@ -26,9 +27,11 @@ export default class Shell {
   handleData(data) {
     switch (data) {
       case Ascii.CR:
-        this.write("\r\ncommand not found: " + this.input + "\r\n");
-        this.input = "";
+        let line = this.input;
+        this.input = '';
         this.cursor = 0;
+        this.write(Ascii.CR + Ascii.LF);
+        this.interpretLine(line);
         this.write(PREFIX);
         break;
 
@@ -79,6 +82,16 @@ export default class Shell {
         this.cursor++;
         this.write(Ansi.CURSOR_FORWARD);
         this.renderLine();
+    }
+  }
+
+  interpretLine(line) {
+    let args = line.split(' ');
+    let command = args[0];
+    if (command in commands) {
+      commands[command](args, this.write);
+    } else if (command !== '') {
+      this.write("command not found: " + command + "\r\n");
     }
   }
 }
