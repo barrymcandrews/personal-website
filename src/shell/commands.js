@@ -1,3 +1,5 @@
+import * as Ansi from "./Ansi";
+
 function help(args, out) {
   out("Available commands:\n");
   for (let key of Object.keys(commands)) {
@@ -30,6 +32,10 @@ function mail(args, out) {
   window.open("mailto:" + args[1], "_self");
 }
 
+function clear(args, out) {
+  out(Ansi.clearScreen);
+}
+
 function whoami(args, out) {
   out("barry\n");
 }
@@ -38,6 +44,7 @@ export const commands = {
   'help': help,
   'open': open,
   'mail': mail,
+  'clear': clear,
   'whoami': whoami,
 };
 
