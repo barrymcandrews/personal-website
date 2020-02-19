@@ -59,7 +59,7 @@ function ls(args, out) {
   if (FileSystem.exists(dir)) {
     out(FileSystem.list(dir).join('\n') + '\n')
   } else {
-    out('ls: no such file or directory')
+    out('ls: no such file or directory\n')
   }
 }
 
@@ -77,7 +77,7 @@ function getAbsolutePath(path) {
   if (path.startsWith('/')) return path;
   let prefix = (cwd === '/') ? '/' : cwd + '/';
   path = prefix + path;
-  path = path.split('/');
+  path = path.split('/').filter(s => s !== '.');
   for (let i = 0; i < path.length; i++) {
     if (path[i] === '..') {
       path.splice(i - 1, 2);
@@ -86,7 +86,6 @@ function getAbsolutePath(path) {
   }
   path = path.join('/');
   path = (path === '') ? '/' : path.replace(/\/$/, '');
-  console.log(path);
   return path;
 }
 
