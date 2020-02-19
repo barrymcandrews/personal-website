@@ -1,12 +1,12 @@
-import * as Ansi from "./Ansi";
-import {FileSystem} from "./FileSystem";
+import * as Ansi from './Ansi';
+import {FileSystem} from './FileSystem';
 
-let cwd = '/';
+let cwd = '/home/barry';
 
 function help(args, out) {
-  out("Available commands:\n");
+  out('Available commands:\n');
   for (let key of Object.keys(commands)) {
-    out("  " + key + "\n")
+    out('  ' + key + '\n')
   }
 }
 
@@ -16,11 +16,11 @@ function open(args, out) {
     return;
   }
 
-  if (!args[1].startsWith("http://") && !args[1].startsWith("https://")) {
-    args[1] = "http://" + args[1];
+  if (!args[1].startsWith('http://') && !args[1].startsWith('https://')) {
+    args[1] = 'http://' + args[1];
   }
 
-  window.open(args[1], "_blank");
+  window.open(args[1], '_blank');
 }
 
 function mail(args, out) {
@@ -29,7 +29,7 @@ function mail(args, out) {
     return;
   }
 
-  window.open("mailto:" + args[1], "_self");
+  window.open('mailto:' + args[1], '_self');
 }
 
 function clear(args, out) {
@@ -37,11 +37,11 @@ function clear(args, out) {
 }
 
 function whoami(args, out) {
-  out("barry\n");
+  out('barry\n');
 }
 
 function pwd(args, out) {
-  out(cwd + "\n");
+  out(cwd + '\n');
 }
 
 function cd(args, out) {
@@ -65,11 +65,21 @@ function ls(args, out) {
 
 function mkdir(args, out) {
   let path = getAbsolutePath(args[1]);
-  if(FileSystem.exists(path)) {
-    out("mkdir: " + args[1] + ": File exists");
+  if (FileSystem.exists(path)) {
+    out('mkdir: ' + args[1] + ': File exists');
   } else {
     path = path.replace(/\/$/, '');
-    FileSystem.put(path + "/__folder__", {})
+    FileSystem.put(path + '/__folder__', {})
+  }
+}
+
+function cat(args, out) {
+  let path = getAbsolutePath(args[1]);
+  if (FileSystem.isFile(path)) {
+    out(FileSystem.get(path) + '\n');
+  } else {
+    let msg = FileSystem.exists(path) ? ': Is a directory' : ': No such file or directory';
+    out('cd: ' + args[1] + msg + '\n');
   }
 }
 
@@ -98,6 +108,7 @@ export const commands = {
   'cd': cd,
   'ls': ls,
   'mkdir': mkdir,
+  'cat': cat,
   'clear': clear,
   'whoami': whoami,
 };

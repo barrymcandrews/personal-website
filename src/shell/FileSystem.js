@@ -1,6 +1,9 @@
+import {parrot} from "./constants";
+
 let fs = {
-  '/test.txt': "",
-  '/etc/conf': "",
+  '/home/barry/test.txt': 'This is a Test!!!',
+  '/home/barry/parrot.txt': parrot,
+  '/etc/conf': 'get outta here',
   '/usr/bin/__folder__': {},
   '/home/barry/__folder__': {},
 };
