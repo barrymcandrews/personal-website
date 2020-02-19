@@ -58,7 +58,10 @@ function cd(args, out) {
 function ls(args, out) {
   let dir = (args.length === 1) ? cwd : getAbsolutePath(args[1]);
   if (FileSystem.exists(dir)) {
-    out(FileSystem.list(dir).join('\n') + '\n')
+    let entries = FileSystem.list(dir);
+    if (entries.length > 0) {
+      out(entries.join('\n') + '\n');
+    }
   } else {
     out('ls: no such file or directory\n')
   }
