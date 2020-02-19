@@ -79,7 +79,7 @@ function cat(args, out) {
     out(FileSystem.get(path) + '\n');
   } else {
     let msg = FileSystem.exists(path) ? ': Is a directory' : ': No such file or directory';
-    out('cd: ' + args[1] + msg + '\n');
+    out('cat: ' + args[1] + msg + '\n');
   }
 }
 
