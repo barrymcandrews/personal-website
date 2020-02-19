@@ -89,7 +89,16 @@ export default class Shell {
     let args = line.split(' ');
     let command = args[0];
     if (command in commands) {
-      commands[command](args, this.write);
+      try {
+        commands[command](args, this.write);
+      } catch (e) {
+        if (process.env.NODE_ENV === 'production') {
+          this.write("sh: An unknown error occurred\n");
+        } else {
+          throw e;
+        }
+      }
+
     } else if (command !== '') {
       this.write("command not found: " + command + "\r\n");
     }
