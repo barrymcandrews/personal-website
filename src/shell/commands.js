@@ -84,6 +84,7 @@ function cat(args, out) {
 }
 
 function getAbsolutePath(path) {
+  if (!path) path = '';
   if (path.startsWith('/')) return path;
   let prefix = (cwd === '/') ? '/' : cwd + '/';
   path = prefix + path;
