@@ -13,10 +13,7 @@ function open(args, out) {
     return;
   }
 
-  if (!args[1].startsWith("http://") || !args[1].startsWith("https://")) {
-    if (!args[1].startsWith("www.")) {
-      args[1] = "www." + args[1];
-    }
+  if (!args[1].startsWith("http://") && !args[1].startsWith("https://")) {
     args[1] = "http://" + args[1];
   }
 
