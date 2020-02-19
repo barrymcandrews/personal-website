@@ -18,12 +18,14 @@ export class FileSystem {
   }
 
   static list(path) {
-    return Object.keys(fs)
-      .filter(s => s.startsWith(path))
-      .map(s => s.slice(path.length))
-      .map(s => s.replace(/^\//, ''))
-      .map(s => s.split('/')[0])
-      .filter(s => !s.endsWith('__folder__'))
+    return Array.from(new Set(
+      Object.keys(fs)
+        .filter(s => s.startsWith(path))
+        .map(s => s.slice(path.length))
+        .map(s => s.replace(/^\//, ''))
+        .map(s => s.split('/')[0])
+        .filter(s => !s.endsWith('__folder__'))
+    ))
   }
 
   static isFile(path) {

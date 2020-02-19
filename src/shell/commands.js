@@ -45,6 +45,7 @@ function pwd(args, out) {
 }
 
 function cd(args, out) {
+  if (!args[1]) args[1] = '/home/barry';
   let path = getAbsolutePath(args[1]);
   if (FileSystem.isDir(path)) {
     cwd = path;
