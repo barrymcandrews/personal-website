@@ -1,4 +1,7 @@
 import * as Ansi from "./Ansi";
+import {FileSystem} from "./FileSystem";
+
+let cwd = '/';
 
 function help(args, out) {
   out("Available commands:\n");
@@ -37,10 +40,65 @@ function whoami(args, out) {
   out("barry\n");
 }
 
+function pwd(args, out) {
+  out(cwd + "\n");
+}
+
+function cd(args, out) {
+  let path = getAbsolutePath(args[1]);
+  if (FileSystem.isDir(path)) {
+    cwd = path;
+  } else {
+    let message = (FileSystem.isFile(args[1])) ? 'cd: not a directory: ' : 'cd: no such file or directory: ';
+    out(message + args[1] + '\n');
+  }
+}
+
+function ls(args, out) {
+  let dir = (args.length === 1) ? cwd : getAbsolutePath(args[1]);
+  if (FileSystem.exists(dir)) {
+    out(FileSystem.list(dir).join('\n') + '\n')
+  } else {
+    out('ls: no such file or directory')
+  }
+}
+
+function mkdir(args, out) {
+  let path = getAbsolutePath(args[1]);
+  if(FileSystem.exists(path)) {
+    out("mkdir: " + args[1] + ": File exists");
+  } else {
+    path = path.replace(/\/$/, '');
+    FileSystem.put(path + "/__folder__", {})
+  }
+}
+
+function getAbsolutePath(path) {
+  if (path.startsWith('/')) return path;
+  let prefix = (cwd === '/') ? '/' : cwd + '/';
+  path = prefix + path;
+  path = path.split('/');
+  for (let i = 0; i < path.length; i++) {
+    if (path[i] === '..') {
+      path.splice(i - 1, 2);
+      i = 0;
+    }
+  }
+  path = path.join('/');
+  path = (path === '') ? '/' : path.replace(/\/$/, '');
+  console.log(path);
+  return path;
+}
+
+
 export const commands = {
   'help': help,
   'open': open,
   'mail': mail,
+  'pwd': pwd,
+  'cd': cd,
+  'ls': ls,
+  'mkdir': mkdir,
   'clear': clear,
   'whoami': whoami,
 };
