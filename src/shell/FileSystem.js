@@ -21,7 +21,7 @@ export class FileSystem {
     return Array.from(new Set(
       Object.keys(fs)
         .filter(s => s.startsWith(path))
-        .filter(s => s.charAt(path.length) === '/')
+        .filter(s => path === '/' || s.charAt(path.length) === '/')
         .map(s => s.slice(path.length))
         .map(s => s.replace(/^\//, ''))
         .map(s => s.split('/')[0])
