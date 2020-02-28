@@ -87,6 +87,11 @@ function cat(args, out) {
   }
 }
 
+function echo(args, out) {
+  let text = (args.length > 1) ? args[1] : "";
+  out(text);
+}
+
 function getAbsolutePath(path) {
   if (!path) path = '';
   if (path.startsWith('/')) return path;
@@ -114,6 +119,7 @@ export const commands = {
   'ls': ls,
   'mkdir': mkdir,
   'cat': cat,
+  'echo': echo,
   'clear': clear,
   'whoami': whoami,
 };
