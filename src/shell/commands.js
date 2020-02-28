@@ -88,8 +88,9 @@ function cat(args, out) {
 }
 
 function echo(args, out) {
-  let text = (args.length > 1) ? args[1] : "";
-  out(text);
+  let text = ((args.length > 1) ? args[1] : '')
+    .replace(/"([^"]+(?="))"/g, '$1');
+  out(text + '\n');
 }
 
 function getAbsolutePath(path) {
