@@ -1,4 +1,5 @@
-# Barry McAndrews' Personal Website
+# Barry McAndrews' Personal Website 
+![Deploy Website to S3](https://github.com/barrymcandrews/personal-website/workflows/Deploy%20Website%20to%20S3/badge.svg)
 
 Welcome to the source code of my [personal website](https://www.bmcandrews.com).
 
