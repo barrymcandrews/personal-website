@@ -7,8 +7,8 @@ function Error() {
       <div className={styles.container}>
         <div>
         <header>
-            <code>Error 404</code>
-            <h1>Page not found.</h1>
+          <code>Error 404</code>
+          <h1>Page not found.</h1>
         </header>
 
         <section className="text-center m-5">
