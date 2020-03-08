@@ -1,21 +1,20 @@
-.App {
+.Home {
 }
 
-.App-image {
+.Home-image {
   width: 130px;
   border-radius: 50%;
   pointer-events: none;
   margin: 30px 30px;
 }
 
-.App-header {
+.Home-header {
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   flex-wrap: wrap;
 }
-
 
 .header-text {
   text-align: left;
@@ -33,10 +32,6 @@
     margin-right: auto;
     max-width: 570px;
 
-}
-
-.text-center {
-  text-align: center;
 }
 
 .bg-dark {
@@ -59,9 +54,4 @@
   @media only screen and (max-width: 600px) {
     display: none;
   }
-}
-
-.m-5 {
-  margin-left: 20px;
-  margin-right: 20px;
 }
