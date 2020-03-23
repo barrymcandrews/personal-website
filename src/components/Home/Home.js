@@ -31,7 +31,7 @@ function Home() {
           <div>
             <code>$ open https://www.linkedin.com/in/barry-mcandrews/</code>
             <h4>LinkedIn</h4>
-            <p className="mw-300">
+            <p className="mw-450">
               For more information about me check out my
               LinkedIn page. There you can find my most
               up-to-date employment information. Feel free
@@ -46,7 +46,7 @@ function Home() {
           <div>
             <code>$ open https://github.com/barrymcandrews</code>
             <h4>GitHub</h4>
-            <p className="mw-300">
+            <p className="mw-450">
               Most of my personal projects are hosted on
               GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
               my house’s LED lights.
