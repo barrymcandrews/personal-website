@@ -15,6 +15,10 @@ export default class Shell {
     this.write = closure;
   }
 
+  handleString(str) {
+    str.split('').forEach(c => this.handleData(c));
+  }
+
   renderLine() {
     this.write(Ansi.cursorSavePosition);
     this.write(Ansi.eraseLine);

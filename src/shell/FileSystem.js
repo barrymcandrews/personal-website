@@ -1,10 +1,14 @@
 import {parrot} from "./constants";
 
 let fs = {
-  '/home/barry/test.txt': 'This is a Test!!!',
+  '/home/barry/linkedin.txt': 'https://www.linkedin.com/in/barry-mcandrews\n',
+  '/home/barry/github.txt': 'https://github.com/barrymcandrews\n',
+  '/home/barry/copyright.txt': 'Made by Barry McAndrews © 2020\n',
   '/home/barry/parrot.txt': parrot,
   '/etc/conf': 'get outta here',
   '/usr/bin/__folder__': {},
+  '/var/__folder__': {},
+  '/tmp/__folder__': {},
   '/home/barry/__folder__': {},
 };
 

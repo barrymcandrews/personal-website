@@ -6,6 +6,7 @@ import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
 import Shell from '../../shell/Shell';
+import * as Ascii from '../../shell/Ascii';
 
 
 export default class Terminal extends Component {
@@ -44,6 +45,8 @@ export default class Terminal extends Component {
         this.shell.onWrite((d) => this.term.write(d));
 
         window.addEventListener('resize',  this.fitAddon.fit());
+        this.shell.handleString('cat copyright.txt' + Ascii.CR);
+
     }
 
     componentWillUnmount() {
