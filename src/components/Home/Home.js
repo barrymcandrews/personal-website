@@ -17,17 +17,17 @@ function Home() {
           <div className="header-text">
             <h1>Barry</h1><br/>
             <h1>McAndrews</h1><br/>
-            <h2>Software Engineer</h2>
+            <h2 className="subtitle">Software Engineer</h2>
           </div>
         </header>
 
-        <section className="text-center m-5">
+        <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
           <Button href="https://www.bmcandrews.com/Barry_McAndrews_3-12-20.pdf">Download Resume</Button>
         </section>
 
-        <section className="flex m-5">
+        <section className="flex m-20">
           <div>
             <code>$ open https://www.linkedin.com/in/barry-mcandrews/</code>
             <h4>LinkedIn</h4>
@@ -42,7 +42,7 @@ function Home() {
           <img className="mobile-hide" src={linkedin} width="100px" alt="LinkedIn Logo"/>
         </section>
 
-        <section className="flex m-5">
+        <section className="flex m-20">
           <div>
             <code>$ open https://github.com/barrymcandrews</code>
             <h4>GitHub</h4>
@@ -56,7 +56,7 @@ function Home() {
           <img className="mobile-hide" src={github} width="100px" alt="GitHub Logo"/>
         </section>
 
-        <section className="text-center m-5">
+        <section className="text-center m-20">
           <code>$ mail bmcandrews@pitt.edu</code>
           <h3>Send me an email!</h3>
           <p>
@@ -69,7 +69,7 @@ function Home() {
 
       <section className="bg-dark">
         <div className="container">
-          <div className="m-5">
+          <div className="m-20">
             <Terminal/>
           </div>
         </div>

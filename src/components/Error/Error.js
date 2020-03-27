@@ -11,7 +11,7 @@ function Error() {
           <h1>Page not found.</h1>
         </header>
 
-        <section className="text-center m-5">
+        <section className="text-center m-20">
           <LinkButton to="/">Go Home</LinkButton>
         </section>
         </div>
