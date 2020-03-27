@@ -1,7 +1,6 @@
 import React from 'react';
 import {Button} from '../Button/Button'
 import Terminal from "../Terminal/Terminal";
-import LastVisited from "../LastVisited/LastVisited";
 import './Home.scss';
 import barry from './barry.jpg';
 import github from './github.png';
@@ -11,7 +10,6 @@ function Home() {
   return (
     <div className="Home">
       <div className="container">
-        <LastVisited/>
         <header className="Home-header">
           <div><img className="Home-image" src={barry} width="200px" alt="Barry"/></div>
           <div className="header-text">
