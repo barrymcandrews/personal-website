@@ -4,7 +4,7 @@ import Terminal from "../Terminal/Terminal";
 import './Home.scss';
 import barry from './barry.jpg';
 import github from './github.png';
-import linkedin from './linkedin.png';
+import linkedin from './linkedin.jpg';
 
 function Home() {
   return (
