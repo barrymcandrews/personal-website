@@ -2,13 +2,16 @@ import React from 'react';
 import {Button} from '../Button/Button'
 import Terminal from "../Terminal/Terminal";
 import './Home.scss';
+import barry from './barry.jpg';
+import github from './github.png';
+import linkedin from './linkedin.jpg';
 
 function Home() {
   return (
     <div className="Home">
       <div className="container">
         <header className="Home-header">
-          <div><img className="Home-image" src="/img/barry.jpg" height={130} width={130} alt="Barry"/></div>
+          <div><img className="Home-image" src={barry} height={130} width={130} alt="Barry"/></div>
           <div className="header-text">
             <h1>Barry</h1><br/>
             <h1>McAndrews</h1><br/>
@@ -34,7 +37,7 @@ function Home() {
             </p>
             <Button href="https://www.linkedin.com/in/barry-mcandrews/">See More</Button>
           </div>
-          <img className="mobile-hide" src="/img/linkedin.jpg" height={100} width={100} alt="LinkedIn Logo"/>
+          <img className="mobile-hide" src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
         </section>
 
         <section className="flex m-20">
@@ -48,7 +51,7 @@ function Home() {
             </p>
             <Button href="https://github.com/barrymcandrews">See More</Button>
           </div>
-          <img className="mobile-hide" src="/img/github.png" height={100} width={100} alt="GitHub Logo"/>
+          <img className="mobile-hide" src={github} height={100} width={100} alt="GitHub Logo"/>
         </section>
 
         <section className="text-center m-20">
