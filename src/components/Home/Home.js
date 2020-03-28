@@ -37,7 +37,7 @@ function Home() {
             </p>
             <Button href="https://www.linkedin.com/in/barry-mcandrews/">See More</Button>
           </div>
-          <img className="mobile-hide" src={linkedin} width="100px" alt="LinkedIn Logo"/>
+          <img className="mobile-hide" src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
         </section>
 
         <section className="flex m-20">
@@ -51,7 +51,7 @@ function Home() {
             </p>
             <Button href="https://github.com/barrymcandrews">See More</Button>
           </div>
-          <img className="mobile-hide" src={github} width="100px" alt="GitHub Logo"/>
+          <img className="mobile-hide" src={github} height={100} width={100} alt="GitHub Logo"/>
         </section>
 
         <section className="text-center m-20">
