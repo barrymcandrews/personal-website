@@ -11,7 +11,7 @@ function Home() {
     <div className="Home">
       <div className="container">
         <header className="Home-header">
-          <div><img className="Home-image" src={barry} alt="Barry"/></div>
+          <div><img className="Home-image" src={barry} height={130} width={130} alt="Barry"/></div>
           <div className="header-text">
             <h1>Barry</h1><br/>
             <h1>McAndrews</h1><br/>
