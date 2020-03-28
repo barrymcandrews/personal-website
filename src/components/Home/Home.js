@@ -1,33 +1,17 @@
-import React, {Suspense} from 'react';
+import React from 'react';
 import {Button} from '../Button/Button'
-// import Terminal from "../Terminal/Terminal";
+import Terminal from "../Terminal/Terminal";
 import './Home.scss';
 import barry from './barry.jpg';
 import github from './github.png';
 import linkedin from './linkedin.jpg';
-import { BlurhashCanvas } from "react-blurhash";
-const Terminal = React.lazy(() => import('../Terminal/Terminal'));
 
 function Home() {
   return (
     <div className="Home">
       <div className="container">
         <header className="Home-header">
-          <div className="Home-image-container">
-            <Suspense fallback={
-              <BlurhashCanvas
-                hash="LMI}*I4o4-?b9Ej;?bRj~qM{D%xv"
-                width={130}
-                height={130}
-                resolutionX={32}
-                resolutionY={32}
-                punch={1}
-                className="Home-image"
-              />
-            }>
-              <img className="Home-image" src={barry} height={130} width={130} alt="Barry"/>
-            </Suspense>
-          </div>
+          <div><img className="Home-image" src={barry} height={130} width={130} alt="Barry"/></div>
           <div className="header-text">
             <h1>Barry</h1><br/>
             <h1>McAndrews</h1><br/>
@@ -84,9 +68,7 @@ function Home() {
       <section className="bg-dark">
         <div className="container">
           <div className="m-20">
-            <Suspense fallback={<div style={{height: 500}}></div>}>
-              <Terminal/>
-            </Suspense>
+            <Terminal/>
           </div>
         </div>
       </section>
