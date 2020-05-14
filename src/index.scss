@@ -92,7 +92,12 @@ a {
   color: $title-color;
 }
 
-*::selection, *::-moz-selection {
+*::-moz-selection {
+  color: white;
+  background-color: #2F2F2F;
+}
+
+*::selection {
   color: white;
   background-color: #2F2F2F;
 }
