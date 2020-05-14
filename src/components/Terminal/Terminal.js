@@ -24,8 +24,8 @@ export default class Terminal extends Component {
             rendererType: 'dom',
             bellStyle: 'sound',
             theme: {
-                background: "#121216",
-                cursorAccent: "#121216",
+                background: "#212121",
+                cursorAccent: "#212121",
                 foreground: "#9D9D9D",
                 cursor: "#9D9D9D",
             },

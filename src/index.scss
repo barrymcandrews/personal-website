@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:700,500,300|Open+Sans|Source+Code+Pro:700&display=swap');
 
-$color: #434549;
+$color: #666666;
 $title-color: #121216;
 $code-color: #7a7d81;
 
@@ -13,7 +13,6 @@ html {
 }
 
 h1 {
-  //font-size: 60px;
   @media only screen and (min-width: 600px) {
     font-size: 60px;
   }
@@ -90,7 +89,12 @@ header, section {
 }
 
 a {
-  color: $color;
+  color: $title-color;
+}
+
+*::selection, *::-moz-selection {
+  color: white;
+  background-color: #2F2F2F;
 }
 
 .text-center {
