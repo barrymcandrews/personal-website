@@ -22,7 +22,7 @@ function Home() {
         <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <Button href="https://www.bmcandrews.com/Barry_McAndrews_3-12-20.pdf">Download Resume</Button>
+          <Button href="https://www.bmcandrews.com/Barry_McAndrews_6-02-20.pdf">Download Resume</Button>
         </section>
 
         <section className="flex m-20">
