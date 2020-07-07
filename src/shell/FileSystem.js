@@ -10,6 +10,10 @@ let fs = {
   '/var/__folder__': {},
   '/tmp/__folder__': {},
   '/home/barry/__folder__': {},
+  '/opt/aurora-server/README.md': 'https://github.com/barrymcandrews/aurora-server\n',
+  '/opt/raven-react/README.md': 'https://github.com/barrymcandrews/raven-react\n',
+  '/opt/raven-iac/README.md': 'https://github.com/barrymcandrews/raven-iac\n',
+  '/opt/chatbot/README.md': 'https://github.com/barrymcandrews/chatbot\n',
 };
 
 export class FileSystem {
