@@ -5,6 +5,7 @@ import './Home.scss';
 import barry from './barry.jpg';
 import github from './github.png';
 import linkedin from './linkedin.jpg';
+import awsArchitectAssociate from './aws-certified-solutions-architect-associate.png';
 
 function Home() {
   return (
@@ -52,6 +53,17 @@ function Home() {
             <Button href="https://github.com/barrymcandrews">See More</Button>
           </div>
           <img className="mobile-hide" src={github} height={100} width={100} alt="GitHub Logo"/>
+        </section>
+
+        <section className="text-center m-20">
+          <code>$ aws iam get-user</code>
+          <h3>AWS Certified.</h3>
+          <p className="aws-paragraph">
+            As a developer, the cloud opens up a world of exciting possibilities!
+            To help me take full advantage of this tool, I’ve gotten AWS Certified.
+            (Don’t worry, I have ❤️ for GCP and Azure too!)
+          </p>
+          <img className="aws-badge" src={awsArchitectAssociate} height={150} width={150} alt="AWS Solutions Architect Associate Badge" />
         </section>
 
         <section className="text-center m-20">
