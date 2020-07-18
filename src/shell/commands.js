@@ -44,6 +44,12 @@ function pwd(args, out) {
   out(cwd + '\n');
 }
 
+function aws(args, out) {
+  out('lol you thought I implemented the AWS CLI in this shell.\n\n' +
+    'The AWS CLI is wayyyy too complicated for me to recreate in this fake shell. ' +
+    'I mean don\'t get me wrong. I could do it. I\'d just rather use the time to get another certification.\n\n' );
+}
+
 function cd(args, out) {
   if (!args[1]) args[1] = '/home/barry';
   let path = getAbsolutePath(args[1]);
@@ -123,5 +129,6 @@ export const commands = {
   'echo': echo,
   'clear': clear,
   'whoami': whoami,
+  'aws': aws,
 };
 
