@@ -1,5 +1,6 @@
 import React from 'react';
 import {Button} from '../Button/Button'
+import Emoji from "../Emoji";
 import Terminal from "../Terminal/Terminal";
 import './Home.scss';
 import barry from './barry.jpg';
@@ -61,7 +62,7 @@ function Home() {
           <p className="aws-paragraph">
             As a developer, the cloud opens up a world of exciting possibilities!
             To help me take full advantage of this tool, I’ve gotten AWS Certified.
-            (Don’t worry, I have ❤️ for GCP and Azure too!)
+            (Don’t worry, I have <Emoji symbol="❤️" label="love"/> for GCP and Azure too!)
           </p>
           <img className="aws-badge" src={awsArchitectAssociate} height={150} width={150} alt="AWS Solutions Architect Associate Badge" />
         </section>
