@@ -29,6 +29,9 @@ function Home() {
 
         <section className="flex m-20">
           <div>
+            <div className="text-center desktop-hide">
+              <img className="mb-40" src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
+            </div>
             <code>$ open https://www.linkedin.com/in/barry-mcandrews/</code>
             <h4>LinkedIn</h4>
             <p className="mw-450">
@@ -44,6 +47,9 @@ function Home() {
 
         <section className="flex m-20">
           <div>
+            <div className="text-center desktop-hide">
+              <img className="mb-40" src={github} height={100} width={100} alt="GitHub Logo"/>
+            </div>
             <code>$ open https://github.com/barrymcandrews</code>
             <h4>GitHub</h4>
             <p className="mw-450">
