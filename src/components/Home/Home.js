@@ -40,7 +40,7 @@ function Home() {
               up-to-date employment information. Feel free
               to send me a message!
             </p>
-            <Button href="https://www.linkedin.com/in/barry-mcandrews/">See More</Button>
+            <Button href="https://www.linkedin.com/in/barry-mcandrews/">Go to LinkedIn</Button>
           </div>
           <img className="mobile-hide" src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
         </section>
@@ -57,7 +57,7 @@ function Home() {
               GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
               my house’s LED lights.
             </p>
-            <Button href="https://github.com/barrymcandrews">See More</Button>
+            <Button href="https://github.com/barrymcandrews">Go to GitHub</Button>
           </div>
           <img className="mobile-hide" src={github} height={100} width={100} alt="GitHub Logo"/>
         </section>
