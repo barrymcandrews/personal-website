@@ -2,20 +2,27 @@ import * as Ansi from './Ansi';
 import * as Ascii from './Ascii';
 import {commands} from "./commands";
 
-const  PREFIX = '$ ';
+const PREFIX = '$ ';
+
+type Writer = (data: string) => any;
 
 export default class Shell {
-  constructor() {
-    this.input = '';
-    this.cursor = 0;
-    this.write = (data) => {};
-  }
+  prefix: string = PREFIX;
+  input: string = '';
+  cursor: number = 0;
+  write: Writer = (data: string) => {};
+  hasProcess = false;
 
-  onWrite(closure) {
+  onWrite(closure: Writer) {
     this.write = closure;
   }
 
-  handleString(str) {
+  out(data: string): void {
+    this.write(data);
+    this.prefix += data.split('\n').pop();
+  }
+
+  handleString(str: string) {
     str.split('').forEach(c => this.handleData(c));
   }
 
@@ -23,20 +30,19 @@ export default class Shell {
     this.write(Ansi.cursorSavePosition);
     this.write(Ansi.eraseLine);
     this.write(Ascii.CR);
-    this.write(PREFIX);
-    this.write(this.input);
+    this.write(this.prefix + this.input);
     this.write(Ansi.cursorRestorePosition);
   }
 
-  handleData(data) {
+  handleData(data: string) {
     switch (data) {
       case Ascii.CR:
         let line = this.input;
         this.input = '';
+        this.prefix = '';
         this.cursor = 0;
         this.write(Ascii.CR + Ascii.LF);
         this.interpretLine(line);
-        this.write(PREFIX);
         break;
 
       case Ascii.ETX:
@@ -89,12 +95,38 @@ export default class Shell {
     }
   }
 
-  interpretLine(line) {
+  async read(): Promise<string> {
+    return new Promise((resolve => {
+      document.addEventListener("shell-return", function(event) {
+        console.log("resolving!")
+        resolve((event as CustomEvent).detail);
+      },{once : true});
+    }))
+  }
+
+  interpretLine(line: string) {
+    if (this.hasProcess) {
+      document.dispatchEvent(new CustomEvent('shell-return', {
+        detail: line
+      }));
+      return;
+    }
+
     let args = line.split(' ');
     let command = args[0];
     if (command in commands) {
+      let shell: Shell = this;
+
       try {
-        commands[command](args, this.write);
+        shell.hasProcess = true;
+        commands[command](args, {
+          out: (d) => this.out(d),
+          in: this.read,
+          err: (d) => this.out(d),
+        }).then(() => {
+          shell.hasProcess = false;
+          this.out(PREFIX);
+        });
       } catch (e) {
         if (process.env.NODE_ENV === 'production') {
           this.write("sh: An unknown error occurred\n");
@@ -105,6 +137,9 @@ export default class Shell {
 
     } else if (command !== '') {
       this.write("command not found: " + command + "\r\n");
+      this.out(PREFIX);
+    } else {
+      this.out(PREFIX);
     }
   }
 }
