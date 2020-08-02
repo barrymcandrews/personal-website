@@ -32,7 +32,7 @@ export let eraseScreen = ESC + '2J';
 export let scrollUp = ESC + 'S';
 export let scrollDown = ESC + 'T';
 
-export let clearScreen = '\u001Bc';
+export let clearScreen = '\u001Bc\n';
 export let clearTerminal = `${eraseScreen}${ESC}3J${ESC}H`;
 
 export let beep = BEL;
