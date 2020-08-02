@@ -38,7 +38,7 @@ export let clearTerminal = `${eraseScreen}${ESC}3J${ESC}H`;
 export let beep = BEL;
 
 
-export function cursorTo(x, y) {
+export function cursorTo(x: any, y: any) {
   if (typeof x !== 'number') {
     throw new TypeError('The `x` argument is required');
   }
@@ -50,7 +50,7 @@ export function cursorTo(x, y) {
   return ESC + (y + 1) + ';' + (x + 1) + 'H';
 }
 
-export function cursorMove(x, y) {
+export function cursorMove(x: any, y: any) {
   if (typeof x !== 'number') {
     throw new TypeError('The `x` argument is required');
   }
@@ -72,7 +72,7 @@ export function cursorMove(x, y) {
   return ret;
 }
 
-export function eraseLines(count) {
+export function eraseLines(count: number) {
   let clear = '';
 
   for (let i = 0; i < count; i++) {
@@ -86,7 +86,10 @@ export function eraseLines(count) {
   return clear;
 }
 
-export function link(text, url) {
+export function link(url: string, text?: string) {
+  if (!text) {
+    text = url;
+  }
   return [
     OSC,
     '8',
