@@ -4,7 +4,10 @@ interface EnvStore {
 }
 
 let env: EnvStore = {
-  'PATH': '/usr/bin'
+  'PATH': '/usr/bin',
+  'HOME': '/home/barry',
+  'USER': 'barry',
+  'TERM': 'xterm-256color'
 }
 
 export function put(key: string, value: string) {
@@ -13,6 +16,10 @@ export function put(key: string, value: string) {
 
 export function get(key: string): string {
   return env[key];
+}
+
+export function getAll(): string[] {
+  return Object.keys(env);
 }
 
 export function substitute(line: string): string {

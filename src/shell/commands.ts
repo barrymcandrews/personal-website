@@ -3,7 +3,7 @@ import {FileSystem} from './FileSystem';
 
 let cwd = '/home/barry';
 
-interface IO {
+export interface IO {
   in: () => Promise<string>;
   out: (str: string) => void;
   err: (str: string) => void;
@@ -119,6 +119,19 @@ async function echo(args: string[], io: IO) {
   return 0;
 }
 
+async function touch(args: string[], io: IO) {
+  if (args.length < 2) {
+    io.out("Usage: touch <file..>\n");
+    return 1;
+  }
+
+  for (let i = 0; i < args.length; i++) {
+    let path = getAbsolutePath(args[i]);
+    FileSystem.put(path, "");
+  }
+  return 0;
+}
+
 async function mirror(args: string[], io: IO) {
   io.out('say something: ');
   let str = await io.in();
@@ -161,5 +174,6 @@ export const commands: Executables = {
   'whoami': whoami,
   'aws': aws,
   'mirror': mirror,
+  'touch': touch,
 };
 
