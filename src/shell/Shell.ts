@@ -1,7 +1,7 @@
 import * as Ansi from './Ansi';
 import * as Ascii from './Ascii';
 import {commands} from "./commands";
-import * as Env from './environment';
+import {Environment} from './environment';
 
 const PREFIX = '$ ';
 
@@ -13,6 +13,7 @@ export default class Shell {
   cursor: number = 0;
   write: Writer = (data: string) => {};
   hasProcess = false;
+  env = new Environment();
 
   onWrite(closure: Writer) {
     this.write = closure;
@@ -51,7 +52,7 @@ export default class Shell {
         this.write(Ascii.CR);
         this.cursor = 0;
         this.input = '';
-        Env.put('?', '130');
+        this.env.put('?', '130');
         this.write(PREFIX);
         break;
 
@@ -114,11 +115,13 @@ export default class Shell {
       return;
     }
 
+    // Substitute variables in line
+    line = this.env.substitute(line);
+
     // Handle Environment Variables
-    line = Env.substitute(line);
     if (/^(\w)+=/.test(line)) {
       let separator = line.indexOf('=');
-      Env.put(line.substring(0, separator), line.substring(separator + 1));
+      this.env.put(line.substring(0, separator), line.substring(separator + 1));
       this.out(PREFIX);
       return;
     }
@@ -139,7 +142,7 @@ export default class Shell {
           err: (d) => this.out(d),
         }).then((returnCode) => {
           shell.hasProcess = false;
-          Env.put('?', returnCode.toString());
+          this.env.put('?', returnCode.toString());
           this.out(PREFIX);
         });
       } catch (e) {
@@ -152,7 +155,7 @@ export default class Shell {
 
     } else if (command !== '') {
       this.write("command not found: " + command + "\r\n");
-      Env.put('?', '127');
+      this.env.put('?', '127');
       this.out(PREFIX);
     } else {
       this.out(PREFIX);

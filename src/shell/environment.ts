@@ -3,36 +3,40 @@ interface EnvStore {
   [key: string]: string
 }
 
-let env: EnvStore = {
-  'PATH': '/usr/bin',
-  'HOME': '/home/barry',
-  'USER': 'barry',
-  'TERM': 'xterm-256color'
-}
+export class Environment {
+  env: EnvStore = {
+    'PATH': '/usr/bin',
+    'HOME': '/home/barry',
+    'USER': 'barry',
+    'TERM': 'xterm-256color'
+  };
 
-export function put(key: string, value: string) {
-  env[key] = value;
-}
+  copy(): Environment {
+    return Object.create(this);
+  }
 
-export function get(key: string): string {
-  return env[key];
-}
+  put(key: string, value: string) {
+    this.env[key] = value;
+  }
 
-export function getAll(): string[] {
-  return Object.keys(env);
-}
+  get(key: string): string {
+    return (key in this.env) ? this.env[key] : "";
+  }
 
-export function substitute(line: string): string {
-  return line
-    .split(' ')
-    .map(word => {
-      if (word.startsWith('$')) {
-        let key = word.substring(1);
-        if (key in env) {
-          return env[key];
+  getAll(): string[] {
+    return Object.keys(this.env);
+  }
+
+  substitute(line: string): string {
+    return line
+      .split(' ')
+      .map(word => {
+        if (word.startsWith('$')) {
+          let key = word.substring(1);
+          return this.env[key];
         }
-      }
-      return word;
-    })
-    .join(' ');
+        return word;
+      })
+      .join(' ');
+  }
 }
