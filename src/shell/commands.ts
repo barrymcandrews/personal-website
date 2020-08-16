@@ -1,13 +1,8 @@
 import * as Ansi from './Ansi';
-import {FileSystem} from './FileSystem';
+import {Executable, FileSystem, IO} from './system';
 
 let cwd = '/home/barry';
 
-export interface IO {
-  in: () => Promise<string>;
-  out: (str: string) => void;
-  err: (str: string) => void;
-}
 
 async function help(args: string[], io: IO) {
   io.out('Available commands:\n');
@@ -157,7 +152,7 @@ function getAbsolutePath(path: string) {
 }
 
 interface Executables {
-  [command: string]: (args: string[], io: IO) => Promise<number>;
+  [command: string]: Executable;
 }
 
 export const commands: Executables = {
@@ -177,3 +172,7 @@ export const commands: Executables = {
   'touch': touch,
 };
 
+// Add all commands to filesystem
+for (let e of Object.keys(commands)) {
+  FileSystem.put('/usr/bin/' + e, commands[e]);
+}

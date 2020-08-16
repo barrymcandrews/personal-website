@@ -1,10 +1,21 @@
 import {parrot} from "./constants";
 import * as Ansi from './Ansi';
+import {Environment} from './environment';
 
 const YEAR = new Date().getFullYear();
 
+export interface IO {
+  in: () => Promise<string>;
+  out: (str: string) => void;
+  err: (str: string) => void;
+  env: Environment;
+}
+
+export type Executable = (args: string[], io: IO) => Promise<number>;
+export type FsObject = string | {} | Executable;
+
 interface FileMap {
-  [key: string]: string | {}
+  [key: string]: FsObject
 }
 
 let fs: FileMap = {

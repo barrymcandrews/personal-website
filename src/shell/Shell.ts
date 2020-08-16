@@ -137,6 +137,7 @@ export default class Shell {
       try {
         shell.hasProcess = true;
         commands[command](args, {
+          env: this.env,
           out: (d) => this.out(d),
           in: this.read,
           err: (d) => this.out(d),
