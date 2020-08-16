@@ -1,6 +1,11 @@
 import React from "react";
 
-export default function Emoji(props) {
+export interface EmojiProps {
+  label: string;
+  symbol: string;
+}
+
+export default function Emoji(props: EmojiProps) {
   return (
     <span
       role="img"

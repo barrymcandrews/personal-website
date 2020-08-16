@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from '../Button/Button'
+import {AnchorButton} from '../Button/AnchorButton'
 import Emoji from "../Emoji";
 import Terminal from "../Terminal/Terminal";
 import './Home.scss';
@@ -24,7 +24,7 @@ function Home() {
         <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <Button href="https://www.bmcandrews.com/Barry_McAndrews_6-02-20.pdf">Download Resume</Button>
+          <AnchorButton to="https://www.bmcandrews.com/Barry_McAndrews_6-02-20.pdf">Download Resume</AnchorButton>
         </section>
 
         <section className="flex m-20">
@@ -40,7 +40,7 @@ function Home() {
               up-to-date employment information. Feel free
               to send me a message!
             </p>
-            <Button href="https://www.linkedin.com/in/barry-mcandrews/">Go to LinkedIn</Button>
+            <AnchorButton to="https://www.linkedin.com/in/barry-mcandrews/">Go to LinkedIn</AnchorButton>
           </div>
           <img className="mobile-hide" src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
         </section>
@@ -57,7 +57,7 @@ function Home() {
               GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
               my house’s LED lights.
             </p>
-            <Button href="https://github.com/barrymcandrews">Go to GitHub</Button>
+            <AnchorButton to="https://github.com/barrymcandrews">Go to GitHub</AnchorButton>
           </div>
           <img className="mobile-hide" src={github} height={100} width={100} alt="GitHub Logo"/>
         </section>
@@ -80,7 +80,7 @@ function Home() {
             Whether it’s a job, side project, or anything else, I’m always looking
             to explore new ideas and opportunities.
           </p>
-          <Button href="mailto:bmcandrews@pitt.edu">Contact Me</Button>
+          <AnchorButton to="mailto:bmcandrews@pitt.edu">Contact Me</AnchorButton>
         </section>
       </div>
 

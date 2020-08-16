@@ -10,30 +10,26 @@ import * as Ascii from '../../shell/Ascii';
 
 
 export default class Terminal extends Component {
-
-    constructor(props) {
-        super(props);
-        this.fitAddon = new FitAddon();
-        this.webLinksAddon = new WebLinksAddon();
-        this.shell = new Shell();
-        this.term = new XTerm({
-            cursorBlink: true,
-            fontFamily: `"Source Code Pro", monospace`,
-            convertEol: true,
-            fontSize: 12,
-            rendererType: 'dom',
-            bellStyle: 'sound',
-            theme: {
-                background: "#212121",
-                cursorAccent: "#212121",
-                foreground: "#9D9D9D",
-                cursor: "#9D9D9D",
-            },
-        });
-    }
+    fitAddon = new FitAddon();
+    webLinksAddon = new WebLinksAddon();
+    shell = new Shell();
+    term = new XTerm({
+        cursorBlink: true,
+        fontFamily: `"Source Code Pro", monospace`,
+        convertEol: true,
+        fontSize: 12,
+        rendererType: 'dom',
+        bellStyle: 'sound',
+        theme: {
+            background: "#212121",
+            cursorAccent: "#212121",
+            foreground: "#9D9D9D",
+            cursor: "#9D9D9D",
+        },
+    });
 
     componentDidMount() {
-        const terminalContainer = findDOMNode(this);
+        const terminalContainer = findDOMNode(this) as HTMLElement;
         this.term.loadAddon(this.fitAddon);
         this.term.loadAddon(this.webLinksAddon);
         this.term.open(terminalContainer);
@@ -44,14 +40,14 @@ export default class Terminal extends Component {
         this.term.onData((d) => this.shell.handleData(d));
         this.shell.onWrite((d) => this.term.write(d));
 
-        window.addEventListener('resize',  this.fitAddon.fit());
+        window.addEventListener('resize',  () => this.fitAddon.fit());
         this.shell.handleString('cat copyright.txt' + Ascii.CR);
 
     }
 
     componentWillUnmount() {
         this.term.dispose();
-        window.removeEventListener('resize',  this.fitAddon.fit());
+        window.removeEventListener('resize',  () => this.fitAddon.fit());
     }
 
     render() {

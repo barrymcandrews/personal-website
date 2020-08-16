@@ -1,5 +1,5 @@
 import React from 'react';
-import {LinkButton} from "../Button/Button";
+import {LinkButton} from "../Button/AnchorButton";
 import styles from "./Error.module.scss";
 
 function Error() {
