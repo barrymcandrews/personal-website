@@ -1,5 +1,5 @@
 import React from 'react';
-import {AnchorButton} from '../Button/AnchorButton'
+import {AnchorButton} from '../Button/Button'
 import Emoji from "../Emoji";
 import Terminal from "../Terminal/Terminal";
 import './Home.scss';
