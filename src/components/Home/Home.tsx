@@ -24,7 +24,7 @@ function Home() {
         <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <AnchorButton to="https://www.bmcandrews.com/Barry_McAndrews_6-02-20.pdf">Download Resume</AnchorButton>
+          <AnchorButton to="https://www.bmcandrews.com/Barry_McAndrews_8-19-20.pdf">Download Resume</AnchorButton>
         </section>
 
         <section className="flex m-20">
