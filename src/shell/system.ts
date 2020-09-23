@@ -32,6 +32,7 @@ let fs: FileMap = {
   '/opt/raven-react/README.md': Ansi.link('https://github.com/barrymcandrews/raven-react') + '\n',
   '/opt/raven-iac/README.md': Ansi.link('https://github.com/barrymcandrews/raven-iac') + '\n',
   '/opt/chatbot/README.md': Ansi.link('https://github.com/barrymcandrews/chatbot') + '\n',
+  '/opt/raven-cli/README.md': Ansi.link('https://github.com/barrymcandrews/raven-cli') + '\n',
 };
 
 export class FileSystem {
