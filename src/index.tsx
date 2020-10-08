@@ -3,12 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App/App';
 import * as serviceWorker from './serviceWorker';
-import ReactGA from "react-ga";
-
-if (process.env.NODE_ENV === 'production') {
-  ReactGA.initialize('UA-73066517-1');
-  ReactGA.pageview(window.location.pathname + window.location.search);
-}
 
 ReactDOM.render(<App />, document.getElementById('root'));
 
@@ -16,3 +10,12 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+async function setupAnalytics() {
+  if (process.env.NODE_ENV === 'production') {
+    const ReactGA = await import('react-ga');
+    ReactGA.initialize('UA-73066517-1');
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }
+}
+setupAnalytics();

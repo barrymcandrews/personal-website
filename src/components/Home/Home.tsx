@@ -1,12 +1,12 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import {AnchorButton} from '../Button/Button'
 import Emoji from "../Emoji";
-import Terminal from "../Terminal/Terminal";
 import './Home.scss';
 import barry from './barry.jpg';
 import github from './github.png';
 import linkedin from './linkedin.jpg';
 import awsArchitectAssociate from './aws-certified-solutions-architect-associate.png';
+const Terminal = React.lazy(() => import("../Terminal/Terminal"));
 
 function Home() {
   return (
@@ -87,7 +87,9 @@ function Home() {
       <section className="bg-dark">
         <div className="container">
           <div className="m-20">
-            <Terminal/>
+            <Suspense fallback={<div/>}>
+              <Terminal/>
+            </Suspense>
           </div>
         </div>
       </section>
