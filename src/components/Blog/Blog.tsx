@@ -40,10 +40,10 @@ export default function Blog() {
   }, [postName]);
 
   return (
-    <div className={classes.Blog}>
+    <>
       {error && <Error/>}
       {/*{loading && "Loading..."}*/}
-      {post && <>
+      {post && <div className={classes.Blog}>
         <Navbar/>
         <div className={classes.container}>
           <div className="m-20">
@@ -51,7 +51,7 @@ export default function Blog() {
             <Markdown children={post}/>
           </div>
         </div>
-      </>}
-    </div>
+      </div>}
+    </>
   );
 }
