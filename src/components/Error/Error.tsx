@@ -21,7 +21,7 @@ function Error() {
             [&lt;ffffffff8163aa9a&gt;] start_secondary+0xd9/0xdb<br/>
             Kernel panic - Error 404<br/>
           </code>
-          <h1>Page not found.</h1>
+          <h1 className={styles.main}>Page not found.</h1>
         </header>
 
         <section className="text-center m-20">

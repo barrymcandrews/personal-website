@@ -12,54 +12,32 @@ html {
   width: 100%;
 }
 
+h1, h2, h3, h4, h5 {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 h1 {
-  @media only screen and (min-width: 600px) {
-    font-size: 60px;
-  }
-  @media only screen and (max-width: 600px) {
-    font-size: 40px;
-  }
-  margin: 0;
   font-family: $title-font;
   color: $title-color;
   font-weight: 700;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h2 {
-  @media only screen and (min-width: 600px) {
-    font-size: 20px;
-  }
-  @media only screen and (max-width: 600px) {
-    font-size: 15px;
-  }
   font-family: $title-font;
   font-weight: 300;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  margin: 0;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h3 {
- font-weight: 700;
-  margin: 0;
+  font-weight: 700;
   font-family: $title-font;
   color: $title-color;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 h4 {
-  font-size: 30px;
   font-weight: 500;
-  margin: 0;
   font-family: $title-font;
   color: $title-color;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
 
@@ -70,18 +48,6 @@ body {
   width: 100%;
 }
 
-p {
-  margin-top: 6px;
-  margin-bottom: 24px;
-  font-size: 16px;
-}
-
-code {
-  font-size: 12px;
-  color: $code-color;
-  font-family: $code-font;
-  display: block;
-}
 
 header, section {
   margin-top: 20vh;
