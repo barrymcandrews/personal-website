@@ -1,0 +1,127 @@
+@import "../../index";
+
+.Home {
+
+  h1 {
+    @media only screen and (min-width: 600px) {
+      font-size: 60px;
+    }
+    @media only screen and (max-width: 600px) {
+      font-size: 40px;
+    }
+    margin: 0;
+  }
+
+  h2 {
+    @media only screen and (min-width: 600px) {
+      font-size: 20px;
+    }
+    @media only screen and (max-width: 600px) {
+      font-size: 15px;
+    }
+    letter-spacing: 3px;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0;
+  }
+
+  h4 {
+    font-size: 30px;
+    margin: 0;
+  }
+
+  p {
+    margin-top: 6px;
+    margin-bottom: 24px;
+    font-size: 16px;
+  }
+
+  code {
+    font-size: 12px;
+    color: $code-color;
+    font-family: $code-font;
+    display: block;
+  }
+
+  .image {
+    width: 130px;
+    border-radius: 50%;
+    pointer-events: none;
+    margin: 30px 30px;
+  }
+
+  .header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex-wrap: wrap;
+  }
+
+  .headerText {
+    text-align: left;
+
+    h1, h2, h3 {
+      display: inline;
+    }
+  }
+
+  .subtitle {
+    color: #7a7d81;
+  }
+
+  .container {
+    @media only screen and (max-width: 680px) {
+      width: 100%;
+    }
+
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 680px;
+
+  }
+
+  .bgDark {
+    background: #212121;
+  }
+
+  .flex {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mw450 {
+    @media only screen and (min-width: 680px) {
+      max-width: 450px;
+    }
+  }
+
+  .mb40 {
+    margin-bottom: 40px;
+  }
+
+  .mobileHide {
+    @media only screen and (max-width: 680px) {
+      display: none;
+    }
+  }
+
+  .desktopHide {
+    @media only screen and (min-width: 680px) {
+      display: none;
+    }
+  }
+
+  .awsBadge {
+    margin: 5px;
+  }
+
+  .awsParagraph {
+    // This with is fitted for the aws paragraph content
+    display: inline-block;
+    max-width: 511px;
+  }
+}
