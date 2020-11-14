@@ -4,6 +4,7 @@ import Markdown from "markdown-to-jsx";
 import Error from "../Error/Error"
 import {safeLoad} from "js-yaml"
 import {Navbar} from '../Navbar/Navbar';
+import classes from './Blog.module.scss';
 
 
 interface Metadata {
@@ -39,18 +40,18 @@ export default function Blog() {
   }, [postName]);
 
   return (
-    <>
+    <div className={classes.Blog}>
       {error && <Error/>}
       {/*{loading && "Loading..."}*/}
       {post && <>
         <Navbar/>
-        <div className="container">
+        <div className={classes.container}>
           <div className="m-20">
             <h1>{metadata!.title}</h1>
             <Markdown children={post}/>
           </div>
         </div>
       </>}
-    </>
+    </div>
   );
 }

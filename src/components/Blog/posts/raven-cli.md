@@ -1,10 +1,8 @@
 ---
 layout: post
-title: How to cut a bagel
+title: Raven CLI
 ---
 
-
-# Raven CLI
 **See Also:** &nbsp;&nbsp;&nbsp;&nbsp;🏗 [AWS Infrastructure](https://github.com/barrymcandrews/raven-iac)&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;🖼️ [React Frontend](https://github.com/barrymcandrews/raven-react)&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp; 🚀[React Frontend Demo](https://raven.bmcandrews.com)
 
 
