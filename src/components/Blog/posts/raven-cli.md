@@ -3,7 +3,7 @@ layout: post
 title: Raven CLI
 ---
 
-**See Also:** &nbsp;&nbsp;&nbsp;&nbsp;🏗 [AWS Infrastructure](https://github.com/barrymcandrews/raven-iac)&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp;🖼️ [React Frontend](https://github.com/barrymcandrews/raven-react)&nbsp;&nbsp;&nbsp;&nbsp;&bull;&nbsp;&nbsp;&nbsp;&nbsp; 🚀[React Frontend Demo](https://raven.bmcandrews.com)
+**See Also:** &nbsp;&nbsp;&nbsp;&nbsp;🏗 [AWS Infrastructure](https://github.com/barrymcandrews/raven-iac)&nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp;🖼️ [React Frontend](https://github.com/barrymcandrews/raven-react)&nbsp;&nbsp;&nbsp;&nbsp;•&nbsp;&nbsp;&nbsp;&nbsp; 🚀[React Frontend Demo](https://raven.bmcandrews.com)
 
 
 
@@ -12,7 +12,7 @@ Raven Messenger is a proof-of-concept serverless chat application. This project 
 
 ### Text-based User Interface (TUI)
 
-<img src="docs/raven-cli.png" width="600">
+<img src="https://github.com/barrymcandrews/raven-cli/raw/master/docs/raven-cli.png" width="600">
 
 The text-based user interface lets you browse and send messages like you would in a web browser. 
 

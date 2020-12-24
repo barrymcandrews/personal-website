@@ -5,8 +5,15 @@
 .Blog {
 
   h1, h2, h3, h4, h5 {
-    font-weight: unset !important;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    font-weight: 600;
     color: black;
+  }
+
+  h1, h2 {
+    padding-bottom: 7px;
+    //border-bottom: 1px solid $color;
   }
 
   pre {
@@ -14,14 +21,24 @@
     background: #f3f3f3;
     color: #2F2F2F;
     border-radius: 6px;
-    font-size: 85%;
+    //font-size: 85%;
     line-height: 1.45;
+    code {
+      padding: 0 !important;
+    }
   }
 
   code {
+    color: #2F2F2F;
+    font-size: 85%;
     font-family: $code-font;
     background: #f3f3f3;
     border-radius: 6px;
+    padding: 2px 5px;
+  }
+
+  li:not(:first-child) {
+    margin-top: 4px;
   }
 
   table {
@@ -48,14 +65,23 @@
     font-weight: bold;
   }
 
+  strong {
+    font-weight: 600;
+  }
+
+  .blockquoteWrapper {
+      border-left: 3px solid $color;
+  }
+
   .container {
-    @media only screen and (max-width: 680px) {
+    @media only screen and (max-width: 800px) {
       width: 100%;
     }
 
     margin-left: auto;
     margin-right: auto;
-    max-width: 680px;
+    margin-top: 40px;
+    max-width: 800px;
 
   }
 

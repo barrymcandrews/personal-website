@@ -39,6 +39,10 @@ export default function Blog() {
     });
   }, [postName]);
 
+  const Blockquote = (props: any) => {
+    return <div className={classes.blockquoteWrapper}><blockquote>{props.children}</blockquote></div>;
+  };
+
   return (
     <>
       {error && <Error/>}
@@ -48,7 +52,14 @@ export default function Blog() {
         <div className={classes.container}>
           <div className="m-20">
             <h1>{metadata!.title}</h1>
-            <Markdown children={post}/>
+            <Markdown children={post}
+                      options={{
+                        overrides: {
+                          blockquote: {
+                            component: Blockquote
+                          },
+                        },
+                      }}/>
           </div>
         </div>
       </div>}
