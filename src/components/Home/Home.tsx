@@ -1,7 +1,6 @@
 import React, { Suspense } from 'react';
 import {AnchorButton} from '../Button/Button'
 import Emoji from "../Emoji";
-// import './Home.module.scss';
 import classes from './Home.module.scss'
 import barry from './barry.jpg';
 import github from './github.png';
@@ -25,7 +24,7 @@ function Home() {
         <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <AnchorButton to="https://www.bmcandrews.com/Barry_McAndrews_8-19-20.pdf">Download Resume</AnchorButton>
+          <AnchorButton to={process.env.PUBLIC_URL + "/Barry_McAndrews_8-19-20.pdf"}>Download Resume</AnchorButton>
         </section>
 
         <section className={`${classes.flex} m-20`}>
