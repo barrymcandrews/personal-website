@@ -18,7 +18,7 @@ interface BlogParams {
 
 export default function Blog() {
   const {postName} = useParams<BlogParams>();
-  const [, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<boolean>(false);
   const [metadata, setMetadata] = useState<Metadata>();
   const [post, setPost] = useState<string>();
@@ -46,7 +46,7 @@ export default function Blog() {
   return (
     <>
       {error && <Error/>}
-      {/*{loading && "Loading..."}*/}
+      {loading && <Navbar/>}
       {post && <div className={classes.Blog}>
         <Navbar/>
         <div className={classes.container}>
