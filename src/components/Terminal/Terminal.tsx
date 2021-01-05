@@ -16,6 +16,7 @@ export default class Terminal extends Component {
     term = new XTerm({
         cursorBlink: true,
         fontFamily: `"Source Code Pro", monospace`,
+        fontWeight: '500',
         convertEol: true,
         fontSize: 12,
         rendererType: 'dom',
