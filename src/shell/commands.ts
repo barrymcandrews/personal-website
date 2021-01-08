@@ -1,5 +1,6 @@
 import * as Ansi from './Ansi';
 import {Executable, FileSystem, IO} from './system';
+import history from '../App/history';
 
 let cwd = '/home/barry';
 
@@ -151,6 +152,16 @@ function getAbsolutePath(path: string) {
   return path;
 }
 
+async function goto(args: string[], io: IO) {
+  if (args.length !== 2) {
+    io.out("Usage: goto <page>\n");
+    return 1;
+  }
+  history.push(args[1]);
+  return 0;
+}
+
+
 interface Executables {
   [command: string]: Executable;
 }
@@ -170,6 +181,7 @@ export const commands: Executables = {
   'aws': aws,
   'mirror': mirror,
   'touch': touch,
+  'goto': goto,
 };
 
 // Add all commands to filesystem
