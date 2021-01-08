@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import {AnchorButton} from '../Button/Button'
 import Emoji from "../Emoji";
 import classes from './Home.module.scss'
@@ -6,7 +6,6 @@ import barry from './barry.jpg';
 import github from './github.png';
 import linkedin from './linkedin.jpg';
 import awsArchitectAssociate from './aws-certified-solutions-architect-associate.png';
-const Terminal = React.lazy(() => import("../Terminal/Terminal"));
 
 function Home() {
   return (
@@ -83,16 +82,6 @@ function Home() {
           <AnchorButton to="mailto:bmcandrews@pitt.edu">Contact Me</AnchorButton>
         </section>
       </div>
-
-      <section className={classes.bgDark}>
-        <div className={classes.container}>
-          <div className="m-20">
-            <Suspense fallback={<div/>}>
-              <Terminal/>
-            </Suspense>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }
