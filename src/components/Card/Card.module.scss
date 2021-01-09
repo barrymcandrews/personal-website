@@ -27,6 +27,12 @@
     font-weight: 700;
   }
 
+  code {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   .m20 {
     margin-left: 20px;
     margin-right: 20px;
