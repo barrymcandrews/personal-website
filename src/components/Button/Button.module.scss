@@ -7,7 +7,12 @@
   padding: 6px 30px 8px;
   font-weight: 700;
   margin-top: 12px;
-  font-size: 0.75em;
+  font-size: 0.85em;
+
+  @media only screen and (max-width: 550px) {
+    padding: 10px 34px 12px;
+    font-size: 0.95em;
+  }
 }
 
 .btn:hover {
