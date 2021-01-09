@@ -9,7 +9,7 @@ export interface ButtonProps {
 
 export function AnchorButton(props: ButtonProps) {
     return (
-      <a className={styles.btn} href={props.to}>{props.text}</a>
+      <a className={styles.btn} href={props.to} target="_blank" rel="noopener noreferrer">{props.text}</a>
     );
 }
 
