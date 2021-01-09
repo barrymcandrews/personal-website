@@ -1,6 +1,7 @@
 import React from 'react';
 import {AnchorButton} from '../Button/Button'
 import Emoji from "../Emoji";
+import Card from '../Card/Card';
 import classes from './Home.module.scss'
 import barry from './barry.jpg';
 import github from './github.png';
@@ -26,40 +27,31 @@ function Home() {
           <AnchorButton to={process.env.PUBLIC_URL + "/Barry_McAndrews_8-19-20.pdf"} text="Download Resume"/>
         </section>
 
-        <section className={`${classes.flex} m-20`}>
-          <div>
-            <div className={`text-center ${classes.desktopHide}`}>
-              <img className={classes.mb40} src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
-            </div>
-            <code>$ open https://www.linkedin.com/in/barry-mcandrews/</code>
-            <h4>LinkedIn</h4>
-            <p className={classes.mw450}>
-              For more information about me check out my
-              LinkedIn page. There you can find my most
-              up-to-date employment information. Feel free
-              to send me a message!
-            </p>
-            <AnchorButton to="https://www.linkedin.com/in/barry-mcandrews/" text="Go to LinkedIn"/>
-          </div>
-          <img className={classes.mobileHide} src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
-        </section>
+        <Card className={classes.section}
+              image={linkedin}
+              code="$ open https://www.linkedin.com/in/barry-mcandrews/"
+              title="LinkedIn"
+              body="For more information about me check out my
+                    LinkedIn page. There you can find my most
+                    up-to-date employment information. Feel free
+                    to send me a message!"
+              button={{
+                text: "Go to LinkedIn",
+                to: "https://www.linkedin.com/in/barry-mcandrews/"
+              }}
+        />
 
-        <section className={`${classes.flex} m-20`}>
-          <div>
-            <div className={`text-center ${classes.desktopHide}`}>
-              <img className={classes.mb40} src={github} height={100} width={100} alt="GitHub Logo"/>
-            </div>
-            <code>$ open https://github.com/barrymcandrews</code>
-            <h4>GitHub</h4>
-            <p className={classes.mw450}>
-              Most of my personal projects are hosted on
-              GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
-              my house’s LED lights.
-            </p>
-            <AnchorButton to="https://github.com/barrymcandrews" text="Go to GitHub"/>
-          </div>
-          <img className={classes.mobileHide} src={github} height={100} width={100} alt="GitHub Logo"/>
-        </section>
+        <Card image={github}
+              code="$ open https://github.com/barrymcandrews"
+              title="GitHub"
+              body={<>Most of my personal projects are hosted on
+                     GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
+                     my house’s LED lights.</>}
+              button={{
+                text: "Go to GitHub",
+                to: "https://github.com/barrymcandrews"
+              }}
+        />
 
         <section className="text-center m-20">
           <code>$ aws iam get-user</code>
