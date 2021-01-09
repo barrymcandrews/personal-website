@@ -23,7 +23,7 @@ function Home() {
         <section className="text-center m-20">
           <h3>Hi, I'm Barry</h3>
           <p>I'm a software engineer with a passion for technology.</p>
-          <AnchorButton to={process.env.PUBLIC_URL + "/Barry_McAndrews_8-19-20.pdf"}>Download Resume</AnchorButton>
+          <AnchorButton to={process.env.PUBLIC_URL + "/Barry_McAndrews_8-19-20.pdf"} text="Download Resume"/>
         </section>
 
         <section className={`${classes.flex} m-20`}>
@@ -39,7 +39,7 @@ function Home() {
               up-to-date employment information. Feel free
               to send me a message!
             </p>
-            <AnchorButton to="https://www.linkedin.com/in/barry-mcandrews/">Go to LinkedIn</AnchorButton>
+            <AnchorButton to="https://www.linkedin.com/in/barry-mcandrews/" text="Go to LinkedIn"/>
           </div>
           <img className={classes.mobileHide} src={linkedin} height={100} width={100} alt="LinkedIn Logo"/>
         </section>
@@ -56,7 +56,7 @@ function Home() {
               GitHub. Check out my favorite project, <a href="https://github.com/barrymcandrews/aurora-server">Aurora Server</a>, which I created to enhance
               my house’s LED lights.
             </p>
-            <AnchorButton to="https://github.com/barrymcandrews">Go to GitHub</AnchorButton>
+            <AnchorButton to="https://github.com/barrymcandrews" text="Go to GitHub"/>
           </div>
           <img className={classes.mobileHide} src={github} height={100} width={100} alt="GitHub Logo"/>
         </section>
@@ -79,7 +79,7 @@ function Home() {
             Whether it’s a job, side project, or anything else, I’m always looking
             to explore new ideas and opportunities.
           </p>
-          <AnchorButton to="mailto:bmcandrews@pitt.edu">Contact Me</AnchorButton>
+          <AnchorButton to="mailto:bmcandrews@pitt.edu" text="Contact Me"/>
         </section>
       </div>
     </div>

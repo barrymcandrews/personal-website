@@ -25,7 +25,7 @@ function Error() {
         </header>
 
         <section className="text-center m-20">
-          <LinkButton to="/">Go Home</LinkButton>
+          <LinkButton to="/" text="Go Home"/>
         </section>
         </div>
       </div>

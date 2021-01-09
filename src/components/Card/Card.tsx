@@ -1,11 +1,7 @@
 import React from 'react';
 import classes from './Card.module.scss';
-import {AnchorButton} from '../Button/Button';
+import {AnchorButton, ButtonProps} from '../Button/Button';
 
-export interface LinkProps {
-  text: string
-  to: string
-}
 
 export interface CardProps {
   className?: string
@@ -13,7 +9,7 @@ export interface CardProps {
   body?: JSX.Element | string
   code?: string
   image?: string
-  button?: LinkProps
+  button?: ButtonProps
 }
 
 export default function Card(props: CardProps) {
@@ -29,7 +25,7 @@ export default function Card(props: CardProps) {
         <div className={classes.cardText}>{props.body}</div>
         {props.button &&
           <div className={classes.button}>
-            <AnchorButton to={props.button.to}>{props.button.text}</AnchorButton>
+            <AnchorButton {...props.button}/>
           </div>
         }
       </div>

@@ -4,17 +4,17 @@ import {Link} from "react-router-dom";
 
 export interface ButtonProps {
     to: string,
-    children: ReactNode
+    text: string
 }
 
 export function AnchorButton(props: ButtonProps) {
     return (
-      <a className={styles.btn} href={props.to}>{props.children}</a>
+      <a className={styles.btn} href={props.to}>{props.text}</a>
     );
 }
 
 export function LinkButton(props: ButtonProps) {
     return (
-      <Link className={styles.btn} to={props.to}>{props.children}</Link>
+      <Link className={styles.btn} to={props.to}>{props.text}</Link>
     );
 }
