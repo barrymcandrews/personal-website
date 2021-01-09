@@ -2,18 +2,18 @@ import React from 'react';
 import classes from './Card.module.scss';
 import {AnchorButton} from '../Button/Button';
 
-interface ButtonProps {
+export interface LinkProps {
   text: string
   to: string
 }
 
-interface CardProps {
+export interface CardProps {
   className?: string
   title?: string
   body?: JSX.Element | string
   code?: string
   image?: string
-  button?: ButtonProps
+  button?: LinkProps
 }
 
 export default function Card(props: CardProps) {
@@ -32,10 +32,8 @@ export default function Card(props: CardProps) {
             <AnchorButton to={props.button.to}>{props.button.text}</AnchorButton>
           </div>
         }
-
       </div>
       {/*<a>See More ›</a>*/}
-
     </section>
   );
 }
