@@ -45,7 +45,9 @@ export default class Shell {
           this.historyIndex = 0;
         }
         let line = this.history[0];
-        this.history.unshift('');
+        if (this.history[0] !== '') {
+          this.history.unshift('');
+        }
         this.prefix = '';
         this.cursor = 0;
         this.write(Ascii.CR + Ascii.LF);
@@ -56,7 +58,9 @@ export default class Shell {
         this.write('^C\n');
         this.write(Ascii.CR);
         this.cursor = 0;
-        this.history.unshift('');
+        if (this.history[0] !== '') {
+          this.history.unshift('');
+        }
         this.env.put('?', '130');
         this.write(PREFIX);
         break;
