@@ -9,10 +9,11 @@ type Writer = (data: string) => any;
 
 export default class Shell {
   prefix: string = PREFIX;
-  input: string = '';
   cursor: number = 0;
   write: Writer = (data: string) => {};
   hasProcess = false;
+  history: string[] = [''];
+  historyIndex: number = 0;
   env = new Environment();
 
   onWrite(closure: Writer) {
@@ -28,19 +29,23 @@ export default class Shell {
     str.split('').forEach(c => this.handleData(c));
   }
 
-  renderLine() {
+  private renderLine(line?: string) {
     this.write(Ansi.cursorSavePosition);
     this.write(Ansi.eraseLine);
     this.write(Ascii.CR);
-    this.write(this.prefix + this.input);
+    this.write(this.prefix + (line || this.history[0]));
     this.write(Ansi.cursorRestorePosition);
   }
 
   handleData(data: string) {
     switch (data) {
       case Ascii.CR:
-        let line = this.input;
-        this.input = '';
+        if (this.historyIndex !== 0) {
+          this.history[0] = this.history[this.historyIndex];
+          this.historyIndex = 0;
+        }
+        let line = this.history[0];
+        this.history.unshift('');
         this.prefix = '';
         this.cursor = 0;
         this.write(Ascii.CR + Ascii.LF);
@@ -51,7 +56,7 @@ export default class Shell {
         this.write('^C\n');
         this.write(Ascii.CR);
         this.cursor = 0;
-        this.input = '';
+        this.history.unshift('');
         this.env.put('?', '130');
         this.write(PREFIX);
         break;
@@ -60,7 +65,7 @@ export default class Shell {
       case Ascii.BS:
         if (this.cursor > 0) {
           this.cursor--;
-          this.input = this.input.substr(0, this.cursor) + this.input.substr(this.cursor + 1);
+          this.history[0]  = this.history[0].substr(0, this.cursor) + this.history[0].substr(this.cursor + 1);
           this.write('\b');
           this.renderLine();
         } else {
@@ -69,7 +74,7 @@ export default class Shell {
         break;
 
       case Ansi.CURSOR_FORWARD:
-        if (this.cursor < this.input.length) {
+        if (this.cursor < this.history[0].length) {
           this.cursor += 1;
           this.write(data);
         } else {
@@ -87,11 +92,33 @@ export default class Shell {
         break;
 
       case Ansi.CURSOR_UP:
+        if (this.historyIndex === this.history.length - 1) {
+          this.write(Ascii.BEL);
+        }
+        this.historyIndex = Math.min(this.history.length - 1, this.historyIndex + 1);
+        this.renderLine(this.history[this.historyIndex]);
+        this.write(Ascii.CR);
+        this.write(Ansi.cursorForward(this.history[this.historyIndex].length + PREFIX.length));
+        this.cursor = this.history[this.historyIndex].length;
+        break;
+
       case Ansi.CURSOR_DOWN:
+        if (this.historyIndex === 0) {
+          this.write(Ascii.BEL);
+        }
+        this.historyIndex = Math.max(0, this.historyIndex - 1);
+        this.renderLine(this.history[this.historyIndex]);
+        this.write(Ascii.CR);
+        this.write(Ansi.cursorForward(this.history[this.historyIndex].length + PREFIX.length));
+        this.cursor = this.history[this.historyIndex].length;
         break;
 
       default:
-        this.input = this.input.substr(0, this.cursor) + data + this.input.substr(this.cursor);
+        if (this.historyIndex !== 0) {
+          this.history[0] = this.history[this.historyIndex];
+          this.historyIndex = 0;
+        }
+        this.history[0] = this.history[0].substr(0, this.cursor) + data + this.history[0].substr(this.cursor);
         this.cursor++;
         this.write(Ansi.CURSOR_FORWARD);
         this.renderLine();
@@ -101,13 +128,12 @@ export default class Shell {
   async read(): Promise<string> {
     return new Promise((resolve => {
       document.addEventListener("shell-return", function(event) {
-        console.log("resolving!")
         resolve((event as CustomEvent).detail);
       },{once : true});
     }))
   }
 
-  interpretLine(line: string) {
+  private interpretLine(line: string) {
     if (this.hasProcess) {
       document.dispatchEvent(new CustomEvent('shell-return', {
         detail: line

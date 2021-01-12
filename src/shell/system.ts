@@ -26,6 +26,7 @@ let fs: FileMap = {
   '/etc/conf': 'get outta here',
   '/usr/bin/__folder__': {},
   '/var/__folder__': {},
+  '/var/www/__folder__': {},
   '/tmp/__folder__': {},
   '/home/barry/__folder__': {},
   '/opt/aurora-server/README.md': Ansi.link('https://github.com/barrymcandrews/aurora-server') + '\n',
