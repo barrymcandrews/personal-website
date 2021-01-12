@@ -94,7 +94,7 @@ export default class Shell {
 
       case Ascii.ACK:
       case Ansi.CURSOR_FORWARD:
-        if (this.cursor < this.history[0].length) {
+        if (this.cursor < this.history[this.historyIndex].length) {
           this.cursor += 1;
           this.write(Ansi.CURSOR_FORWARD);
         } else {
