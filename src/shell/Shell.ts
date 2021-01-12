@@ -54,6 +54,7 @@ export default class Shell {
         this.interpretLine(line);
         break;
 
+      // Control-C
       case Ascii.ETX:
         this.write('^C\n');
         this.write(Ascii.CR);
@@ -63,6 +64,20 @@ export default class Shell {
         }
         this.env.put('?', '130');
         this.write(PREFIX);
+        break;
+
+      // Control-A
+      case Ascii.SOH:
+        this.cursor = 0;
+        this.write(Ascii.CR);
+        this.write(Ansi.cursorForward(PREFIX.length));
+        break;
+
+      // Control-E
+      case Ascii.ENQ:
+        this.cursor = this.history[this.historyIndex].length;
+        this.write(Ascii.CR);
+        this.write(Ansi.cursorForward(this.history[this.historyIndex].length + PREFIX.length));
         break;
 
       case Ascii.DEL:
@@ -77,19 +92,21 @@ export default class Shell {
         }
         break;
 
+      case Ascii.ACK:
       case Ansi.CURSOR_FORWARD:
         if (this.cursor < this.history[0].length) {
           this.cursor += 1;
-          this.write(data);
+          this.write(Ansi.CURSOR_FORWARD);
         } else {
           this.write(Ascii.BEL);
         }
         break;
 
+      case Ascii.STX:
       case Ansi.CURSOR_BACKWARDS:
         if (this.cursor > 0) {
           this.cursor -= 1;
-          this.write(data);
+          this.write(Ansi.CURSOR_BACKWARDS);
         } else {
           this.write(Ascii.BEL);
         }
