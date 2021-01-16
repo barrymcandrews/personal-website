@@ -80,8 +80,17 @@ export default class Shell {
         this.write(Ansi.cursorForward(this.history[this.historyIndex].length + PREFIX.length));
         break;
 
+      // Tab
+      case Ascii.HT:
+        break;
+
+      // Backspace
       case Ascii.DEL:
       case Ascii.BS:
+        if (this.historyIndex !== 0) {
+          this.history[0] = this.history[this.historyIndex];
+          this.historyIndex = 0;
+        }
         if (this.cursor > 0) {
           this.cursor--;
           this.history[0]  = this.history[0].substr(0, this.cursor) + this.history[0].substr(this.cursor + 1);
