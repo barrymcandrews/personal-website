@@ -35,13 +35,19 @@ export default class Terminal extends Component {
         this.term.loadAddon(this.webLinksAddon);
         this.term.open(terminalContainer);
         this.fitAddon.fit();
+        this.shell.env.put("ROWS", this.term.rows.toString());
+        this.shell.env.put("COLS", this.term.cols.toString());
         this.term.write("$ ");
 
         // Connect shell to terminal
         this.term.onData((d) => this.shell.handleData(d));
         this.shell.onWrite((d) => this.term.write(d));
 
-        window.addEventListener('resize',  () => this.fitAddon.fit());
+        window.addEventListener('resize',  () => {
+            this.fitAddon.fit();
+            this.shell.env.put("ROWS", this.term.rows.toString());
+            this.shell.env.put("COLS", this.term.cols.toString());
+        });
         this.shell.handleString('cat copyright.txt' + Ascii.CR);
 
     }

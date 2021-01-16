@@ -1,4 +1,4 @@
-import {parrot} from "./constants";
+import {parrot, bio, plan, honestBio, hosts, resolv} from "./constants";
 import * as Ansi from './Ansi';
 import {Environment} from './environment';
 
@@ -23,12 +23,21 @@ let fs: FileMap = {
   '/home/barry/github.txt': Ansi.link('https://github.com/barrymcandrews') + '\n',
   '/home/barry/copyright.txt': 'Made by Barry McAndrews © ' + YEAR + '\n',
   '/home/barry/parrot.txt': parrot,
+  '/home/barry/bio.txt': bio,
+
+  '/home/barry/.trash/bio-draft.txt': honestBio,
+  '/home/barry/.trash/ideas.txt': plan,
+
   '/etc/conf': 'get outta here',
+  '/etc/sysflags': '🏳️‍🌈',
+  '/etc/hosts': hosts,
+  '/etc/resolv.conf': resolv,
+
   '/usr/bin/__folder__': {},
   '/var/__folder__': {},
   '/var/www/__folder__': {},
   '/tmp/__folder__': {},
-  '/home/barry/__folder__': {},
+
   '/opt/aurora-server/README.md': Ansi.link('https://github.com/barrymcandrews/aurora-server') + '\n',
   '/opt/raven-react/README.md': Ansi.link('https://github.com/barrymcandrews/raven-react') + '\n',
   '/opt/raven-iac/README.md': Ansi.link('https://github.com/barrymcandrews/raven-iac') + '\n',
