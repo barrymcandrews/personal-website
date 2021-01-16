@@ -73,9 +73,16 @@ async function cd(args: string[], io: IO) {
 }
 
 async function ls(args: string[], io: IO) {
-  let dir = (args.length === 1) ? cwd : getAbsolutePath(args[1]);
+  let flags = args
+    .filter(x => x.startsWith("-"))
+    .join("")
+    .replace(/-/g, "");
+  let positionalArgs = args.filter(x => !x.startsWith("-"));
+  let showAll = flags.includes('a');
+
+  let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1]);
   if (FileSystem.exists(dir)) {
-    let entries = FileSystem.list(dir);
+    let entries = FileSystem.list(dir).filter(x => showAll || !x.startsWith("."));
     if (entries.length > 0) {
       io.out(entries.join('\n') + '\n');
     }
