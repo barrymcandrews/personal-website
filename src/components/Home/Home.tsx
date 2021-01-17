@@ -70,7 +70,7 @@ function Home() {
           <p className={classes.bioParagraph}>
             When I'm not working, you can find me taking a walk, working out, or skiing down a mountain.
           </p>
-          <p className={classes.bioParagraph}>
+          <p>
             <Emoji symbol="☁️" label="cloud"/>&nbsp;
             <Emoji symbol="🤖" label="automation"/>&nbsp;
             <Emoji symbol="💡️" label="lights"/>&nbsp;
