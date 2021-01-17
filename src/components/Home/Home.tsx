@@ -54,10 +54,36 @@ function Home() {
         />
 
         <section className="text-center m-20">
+          <code>$ whoami</code>
+          <h3 className={classes.aboutTitle}>About Me</h3>
+          <p className={classes.bioParagraph}>
+            My name is Barry McAndrews, and I'm an accomplished Software Engineer with a passion for the cloud
+            and home automation. Through my work at Vanguard, I've gained first-hand experience with cutting edge
+            cloud technologies. This experience opened my eyes to just how powerful the cloud can be, and it inspired me
+            to achieve my first AWS certification.
+          </p>
+          <p className={classes.bioParagraph}>
+            As an engineer, I'm is always looking for ways to solve problems, and often find myself putting my
+            software (and occasionally hardware) skills to use in home automation projects. I find the challenge of
+            making a better product than one you could buy in a store almost irresistible.
+          </p>
+          <p className={classes.bioParagraph}>
+            When I'm not working, you can find me taking a walk, working out, or skiing down a mountain.
+          </p>
+          <p className={classes.bioParagraph}>
+            <Emoji symbol="☁️" label="cloud"/>&nbsp;
+            <Emoji symbol="🤖" label="automation"/>&nbsp;
+            <Emoji symbol="💡️" label="lights"/>&nbsp;
+            <Emoji symbol="💪" label="workout"/>&nbsp;
+            <Emoji symbol="⛷" label="ski"/>
+          </p>
+        </section>
+
+        <section className="text-center m-20">
           <code>$ aws iam get-user</code>
           <h3>AWS Certified.</h3>
           <p className={classes.awsParagraph}>
-            As a developer, the cloud opens up a world of exciting possibilities!
+            The cloud opens up a world of new and exciting possibilities!<br/>
             To help me take full advantage of this tool, I’ve gotten AWS Certified.
             (Don’t worry, I have <Emoji symbol="❤️" label="love"/> for GCP and Azure too!)
           </p>
