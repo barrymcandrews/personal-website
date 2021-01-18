@@ -66,6 +66,18 @@ export default class Shell {
         this.write(PREFIX);
         break;
 
+      // Control-D
+      case Ascii.EOT:
+        this.write('^D\n');
+        this.write(Ascii.CR);
+        this.cursor = 0;
+        if (this.history[0] !== '') {
+          this.history.unshift('');
+        }
+        this.env.put('?', '130');
+        this.write(PREFIX);
+        break;
+
       // Control-A
       case Ascii.SOH:
         this.cursor = 0;
