@@ -63,7 +63,7 @@ function Home() {
             to achieve my first AWS certification.
           </p>
           <p className={classes.bioParagraph}>
-            As an engineer, I'm is always looking for ways to solve problems, and often find myself putting my
+            As an engineer, I'm always looking for ways to solve problems, and often find myself putting my
             software (and occasionally hardware) skills to use in home automation projects. I find the challenge of
             making a better product than one you could buy in a store almost irresistible.
           </p>
