@@ -5,13 +5,65 @@ import history from '../App/history';
 let cwd = '/home/barry';
 
 
+/*
+ *  Helper Functions
+ */
+
+async function columns(list: string[], io: IO): Promise<string> {
+  let termWidth = parseInt(io.env.get("COLS"));
+  let colWidth = Math.max(...list.map(x => x.length + 1));
+  const numCols = Math.min(Math.floor(termWidth / colWidth), list.length);
+
+  let chunks: string[][] = [];
+  let nCols = numCols;
+  while(list.length) {
+    const chunkSize = Math.ceil(list.length / nCols--);
+    const chunk = list.slice(0, chunkSize);
+    chunks.push(chunk);
+    list = list.slice(chunkSize);
+  }
+
+  let largestList = Math.max(...chunks.map(x => x.length));
+  let str = "";
+  for (let i = 0; i < largestList; i++) {
+    for (let j = 0; j < numCols; j++) {
+      if (chunks[j].length > i) {
+        let spaces = colWidth - chunks[j][i].length
+        str += chunks[j][i] + Array(spaces + 1).join(" ");
+      }
+    }
+    str += "\n";
+  }
+  return str;
+}
+
+function getAbsolutePath(path: string) {
+  if (!path) path = '';
+  if (path.startsWith('/')) return path;
+  let prefix = (cwd === '/') ? '/' : cwd + '/';
+  path = prefix + path;
+  let pathItems = path.split('/').filter(s => s !== '.');
+  for (let i = 0; i < pathItems.length; i++) {
+    if (pathItems[i] === '..') {
+      pathItems.splice(i - 1, 2);
+      i = 0;
+    }
+  }
+  path = pathItems.join('/');
+  path = (path === '') ? '/' : path.replace(/\/$/, '');
+  return path;
+}
+
 async function help(args: string[], io: IO) {
   io.out('Available commands:\n');
-  for (let key of Object.keys(commands)) {
-    io.out('  ' + key + '\n')
-  }
+  io.out(await columns(Object.keys(commands), io) + "\n");
   return 0;
 }
+
+
+/*
+ *  Command Functions
+ */
 
 async function open(args: string[], io: IO) {
   if (args.length !== 2) {
@@ -79,13 +131,22 @@ async function ls(args: string[], io: IO) {
     .replace(/-/g, "");
   let positionalArgs = args.filter(x => !x.startsWith("-"));
   let showAll = flags.includes('a');
+  let showLong = flags.includes('l');
 
   let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1]);
   if (FileSystem.exists(dir)) {
-    let entries = FileSystem.list(dir).filter(x => showAll || !x.startsWith("."));
-    if (entries.length > 0) {
-      io.out(entries.join('\n') + '\n');
+    let entries = FileSystem
+      .list(dir)
+      .filter(x => showAll || !x.startsWith("."))
+      .sort((a, b) => a.localeCompare(b));
+    if (!showLong) {
+      io.out(await columns(entries, io));
+    } else {
+      for (let e of entries) {
+        io.out(e + "\n");
+      }
     }
+    io.out("\n");
   } else {
     io.out('ls: no such file or directory\n')
     return 1;
@@ -128,7 +189,7 @@ async function touch(args: string[], io: IO) {
     return 1;
   }
 
-  for (let i = 0; i < args.length; i++) {
+  for (let i = 1; i < args.length; i++) {
     let path = getAbsolutePath(args[i]);
     FileSystem.put(path, "");
   }
@@ -140,23 +201,6 @@ async function mirror(args: string[], io: IO) {
   let str = await io.in();
   io.out(str + '\n');
   return 0;
-}
-
-function getAbsolutePath(path: string) {
-  if (!path) path = '';
-  if (path.startsWith('/')) return path;
-  let prefix = (cwd === '/') ? '/' : cwd + '/';
-  path = prefix + path;
-  let pathItems = path.split('/').filter(s => s !== '.');
-  for (let i = 0; i < pathItems.length; i++) {
-    if (pathItems[i] === '..') {
-      pathItems.splice(i - 1, 2);
-      i = 0;
-    }
-  }
-  path = pathItems.join('/');
-  path = (path === '') ? '/' : path.replace(/\/$/, '');
-  return path;
 }
 
 async function goto(args: string[], io: IO) {
