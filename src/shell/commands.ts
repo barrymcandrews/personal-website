@@ -226,12 +226,18 @@ async function mv(args: string[], io: IO) {
   }
   let source = getAbsolutePath(args[1], io);
   let target = getAbsolutePath(args[2], io);
+  target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
   if (!FileSystem.exists(source)) {
     io.out(`mv: rename ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
   if (FileSystem.isFile(source)) {
+    let targetFolder = target.substring(0, target.lastIndexOf('/'));
+    if (!FileSystem.isDir(targetFolder)) {
+      io.out(`mv: ${args[2]}: No such file or directory\n`)
+      return 1;
+    }
     let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target;
     destinationPath = destinationPath.replaceAll('//', '/');
     FileSystem.put(destinationPath, FileSystem.get(source));
@@ -251,12 +257,18 @@ async function cp(args: string[], io: IO) {
   }
   let source = getAbsolutePath(args[1], io);
   let target = getAbsolutePath(args[2], io);
+  target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
   if (!FileSystem.exists(source)) {
     io.out(`cp: copy ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
   if (FileSystem.isFile(source)) {
+    let targetFolder = target.substring(0, target.lastIndexOf('/'));
+    if (!FileSystem.isDir(targetFolder)) {
+      io.out(`cp: ${args[2]}: No such file or directory\n`)
+      return 1;
+    }
     let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target
     destinationPath = destinationPath.replaceAll('//', '/');
     FileSystem.put(destinationPath, FileSystem.get(source));
