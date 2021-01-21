@@ -37,9 +37,12 @@ async function columns(list: string[], io: IO): Promise<string> {
   return str;
 }
 
-function getAbsolutePath(path: string) {
+function getAbsolutePath(path: string, io: IO) {
   if (!path) path = '';
   if (path.startsWith('/')) return path;
+  if (path.startsWith('~')) {
+    return  path.replace('~', io.env.get("HOME"));
+  }
   let prefix = (cwd === '/') ? '/' : cwd + '/';
   path = prefix + path;
   let pathItems = path.split('/').filter(s => s !== '.');
@@ -54,9 +57,14 @@ function getAbsolutePath(path: string) {
   return path;
 }
 
+function basename(str: string) {
+  return str.split('/').reverse()[0];
+}
+
 async function help(args: string[], io: IO) {
+  let cmds = Object.keys(commands).sort()
   io.out('Available commands:\n');
-  io.out(await columns(Object.keys(commands), io) + "\n");
+  io.out(await columns(cmds, io) + "\n");
   return 0;
 }
 
@@ -113,7 +121,7 @@ async function aws(args: string[], io: IO) {
 
 async function cd(args: string[], io: IO) {
   if (!args[1]) args[1] = '/home/barry';
-  let path = getAbsolutePath(args[1]);
+  let path = getAbsolutePath(args[1], io);
   if (FileSystem.isDir(path)) {
     cwd = path;
     return 0;
@@ -133,12 +141,12 @@ async function ls(args: string[], io: IO) {
   let showAll = flags.includes('a');
   let showLong = flags.includes('l');
 
-  let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1]);
+  let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1], io);
   if (FileSystem.exists(dir)) {
     let entries = FileSystem
       .list(dir)
       .filter(x => showAll || !x.startsWith("."))
-      .sort((a, b) => a.localeCompare(b));
+      .sort();
     if (!showLong) {
       io.out(await columns(entries, io));
     } else {
@@ -146,7 +154,6 @@ async function ls(args: string[], io: IO) {
         io.out(e + "\n");
       }
     }
-    io.out("\n");
   } else {
     io.out('ls: no such file or directory\n')
     return 1;
@@ -155,7 +162,7 @@ async function ls(args: string[], io: IO) {
 }
 
 async function mkdir(args: string[], io: IO) {
-  let path = getAbsolutePath(args[1]);
+  let path = getAbsolutePath(args[1], io);
   if (FileSystem.exists(path)) {
     io.out('mkdir: ' + args[1] + ': File exists');
     return 1;
@@ -167,7 +174,7 @@ async function mkdir(args: string[], io: IO) {
 }
 
 async function cat(args: string[], io: IO) {
-  let path = getAbsolutePath(args[1]);
+  let path = getAbsolutePath(args[1], io);
   if (FileSystem.isFile(path)) {
     io.out(FileSystem.get(path) + '\n');
     return 0;
@@ -190,7 +197,7 @@ async function touch(args: string[], io: IO) {
   }
 
   for (let i = 1; i < args.length; i++) {
-    let path = getAbsolutePath(args[i]);
+    let path = getAbsolutePath(args[i], io);
     FileSystem.put(path, "");
   }
   return 0;
@@ -212,6 +219,64 @@ async function goto(args: string[], io: IO) {
   return 0;
 }
 
+async function mv(args: string[], io: IO) {
+  if (args.length !== 3) {
+    io.out("Usage: mv <source> <target>\n");
+    return 1;
+  }
+  let source = getAbsolutePath(args[1], io);
+  let target = getAbsolutePath(args[2], io);
+  if (!FileSystem.exists(source)) {
+    io.out(`mv: rename ${args[1]} to ${args[2]}: No such file or directory\n`)
+    return 1;
+  }
+
+  if (FileSystem.isFile(source)) {
+    let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target;
+    destinationPath = destinationPath.replaceAll('//', '/');
+    FileSystem.put(destinationPath, FileSystem.get(source));
+    FileSystem.delete(source);
+  }
+
+  if (FileSystem.isDir(source)) {
+    io.out("mv: Directories can not be moved\n")
+  }
+  return 0;
+}
+
+async function cp(args: string[], io: IO) {
+  if (args.length !== 3) {
+    io.out("Usage: cp <source> <target>\n");
+    return 1;
+  }
+  let source = getAbsolutePath(args[1], io);
+  let target = getAbsolutePath(args[2], io);
+  if (!FileSystem.exists(source)) {
+    io.out(`cp: copy ${args[1]} to ${args[2]}: No such file or directory\n`)
+    return 1;
+  }
+
+  if (FileSystem.isFile(source)) {
+    let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target
+    destinationPath = destinationPath.replaceAll('//', '/');
+    FileSystem.put(destinationPath, FileSystem.get(source));
+  }
+
+  if (FileSystem.isDir(source)) {
+    io.out("cp: Directories can not be copied\n")
+  }
+  return 0;
+}
+
+async function date(args: string[], io: IO) {
+  io.out((new Date(Date.now())).toString() + "\n");
+  return 0;
+}
+
+async function hostname(args: string[], io: IO) {
+  io.out("hyperion\n");
+  return 0;
+}
 
 interface Executables {
   [command: string]: Executable;
@@ -233,6 +298,10 @@ export const commands: Executables = {
   'mirror': mirror,
   'touch': touch,
   'goto': goto,
+  'mv': mv,
+  'cp': cp,
+  'date': date,
+  'hostname': hostname,
 };
 
 // Add all commands to filesystem

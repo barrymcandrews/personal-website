@@ -54,6 +54,10 @@ export class FileSystem {
     fs[path] = object;
   }
 
+  static delete(path: string) {
+    delete fs[path];
+  }
+
   static list(path: string) {
     return Array.from(new Set(
       Object.keys(fs)
