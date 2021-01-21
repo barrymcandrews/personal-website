@@ -61,17 +61,17 @@ function basename(str: string) {
   return str.split('/').reverse()[0];
 }
 
+
+/*
+ *  Command Functions
+ */
+
 async function help(args: string[], io: IO) {
   let cmds = Object.keys(commands).sort()
   io.out('Available commands:\n');
   io.out(await columns(cmds, io) + "\n");
   return 0;
 }
-
-
-/*
- *  Command Functions
- */
 
 async function open(args: string[], io: IO) {
   if (args.length !== 2) {
