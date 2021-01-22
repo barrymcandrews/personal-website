@@ -221,6 +221,24 @@ async function cp(args: string[], io: IO) {
   return 0;
 }
 
+async function rm(args: string[], io: IO) {
+  let {positionalArgs} = parseArgs(args);
+  for (let item of positionalArgs.splice(1)) {
+    let path = getAbsolutePath(item, io.env);
+    if (FileSystem.isFile(path)) {
+      FileSystem.put(basename(path) + '__folder__', {});
+      FileSystem.delete(path, true);
+    } else if (FileSystem.isDir(path)) {
+      io.out(`rm: directories can not be removed\n`);
+      return 1;
+    } else {
+      io.out(`rm: ${item}: No such file or directory\n`);
+      return 1;
+    }
+  }
+  return 0;
+}
+
 async function date(args: string[], io: IO) {
   io.out((new Date(Date.now())).toString() + "\n");
   return 0;
@@ -262,6 +280,7 @@ export const commands: Executables = {
   'hostname': hostname,
   'ed': ed,
   'tree': tree,
+  'rm': rm,
 };
 
 if (process.env.NODE_ENV !== 'production') {

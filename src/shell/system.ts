@@ -57,8 +57,18 @@ export class FileSystem {
     fs[path] = object;
   }
 
-  static delete(path: string) {
+  static delete(path: string, keepFolder= false) {
+    if (keepFolder) {
+      let folderPath = path.split('/').reverse()[0] + '/__folder__';
+      if (!fs.hasOwnProperty(folderPath)) {
+        this.put(folderPath, {});
+      }
+    }
     delete fs[path];
+  }
+
+  static scan(prefix: string): string[] {
+    return Object.keys(fs).filter(x => x.startsWith(prefix));
   }
 
   static list(path: string) {
