@@ -7,6 +7,7 @@ export class Environment {
   env: EnvStore = {
     'PATH': '/usr/bin',
     'HOME': '/home/barry',
+    'PWD': '/home/barry',
     'USER': 'barry',
     'TERM': 'xterm-256color'
   };
