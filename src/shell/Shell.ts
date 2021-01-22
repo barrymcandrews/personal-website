@@ -56,26 +56,30 @@ export default class Shell {
 
       // Control-C
       case Ascii.ETX:
-        this.write('^C\n');
-        this.write(Ascii.CR);
-        this.cursor = 0;
-        if (this.history[0] !== '') {
-          this.history.unshift('');
+        if (!this.hasProcess) {
+          this.write('^C');
+          this.write(Ascii.CR + Ascii.LF);
+          this.cursor = 0;
+          if (this.history[0] !== '') {
+            this.history.unshift('');
+          }
+          this.env.put('?', '130');
+          this.write(PREFIX);
         }
-        this.env.put('?', '130');
-        this.write(PREFIX);
         break;
 
       // Control-D
       case Ascii.EOT:
-        this.write('^D\n');
-        this.write(Ascii.CR);
-        this.cursor = 0;
-        if (this.history[0] !== '') {
-          this.history.unshift('');
+        if (!this.hasProcess) {
+          this.write('^D');
+          this.write(Ascii.CR + Ascii.LF);
+          this.cursor = 0;
+          if (this.history[0] !== '') {
+            this.history.unshift('');
+          }
+          this.env.put('?', '130');
+          this.write(PREFIX);
         }
-        this.env.put('?', '130');
-        this.write(PREFIX);
         break;
 
       // Control-A
