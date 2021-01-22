@@ -1,5 +1,5 @@
 import * as Ansi from '../Ansi';
-import {Executable, FileSystem, IO} from '../system';
+import {Executable, FileSystem, fs, IO} from '../system';
 import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
 import {ed} from './ed';
@@ -11,7 +11,7 @@ let cwd = '/home/barry'
  */
 
 async function help(args: string[], io: IO) {
-  let cmds = Object.keys(commands).sort()
+  let cmds = Object.keys(commands).sort();
   io.out('Available commands:\n');
   io.out(await columns(cmds, io) + "\n");
   return 0;
@@ -167,14 +167,14 @@ async function mv(args: string[], io: IO) {
   }
   let source = getAbsolutePath(args[1], io.env);
   let target = getAbsolutePath(args[2], io.env);
-  target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
+  let isFolder = args[2].endsWith("/");
   if (!FileSystem.exists(source)) {
     io.out(`mv: rename ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
   if (FileSystem.isFile(source)) {
-    let targetFolder = target.substring(0, target.lastIndexOf('/'));
+    let targetFolder = (isFolder) ? target : target.substring(0, target.lastIndexOf('/'));
     if (!FileSystem.isDir(targetFolder)) {
       io.out(`mv: ${args[2]}: No such file or directory\n`)
       return 1;
@@ -198,14 +198,14 @@ async function cp(args: string[], io: IO) {
   }
   let source = getAbsolutePath(args[1], io.env);
   let target = getAbsolutePath(args[2], io.env);
-  target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
+  let isFolder = args[2].endsWith("/");
   if (!FileSystem.exists(source)) {
     io.out(`cp: copy ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
   if (FileSystem.isFile(source)) {
-    let targetFolder = target.substring(0, target.lastIndexOf('/'));
+    let targetFolder = (isFolder) ? target : target.substring(0, target.lastIndexOf('/'));
     if (!FileSystem.isDir(targetFolder)) {
       io.out(`cp: ${args[2]}: No such file or directory\n`)
       return 1;
@@ -228,6 +228,11 @@ async function date(args: string[], io: IO) {
 
 async function hostname(args: string[], io: IO) {
   io.out("hyperion\n");
+  return 0;
+}
+
+async function tree(args: string[], io: IO) {
+  console.log(fs);
   return 0;
 }
 
@@ -256,7 +261,12 @@ export const commands: Executables = {
   'date': date,
   'hostname': hostname,
   'ed': ed,
+  'tree': tree,
 };
+
+if (process.env.NODE_ENV !== 'production') {
+  commands['tree'] = tree;
+}
 
 // Add all commands to filesystem
 for (let e of Object.keys(commands)) {

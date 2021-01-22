@@ -18,7 +18,7 @@ interface FileMap {
   [key: string]: FsObject
 }
 
-let fs: FileMap = {
+export let fs: FileMap = {
   '/home/barry/linkedin.txt': Ansi.link('https://www.linkedin.com/in/barry-mcandrews') + '\n',
   '/home/barry/github.txt': Ansi.link('https://github.com/barrymcandrews') + '\n',
   '/home/barry/copyright.txt': 'Made by Barry McAndrews © ' + YEAR + '\n',
@@ -51,6 +51,9 @@ export class FileSystem {
   }
 
   static put(path: string, object: any) {
+    if(path.endsWith('/')) {
+      // throw Error('Invalid Path: path can not end in a slash');
+    }
     fs[path] = object;
   }
 
