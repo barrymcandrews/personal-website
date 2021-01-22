@@ -279,7 +279,6 @@ export const commands: Executables = {
   'date': date,
   'hostname': hostname,
   'ed': ed,
-  'tree': tree,
   'rm': rm,
 };
 
