@@ -1,4 +1,4 @@
-import {IO} from '../system';
+import {IO} from '../proc';
 import {Environment} from '../environment';
 
 export async function columns(list: string[], io: IO): Promise<string> {

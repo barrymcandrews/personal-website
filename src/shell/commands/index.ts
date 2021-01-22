@@ -1,8 +1,9 @@
 import * as Ansi from '../Ansi';
-import {Executable, FileSystem, fs, IO} from '../system';
+import {FileSystem, fs} from '../system';
 import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
 import {ed} from './ed';
+import {Executable, IO, listProcesses} from '../proc';
 
 let cwd = '/home/barry'
 
@@ -66,12 +67,12 @@ async function aws(args: string[], io: IO) {
 async function cd(args: string[], io: IO) {
   if (!args[1]) args[1] = '/home/barry';
   let path = getAbsolutePath(args[1], io.env);
-  if (FileSystem.isDir(path)) {
+  if (io.fs.isDir(path)) {
     cwd = path;
     io.env.put("PWD", cwd);
     return 0;
   } else {
-    let message = (FileSystem.isFile(args[1])) ? 'cd: not a directory: ' : 'cd: no such file or directory: ';
+    let message = (io.fs.isFile(args[1])) ? 'cd: not a directory: ' : 'cd: no such file or directory: ';
     io.out(message + args[1] + '\n');
     return 1;
   }
@@ -83,8 +84,8 @@ async function ls(args: string[], io: IO) {
   let showLong = flags.includes('l');
 
   let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1], io.env);
-  if (FileSystem.exists(dir)) {
-    let entries = FileSystem
+  if (io.fs.exists(dir)) {
+    let entries = io.fs
       .list(dir)
       .filter(x => showAll || !x.startsWith("."))
       .sort();
@@ -104,23 +105,23 @@ async function ls(args: string[], io: IO) {
 
 async function mkdir(args: string[], io: IO) {
   let path = getAbsolutePath(args[1], io.env);
-  if (FileSystem.exists(path)) {
+  if (io.fs.exists(path)) {
     io.out('mkdir: ' + args[1] + ': File exists');
     return 1;
   } else {
     path = path.replace(/\/$/, '');
-    FileSystem.put(path + '/__folder__', {})
+    io.fs.put(path + '/__folder__', {})
     return 0;
   }
 }
 
 async function cat(args: string[], io: IO) {
   let path = getAbsolutePath(args[1], io.env);
-  if (FileSystem.isFile(path)) {
-    io.out(FileSystem.get(path) + '\n');
+  if (io.fs.isFile(path)) {
+    io.out(io.fs.get(path) + '\n');
     return 0;
   } else {
-    let msg = FileSystem.exists(path) ? ': Is a directory' : ': No such file or directory';
+    let msg = io.fs.exists(path) ? ': Is a directory' : ': No such file or directory';
     io.out('cat: ' + args[1] + msg + '\n');
     return 1;
   }
@@ -139,7 +140,7 @@ async function touch(args: string[], io: IO) {
 
   for (let i = 1; i < args.length; i++) {
     let path = getAbsolutePath(args[i], io.env);
-    FileSystem.put(path, "");
+    io.fs.put(path, "");
   }
   return 0;
 }
@@ -168,24 +169,24 @@ async function mv(args: string[], io: IO) {
   let source = getAbsolutePath(args[1], io.env);
   let target = getAbsolutePath(args[2], io.env);
   let isFolder = args[2].endsWith("/");
-  if (!FileSystem.exists(source)) {
+  if (!io.fs.exists(source)) {
     io.out(`mv: rename ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
-  if (FileSystem.isFile(source)) {
+  if (io.fs.isFile(source)) {
     let targetFolder = (isFolder) ? target : target.substring(0, target.lastIndexOf('/'));
-    if (!FileSystem.isDir(targetFolder)) {
+    if (!io.fs.isDir(targetFolder)) {
       io.out(`mv: ${args[2]}: No such file or directory\n`)
       return 1;
     }
-    let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target;
+    let destinationPath = io.fs.isDir(target) ? target + "/" + basename(source) : target;
     destinationPath = destinationPath.replaceAll('//', '/');
-    FileSystem.put(destinationPath, FileSystem.get(source));
-    FileSystem.delete(source);
+    io.fs.put(destinationPath, io.fs.get(source));
+    io.fs.delete(source, false);
   }
 
-  if (FileSystem.isDir(source)) {
+  if (io.fs.isDir(source)) {
     io.out("mv: Directories can not be moved\n")
   }
   return 0;
@@ -199,23 +200,23 @@ async function cp(args: string[], io: IO) {
   let source = getAbsolutePath(args[1], io.env);
   let target = getAbsolutePath(args[2], io.env);
   let isFolder = args[2].endsWith("/");
-  if (!FileSystem.exists(source)) {
+  if (!io.fs.exists(source)) {
     io.out(`cp: copy ${args[1]} to ${args[2]}: No such file or directory\n`)
     return 1;
   }
 
-  if (FileSystem.isFile(source)) {
+  if (io.fs.isFile(source)) {
     let targetFolder = (isFolder) ? target : target.substring(0, target.lastIndexOf('/'));
-    if (!FileSystem.isDir(targetFolder)) {
+    if (!io.fs.isDir(targetFolder)) {
       io.out(`cp: ${args[2]}: No such file or directory\n`)
       return 1;
     }
-    let destinationPath = FileSystem.isDir(target) ? target + "/" + basename(source) : target
+    let destinationPath = io.fs.isDir(target) ? target + "/" + basename(source) : target
     destinationPath = destinationPath.replaceAll('//', '/');
-    FileSystem.put(destinationPath, FileSystem.get(source));
+    io.fs.put(destinationPath, io.fs.get(source));
   }
 
-  if (FileSystem.isDir(source)) {
+  if (io.fs.isDir(source)) {
     io.out("cp: Directories can not be copied\n")
   }
   return 0;
@@ -225,10 +226,10 @@ async function rm(args: string[], io: IO) {
   let {positionalArgs} = parseArgs(args);
   for (let item of positionalArgs.splice(1)) {
     let path = getAbsolutePath(item, io.env);
-    if (FileSystem.isFile(path)) {
-      FileSystem.put(basename(path) + '__folder__', {});
-      FileSystem.delete(path, true);
-    } else if (FileSystem.isDir(path)) {
+    if (io.fs.isFile(path)) {
+      io.fs.put(basename(path) + '__folder__', {});
+      io.fs.delete(path, true);
+    } else if (io.fs.isDir(path)) {
       io.out(`rm: directories can not be removed\n`);
       return 1;
     } else {
@@ -251,6 +252,14 @@ async function hostname(args: string[], io: IO) {
 
 async function tree(args: string[], io: IO) {
   console.log(fs);
+  return 0;
+}
+
+async function ps(args: string[], io: IO) {
+  io.out(`PID \tCMD\n`);
+  listProcesses().forEach(p => {
+    io.out(`${p.pid} \t${p.args?.join(" ")}\n`);
+  });
   return 0;
 }
 
@@ -280,6 +289,7 @@ export const commands: Executables = {
   'hostname': hostname,
   'ed': ed,
   'rm': rm,
+  'ps': ps,
 };
 
 if (process.env.NODE_ENV !== 'production') {

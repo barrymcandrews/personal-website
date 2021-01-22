@@ -1,17 +1,9 @@
 import {parrot, bio, plan, honestBio, hosts, resolv} from "./constants";
 import * as Ansi from './Ansi';
-import {Environment} from './environment';
+import {Executable} from './proc';
 
 const YEAR = new Date().getFullYear();
 
-export interface IO {
-  in: () => Promise<string>;
-  out: (str: string) => void;
-  err: (str: string) => void;
-  env: Environment;
-}
-
-export type Executable = (args: string[], io: IO) => Promise<number>;
 export type FsObject = string | {} | Executable;
 
 interface FileMap {
@@ -44,6 +36,17 @@ export let fs: FileMap = {
   '/opt/chatbot/README.md': Ansi.link('https://github.com/barrymcandrews/chatbot') + '\n',
   '/opt/raven-cli/README.md': Ansi.link('https://github.com/barrymcandrews/raven-cli') + '\n',
 };
+
+export interface FS {
+  get(path: string): FsObject;
+  put(path: string, object: any): void;
+  delete(path: string, keepFolder: boolean): void;
+  scan(prefix: string): string[];
+  list(path: string): string[];
+  isFile(path: string): boolean;
+  isDir(path: string): boolean;
+  exists(path: string): boolean;
+}
 
 export class FileSystem {
   static get(path: string) {

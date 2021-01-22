@@ -1,5 +1,5 @@
-import {FileSystem, IO} from '../system';
 import {getAbsolutePath} from './helpers';
+import {IO} from '../proc';
 
 export async function ed(args: string[], io: IO): Promise<number> {
   let buffer = '';
@@ -10,7 +10,7 @@ export async function ed(args: string[], io: IO): Promise<number> {
 
     let target = getAbsolutePath(filename, io.env);
     let targetFolder = target.substring(0, target.lastIndexOf('/'));
-    if (!FileSystem.isDir(targetFolder)) return undefined;
+    if (!io.fs.isDir(targetFolder)) return undefined;
     return target;
   }
 
@@ -50,19 +50,19 @@ export async function ed(args: string[], io: IO): Promise<number> {
       io.out("?\n");
       return;
     }
-    FileSystem.put(file!, buffer);
+    io.fs.put(file!, buffer);
     io.out(buffer.length + '\n');
   }
 
   async function load(params: string[]): Promise<number> {
     let target = validateFilename(params[1]);
-    if (!target || !FileSystem.isFile(target)) {
+    if (!target || !io.fs.isFile(target)) {
       io.out(`?\n`);
       return 1;
     }
 
     file = target;
-    buffer = FileSystem.get(target).toString();
+    buffer = io.fs.get(target).toString();
     return 0;
   }
 

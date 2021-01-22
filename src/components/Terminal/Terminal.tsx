@@ -5,14 +5,15 @@ import styles from './Terminal.module.scss'
 import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
-import Shell from '../../shell/Shell';
 import * as Ascii from '../../shell/Ascii';
+import sh from '../../shell/commands/shell';
+import {GroupedPipe, init} from '../../shell/proc';
 
 
 export default class Terminal extends Component {
     fitAddon = new FitAddon();
     webLinksAddon = new WebLinksAddon();
-    shell = new Shell();
+    shell = init(sh);
     term = new XTerm({
         cursorBlink: true,
         fontFamily: `"Source Code Pro", monospace`,
@@ -40,16 +41,18 @@ export default class Terminal extends Component {
         this.term.write("$ ");
 
         // Connect shell to terminal
-        this.term.onData((d) => this.shell.handleData(d));
-        this.shell.onWrite((d) => this.term.write(d));
+        this.shell.stdin = new GroupedPipe();
+        this.term.onData((d) => this.shell.stdin.write(d));
+        this.shell.stdout.onWrite(d => this.term.write(d));
 
         window.addEventListener('resize',  () => {
             this.fitAddon.fit();
             this.shell.env.put("ROWS", this.term.rows.toString());
             this.shell.env.put("COLS", this.term.cols.toString());
         });
-        this.shell.handleString('cat copyright.txt' + Ascii.CR);
-
+        this.shell.start(['sh']);
+        let command = 'cat copyright.txt' + Ascii.CR;
+        command.split('').forEach(char => this.shell.stdin.write(char));
     }
 
     componentWillUnmount() {
