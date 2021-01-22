@@ -1,66 +1,10 @@
-import * as Ansi from './Ansi';
-import {Executable, FileSystem, IO} from './system';
-import history from '../App/history';
+import * as Ansi from '../Ansi';
+import {Executable, FileSystem, IO} from '../system';
+import history from '../../App/history';
+import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
+import {ed} from './ed';
 
-let cwd = '/home/barry';
-
-
-/*
- *  Helper Functions
- */
-
-async function columns(list: string[], io: IO): Promise<string> {
-  let termWidth = parseInt(io.env.get("COLS"));
-  let colWidth = Math.max(...list.map(x => x.length + 1));
-  const numCols = Math.min(Math.floor(termWidth / colWidth), list.length);
-
-  let chunks: string[][] = [];
-  let nCols = numCols;
-  while(list.length) {
-    const chunkSize = Math.ceil(list.length / nCols--);
-    const chunk = list.slice(0, chunkSize);
-    chunks.push(chunk);
-    list = list.slice(chunkSize);
-  }
-
-  let largestList = Math.max(...chunks.map(x => x.length));
-  let str = "";
-  for (let i = 0; i < largestList; i++) {
-    for (let j = 0; j < numCols; j++) {
-      if (chunks[j].length > i) {
-        let spaces = colWidth - chunks[j][i].length
-        str += chunks[j][i] + Array(spaces + 1).join(" ");
-      }
-    }
-    str += "\n";
-  }
-  return str;
-}
-
-function getAbsolutePath(path: string, io: IO) {
-  if (!path) path = '';
-  if (path.startsWith('/')) return path;
-  if (path.startsWith('~')) {
-    return  path.replace('~', io.env.get("HOME"));
-  }
-  let prefix = (cwd === '/') ? '/' : cwd + '/';
-  path = prefix + path;
-  let pathItems = path.split('/').filter(s => s !== '.');
-  for (let i = 0; i < pathItems.length; i++) {
-    if (pathItems[i] === '..') {
-      pathItems.splice(i - 1, 2);
-      i = 0;
-    }
-  }
-  path = pathItems.join('/');
-  path = (path === '') ? '/' : path.replace(/\/$/, '');
-  return path;
-}
-
-function basename(str: string) {
-  return str.split('/').reverse()[0];
-}
-
+let cwd = '/home/barry'
 
 /*
  *  Command Functions
@@ -121,9 +65,10 @@ async function aws(args: string[], io: IO) {
 
 async function cd(args: string[], io: IO) {
   if (!args[1]) args[1] = '/home/barry';
-  let path = getAbsolutePath(args[1], io);
+  let path = getAbsolutePath(args[1], io.env);
   if (FileSystem.isDir(path)) {
     cwd = path;
+    io.env.put("PWD", cwd);
     return 0;
   } else {
     let message = (FileSystem.isFile(args[1])) ? 'cd: not a directory: ' : 'cd: no such file or directory: ';
@@ -133,15 +78,11 @@ async function cd(args: string[], io: IO) {
 }
 
 async function ls(args: string[], io: IO) {
-  let flags = args
-    .filter(x => x.startsWith("-"))
-    .join("")
-    .replace(/-/g, "");
-  let positionalArgs = args.filter(x => !x.startsWith("-"));
+  let {flags, positionalArgs} = parseArgs(args);
   let showAll = flags.includes('a');
   let showLong = flags.includes('l');
 
-  let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1], io);
+  let dir = (positionalArgs.length === 1) ? cwd : getAbsolutePath(positionalArgs[1], io.env);
   if (FileSystem.exists(dir)) {
     let entries = FileSystem
       .list(dir)
@@ -162,7 +103,7 @@ async function ls(args: string[], io: IO) {
 }
 
 async function mkdir(args: string[], io: IO) {
-  let path = getAbsolutePath(args[1], io);
+  let path = getAbsolutePath(args[1], io.env);
   if (FileSystem.exists(path)) {
     io.out('mkdir: ' + args[1] + ': File exists');
     return 1;
@@ -174,7 +115,7 @@ async function mkdir(args: string[], io: IO) {
 }
 
 async function cat(args: string[], io: IO) {
-  let path = getAbsolutePath(args[1], io);
+  let path = getAbsolutePath(args[1], io.env);
   if (FileSystem.isFile(path)) {
     io.out(FileSystem.get(path) + '\n');
     return 0;
@@ -197,7 +138,7 @@ async function touch(args: string[], io: IO) {
   }
 
   for (let i = 1; i < args.length; i++) {
-    let path = getAbsolutePath(args[i], io);
+    let path = getAbsolutePath(args[i], io.env);
     FileSystem.put(path, "");
   }
   return 0;
@@ -224,8 +165,8 @@ async function mv(args: string[], io: IO) {
     io.out("Usage: mv <source> <target>\n");
     return 1;
   }
-  let source = getAbsolutePath(args[1], io);
-  let target = getAbsolutePath(args[2], io);
+  let source = getAbsolutePath(args[1], io.env);
+  let target = getAbsolutePath(args[2], io.env);
   target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
   if (!FileSystem.exists(source)) {
     io.out(`mv: rename ${args[1]} to ${args[2]}: No such file or directory\n`)
@@ -255,8 +196,8 @@ async function cp(args: string[], io: IO) {
     io.out("Usage: cp <source> <target>\n");
     return 1;
   }
-  let source = getAbsolutePath(args[1], io);
-  let target = getAbsolutePath(args[2], io);
+  let source = getAbsolutePath(args[1], io.env);
+  let target = getAbsolutePath(args[2], io.env);
   target = (args[2].endsWith("/")) ? target + "/" : target; // getAbsolutePath strips trailing slash
   if (!FileSystem.exists(source)) {
     io.out(`cp: copy ${args[1]} to ${args[2]}: No such file or directory\n`)
@@ -314,6 +255,7 @@ export const commands: Executables = {
   'cp': cp,
   'date': date,
   'hostname': hostname,
+  'ed': ed,
 };
 
 // Add all commands to filesystem
