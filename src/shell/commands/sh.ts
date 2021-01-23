@@ -151,8 +151,8 @@ export default async function sh(args: string[], io: IO): Promise<number> {
           historyIndex = 0;
         }
         history[0] = history[0].substr(0, cursor) + data + history[0].substr(cursor);
-        cursor++;
-        io.out(Ansi.CURSOR_FORWARD);
+        cursor += data.length;
+        io.out(Ansi.cursorForward(data.length));
         renderLine();
     }
   }
