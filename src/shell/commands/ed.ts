@@ -83,6 +83,7 @@ export async function ed(args: string[], io: IO): Promise<number> {
       'f': setFilename,
       'w': write,
       'e': load,
+      //TODO: add more ed commands
       'default': async () => {io.out('?\n');}
     };
     await (commands[cmd] || commands['default'])(params);
