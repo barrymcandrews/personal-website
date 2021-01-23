@@ -159,8 +159,8 @@ class AsyncProcess implements Process {
  * This function is connected to io.in() for all processes. It provides an editable line.
  * To read directly from stdin the user should use io.proc.stdin.read()
  *
- * @param inFn -- should be set to io.proc.stdin.read()
- * @param outFn -- should be set to io.proc.stdin.write()
+ * @param inFn -- should be set to io.proc.stdin.read
+ * @param outFn -- should be set to io.proc.stdin.write
  */
 export async function input(inFn: () => Promise<string>, outFn: (str: string) => void): Promise<string> {
   let cursor = 0;

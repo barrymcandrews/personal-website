@@ -264,6 +264,38 @@ async function ps(args: string[], io: IO) {
   return 0;
 }
 
+async function test(args: string[], io: IO) {
+  args.shift();
+  if (args.pop() !== ']') {
+    io.out('[: ] expected\n');
+    return 2;
+  }
+
+  // Empty strings are considered false
+  if (args.length === 0) return 1;
+
+  // Strings are considered true
+  else if (args.length === 1) return 0;
+
+  else if (args.length === 2) {
+    io.out(`[: parse error: condition expected: ${args[0]}\n`)
+    return 2;
+
+  } else if (args.length === 3) {
+    let a = args[0];
+    let b = args[2];
+    let compareFns: {[key: string]: () => boolean} = {
+      '=': () => a === b,
+      '-eq': () => a === b,
+      //TODO: add more comparisons
+    }
+    return compareFns[args[1]]() ? 0 : 1;
+  } else {
+    io.out(`[: too many arguments\n`)
+    return 2;
+  }
+}
+
 interface Executables {
   [command: string]: Executable;
 }
@@ -292,6 +324,7 @@ export const commands: Executables = {
   'rm': rm,
   'ps': ps,
   'sh': sh,
+  '[': test,
 };
 
 if (process.env.NODE_ENV !== 'production') {
