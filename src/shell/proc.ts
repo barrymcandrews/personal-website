@@ -1,5 +1,4 @@
 import {Environment} from './environment';
-import * as Process from 'process';
 import {FileSystem, FS} from './system';
 
 class Notifier {
@@ -78,7 +77,6 @@ export interface IO {
 
 export type Executable = (args: string[], io: IO) => Promise<number>;
 
-// eslint-disable-next-line
 export interface Process {
   pid: number;
   env: Environment;
