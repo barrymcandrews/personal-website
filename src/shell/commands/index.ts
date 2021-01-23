@@ -2,9 +2,9 @@ import * as Ansi from '../Ansi';
 import {FileSystem, fs} from '../system';
 import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
-import {ed} from './ed';
+import ed from './ed';
+import sh from './sh';
 import {Executable, IO, listProcesses} from '../proc';
-import sh from './shell';
 
 let cwd = '/home/barry'
 

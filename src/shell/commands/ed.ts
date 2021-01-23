@@ -1,7 +1,7 @@
 import {getAbsolutePath} from './helpers';
 import {IO} from '../proc';
 
-export async function ed(args: string[], io: IO): Promise<number> {
+export default async function ed(args: string[], io: IO): Promise<number> {
   let buffer = '';
   let file: string | undefined;
 

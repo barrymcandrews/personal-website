@@ -6,7 +6,7 @@ import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
 import * as Ascii from '../../shell/Ascii';
-import sh from '../../shell/commands/shell';
+import sh from '../../shell/commands/sh';
 import {init} from '../../shell/proc';
 
 
