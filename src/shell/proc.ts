@@ -78,6 +78,7 @@ export interface IO {
 
 export type Executable = (args: string[], io: IO) => Promise<number>;
 
+// eslint-disable-next-line
 export interface Process {
   pid: number;
   env: Environment;
