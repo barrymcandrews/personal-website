@@ -4,6 +4,7 @@ import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
 import {ed} from './ed';
 import {Executable, IO, listProcesses} from '../proc';
+import sh from './shell';
 
 let cwd = '/home/barry'
 
@@ -290,6 +291,7 @@ export const commands: Executables = {
   'ed': ed,
   'rm': rm,
   'ps': ps,
+  'sh': sh,
 };
 
 if (process.env.NODE_ENV !== 'production') {

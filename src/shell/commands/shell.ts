@@ -1,12 +1,12 @@
 import * as Ansi from '../Ansi';
 import * as Ascii from '../Ascii';
 import {commands} from "./index";
-import {createProcess, IO, Process} from '../proc';
+import {createProcess, GroupedPipe, IO, Process} from '../proc';
 
 const PREFIX = '$ ';
 
 export default async function sh(args: string[], io: IO): Promise<number> {
-  let prefix: string = PREFIX;
+  io.proc.stdin = new GroupedPipe();
   let cursor: number = 0;
   let history: string[] = [''];
   let historyIndex: number = 0;
@@ -14,21 +14,21 @@ export default async function sh(args: string[], io: IO): Promise<number> {
   let subprocess: Process | undefined;
   let shouldExit = false;
 
-  // Prints non-user-editable output
-  function out(data: string): void {
-    io.out(data);
-    prefix += data.split('\n').pop();
-  }
+  io.out(PREFIX);
 
   function renderLine(line?: string) {
     io.out(Ansi.cursorSavePosition);
     io.out(Ansi.eraseLine);
     io.out(Ascii.CR);
-    io.out(prefix + (line || history[0]));
+    io.out(PREFIX + (line || history[0]));
     io.out(Ansi.cursorRestorePosition);
   }
 
-  function handleData(data: string) {
+  async function handleData(data: string) {
+    if (subprocess) {
+      await subprocess.stdin.write(data);
+      return;
+    }
     switch (data) {
       case Ascii.CR:
         if (historyIndex !== 0) {
@@ -39,38 +39,33 @@ export default async function sh(args: string[], io: IO): Promise<number> {
         if (history[0] !== '') {
           history.unshift('');
         }
-        prefix = '';
         cursor = 0;
         io.out(Ascii.CR + Ascii.LF);
-        interpretLine(line);
+        await interpretLine(line);
         break;
 
       // Control-C
       case Ascii.ETX:
-        if (!subprocess) {
-          io.out('^C');
-          io.out(Ascii.CR + Ascii.LF);
-          cursor = 0;
-          if (history[0] !== '') {
-            history.unshift('');
-          }
-          io.env.put('?', '130');
-          io.out(PREFIX);
+        io.out('^C');
+        io.out(Ascii.CR + Ascii.LF);
+        cursor = 0;
+        if (history[0] !== '') {
+          history.unshift('');
         }
+        io.env.put('?', '130');
+        io.out(PREFIX);
         break;
 
       // Control-D
       case Ascii.EOT:
-        if (!subprocess) {
-          io.out('^D');
-          io.out(Ascii.CR + Ascii.LF);
-          cursor = 0;
-          if (history[0] !== '') {
-            history.unshift('');
-          }
-          io.env.put('?', '130');
-          io.out(PREFIX);
+        io.out('^D');
+        io.out(Ascii.CR + Ascii.LF);
+        cursor = 0;
+        if (history[0] !== '') {
+          history.unshift('');
         }
+        io.out('exit\n');
+        shouldExit = true;
         break;
 
       // Control-A
@@ -162,11 +157,7 @@ export default async function sh(args: string[], io: IO): Promise<number> {
     }
   }
 
-  function interpretLine(line: string) {
-    if (subprocess) {
-      subprocess.stdin.write(line);
-      return;
-    }
+  async function interpretLine(line: string) {
 
     // Substitute variables in line
     line = io.env.substitute(line);
@@ -175,7 +166,7 @@ export default async function sh(args: string[], io: IO): Promise<number> {
     if (/^(\w)+=/.test(line)) {
       let separator = line.indexOf('=');
       io.env.put(line.substring(0, separator), line.substring(separator + 1));
-      out(PREFIX);
+      io.out(PREFIX);
       return;
     }
 
@@ -188,15 +179,16 @@ export default async function sh(args: string[], io: IO): Promise<number> {
 
       try {
         let proc = createProcess(commands[command], io.env);
-        proc.stdout.onWrite(out);
-        proc.stderr.onWrite(out);
+        proc.stdout.onWrite(io.proc.stdout.write);
+        proc.stderr.onWrite(io.proc.stdout.write);
+
         proc.start(args);
         subprocess = proc;
         proc.wait().then((returnCode) => {
           subprocess = undefined;
           io.proc.stdin = stdin;
           io.env.put('?', returnCode.toString());
-          out(PREFIX);
+          io.out(PREFIX);
         });
       } catch (e) {
         if (process.env.NODE_ENV === 'production') {
@@ -206,18 +198,21 @@ export default async function sh(args: string[], io: IO): Promise<number> {
         }
       }
 
+    } else if (command.startsWith('exit')) {
+      shouldExit = true;
     } else if (command !== '') {
       io.out("command not found: " + command + "\r\n");
       io.env.put('?', '127');
-      out(PREFIX);
+      io.out(PREFIX);
     } else {
-      out(PREFIX);
+      io.out(PREFIX);
     }
   }
 
   while (!shouldExit) {
-    handleData(await io.in());
+    await handleData(await io.proc.stdin.read());
   }
 
   return 0;
 }
+

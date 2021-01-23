@@ -1,5 +1,7 @@
 import {Environment} from './environment';
 import {FileSystem, FS} from './system';
+import * as Ansi from './Ansi';
+import * as Ascii from './Ascii';
 
 class Notifier {
   e = new EventTarget();
@@ -130,7 +132,8 @@ class AsyncProcess implements Process {
     this.args = args;
     let io = {
       env: this.env,
-      in: async () => await this.stdin.read(),
+      // in: async () => await input(this.stdin.read, this.stdin.write),
+      in: async () => await input(this.stdin.read, this.stdout.write),
       out: async (str: string) => await this.stdout.write(str),
       err: async (str: string) => await this.stderr.write(str),
       fs: FileSystem,
@@ -150,4 +153,74 @@ class AsyncProcess implements Process {
   async wait(): Promise<number> {
     return this.promise!;
   }
+}
+
+/**
+ * This function is connected to io.in() for all processes. It provides an editable line.
+ * To read directly from stdin the user should use io.proc.stdin.read()
+ *
+ * @param inFn -- should be set to io.proc.stdin.read()
+ * @param outFn -- should be set to io.proc.stdin.write()
+ */
+export async function input(inFn: () => Promise<string>, outFn: (str: string) => void): Promise<string> {
+  let cursor = 0;
+  let buffer = ''
+  let io = {
+    in: inFn,
+    out: outFn,
+  }
+
+  function cursorForward() {
+    if (cursor < buffer.length) {
+      cursor += 1;
+      io.out(Ansi.CURSOR_FORWARD);
+    } else {
+      io.out(Ascii.BEL);
+    }
+  }
+
+  function cursorBackwards() {
+    if (cursor > 0) {
+      cursor -= 1;
+      io.out(Ansi.CURSOR_BACKWARDS);
+    } else {
+      io.out(Ascii.BEL);
+    }
+  }
+
+  function backspace() {
+    if (cursor > 0) {
+      cursor--;
+      buffer = buffer.substr(0, cursor) + buffer.substr(cursor + 1);
+      io.out('\b \b'); // Code to delete one character
+    } else {
+      io.out(Ascii.BEL);
+    }
+  }
+
+  function handleData(data: string) {
+    buffer = buffer.substr(0, cursor) + data + buffer.substr(cursor);
+    cursor++;
+    io.out(data);
+  }
+
+  let handlers = {
+    [Ascii.ACK]: cursorBackwards,
+    [Ansi.CURSOR_BACKWARDS]: cursorBackwards,
+    [Ascii.STX]: cursorForward,
+    [Ansi.CURSOR_FORWARD]: cursorForward,
+    [Ascii.DEL]: backspace,
+    [Ascii.BS]: backspace,
+  }
+
+  let ch: string;
+  while ((ch = await io.in()) !== Ascii.CR) {
+    if(ch in handlers) {
+      handlers[ch]();
+    } else {
+      handleData(ch);
+    }
+  }
+  io.out('\n');
+  return buffer;
 }
