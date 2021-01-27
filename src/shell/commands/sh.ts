@@ -1,6 +1,5 @@
 import * as Ansi from '../Ansi';
 import * as Ascii from '../Ascii';
-import {commands} from "./index";
 import {createProcess, GroupedPipe, IO, Process} from '../proc';
 
 const PREFIX = '$ ';
@@ -175,38 +174,35 @@ export default async function sh(args: string[], io: IO): Promise<number> {
       .map(v => (/^(".*")|('.*')$/.test(v)) ? v.slice(1, -1) : v);
 
     let command = args[0];
-    if (command in commands) {
+    let proc = createProcess(args, io.env, io.fs);
+    if (proc) {
+      proc.stdout.onWrite(io.proc.stdout.write);
+      proc.stderr.onWrite(io.proc.stdout.write);
 
-      try {
-        let proc = createProcess(commands[command], io.env);
-        proc.stdout.onWrite(io.proc.stdout.write);
-        proc.stderr.onWrite(io.proc.stdout.write);
-
-        proc.start(args);
-        subprocess = proc;
-        proc.wait().then((returnCode) => {
-          subprocess = undefined;
-          io.proc.stdin = stdin;
-          io.env.put('?', returnCode.toString());
-          io.out(PREFIX);
-        });
-      } catch (e) {
-        if (process.env.NODE_ENV === 'production') {
-          io.out("sh: An unknown error occurred\n");
-        } else {
-          throw e;
+      subprocess = proc;
+      proc.start((e) => {
+        io.out("sh: An unknown error occurred\n");
+        if (process.env.NODE_ENV !== 'production') {
+          io.out(`${e}\n`);
         }
-      }
-
+      });
+      proc.wait()
+        .then((returnCode) => {
+        subprocess = undefined;
+        io.proc.stdin = stdin;
+        io.env.put('?', (returnCode || "1").toString());
+        io.out(PREFIX);
+      });
     } else if (command.startsWith('exit')) {
       shouldExit = true;
     } else if (command !== '') {
-      io.out("command not found: " + command + "\r\n");
+      io.out("sh: command not found: " + command + "\r\n");
       io.env.put('?', '127');
       io.out(PREFIX);
     } else {
       io.out(PREFIX);
     }
+
   }
 
   while (!shouldExit) {

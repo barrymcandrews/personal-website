@@ -62,7 +62,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
     }
 
     file = target;
-    buffer = io.fs.get(target).toString();
+    buffer = io.fs.get(target)!.toString();
     return 0;
   }
 

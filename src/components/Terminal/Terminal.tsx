@@ -6,7 +6,6 @@ import {Terminal as XTerm} from 'xterm';
 import {FitAddon} from 'xterm-addon-fit';
 import {WebLinksAddon} from 'xterm-addon-web-links';
 import * as Ascii from '../../shell/Ascii';
-import sh from '../../shell/commands/sh';
 import {init} from '../../shell/proc';
 
 
@@ -35,7 +34,12 @@ export default class Terminal extends Component {
         this.term.loadAddon(this.webLinksAddon);
         this.term.open(terminalContainer);
         this.fitAddon.fit();
-        this.connectShell();
+
+        this.connectShell().catch(() => {
+            // Include a backup message in case an error makes it to prod
+            this.term.write("$ cat copyright.txt\r\n");
+            this.term.write('Made by Barry McAndrews © ' + new Date().getFullYear() + '\n\n');
+        });
     }
 
     componentWillUnmount() {
@@ -50,7 +54,7 @@ export default class Terminal extends Component {
     }
 
     private async connectShell(sendCopyrightCommand: boolean = true) {
-        let shell = init(sh);
+        let shell = init(['sh', '--login', '-i'])!;
 
         shell.env.put("ROWS", this.term.rows.toString());
         shell.env.put("COLS", this.term.cols.toString());
@@ -64,7 +68,7 @@ export default class Terminal extends Component {
             shell.env.put("ROWS", this.term.rows.toString());
             shell.env.put("COLS", this.term.cols.toString());
         });
-        shell.start(['sh', '--login', '-i']);
+        shell.start();
         if (sendCopyrightCommand) {
             let command = 'cat copyright.txt' + Ascii.CR;
             command.split('').forEach(char => shell.stdin.write(char));

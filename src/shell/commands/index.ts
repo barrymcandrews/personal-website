@@ -1,5 +1,4 @@
 import * as Ansi from '../Ansi';
-import {FileSystem, fs} from '../system';
 import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
 import ed from './ed';
@@ -107,7 +106,7 @@ async function ls(args: string[], io: IO) {
 async function mkdir(args: string[], io: IO) {
   let path = getAbsolutePath(args[1], io.env);
   if (io.fs.exists(path)) {
-    io.out('mkdir: ' + args[1] + ': File exists');
+    io.out('mkdir: ' + args[1] + ': File exists\n');
     return 1;
   } else {
     path = path.replace(/\/$/, '');
@@ -141,7 +140,12 @@ async function touch(args: string[], io: IO) {
 
   for (let i = 1; i < args.length; i++) {
     let path = getAbsolutePath(args[i], io.env);
-    io.fs.put(path, "");
+    try {
+      io.fs.put(path, "");
+    } catch (e) {
+      io.out(`touch: unable to create file ${args[i]}\n`);
+      return 1;
+    }
   }
   return 0;
 }
@@ -252,7 +256,7 @@ async function hostname(args: string[], io: IO) {
 }
 
 async function tree(args: string[], io: IO) {
-  console.log(fs);
+  console.log(io.fs.__fs);
   return 0;
 }
 
@@ -329,9 +333,4 @@ export const commands: Executables = {
 
 if (process.env.NODE_ENV !== 'production') {
   commands['tree'] = tree;
-}
-
-// Add all commands to filesystem
-for (let e of Object.keys(commands)) {
-  FileSystem.put('/usr/bin/' + e, commands[e]);
 }

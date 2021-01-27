@@ -1,5 +1,5 @@
 import {Environment} from './environment';
-import {FileSystem, FS} from './system';
+import {ExecutableFile, FileSystem, FS} from './system';
 import * as Ansi from './Ansi';
 import * as Ascii from './Ascii';
 
@@ -43,6 +43,7 @@ export class Pipe {
 
 /**
  * Pipe that ensures bytes are received in the chunks that they are sent.
+ * This is used by shell to correctly group control characters
  */
 export class GroupedPipe extends Pipe {
   groupedBuffer: string[] = [];
@@ -86,7 +87,8 @@ export interface Process {
   stdout: Pipe;
   stderr: Pipe;
   args?: string[];
-  start(args: string[]): void;
+
+  start(onError?: (e: any) => void): void;
   cancel(): void;
   wait(): Promise<number>;
 }
@@ -95,14 +97,31 @@ export interface Process {
 let processes: { [key: number]: Process } = {};
 let nextPid = 0;
 
-export function init(exec: Executable) {
+export function init(command: string[]) {
   let env = new Environment();
-  return createProcess(exec, env);
+  let fs = new FileSystem();
+  return createProcess(command, env, fs);
 }
 
-export function createProcess(exec: Executable, env: Environment): Process {
+export function createProcess(command: string[], env: Environment, fs: FileSystem): Process | null {
+  function findExecutable(): Executable | null {
+    for (let dir of env.get('PATH').split(';')) {
+      let path = dir + '/' + command[0];
+      let file = fs.get(path) || {};
+      if (typeof file === 'object' && file.hasOwnProperty('exec')) {
+        return (file as ExecutableFile).exec;
+      }
+    }
+    return null;
+  }
+
+  let exec = findExecutable();
+  if (exec == null) {
+    return null;
+  }
+
   let pid = nextPid++;
-  let process = new AsyncProcess(pid, exec, env);
+  let process = new AsyncProcess(pid, exec, command, env, fs);
   processes[pid] = process;
   return process;
 }
@@ -115,31 +134,32 @@ export function listProcesses() {
 class AsyncProcess implements Process {
   pid: number;
   exec: Executable;
+  args: string[];
   env: Environment;
+  fs: FileSystem;
   stdin = new Pipe();
   stdout = new Pipe();
   stderr = new Pipe();
   promise?: Promise<number>;
-  args?: string[];
 
-  constructor(pid: number, exec: Executable, env: Environment) {
+  constructor(pid: number, exec: Executable, args: string[], env: Environment, fs: FileSystem) {
     this.pid = pid;
     this.exec = exec;
+    this.args = args;
     this.env = env;
+    this.fs = fs;
   }
 
-  start(args: string[]): void {
-    this.args = args;
-    let io = {
+  start(onError?: (e: any) => void) {
+    let io: IO = {
       env: this.env,
-      // in: async () => await input(this.stdin.read, this.stdin.write),
+      fs: this.fs,
       in: async () => await input(this.stdin.read, this.stdout.write),
       out: async (str: string) => await this.stdout.write(str),
       err: async (str: string) => await this.stderr.write(str),
-      fs: FileSystem,
       proc: this,
     }
-    this.promise = this.exec(args, io);
+    this.promise = this.exec(this.args, io).catch(onError).then();
 
     this.promise.then(() => {
       delete processes[this.pid];
@@ -150,7 +170,7 @@ class AsyncProcess implements Process {
     throw Error ("Async Processes can not be cancelled.");
   }
 
-  async wait(): Promise<number> {
+  wait(): Promise<number> {
     return this.promise!;
   }
 }
@@ -200,7 +220,7 @@ export async function input(inFn: () => Promise<string>, outFn: (str: string) =>
 
   function handleData(data: string) {
     buffer = buffer.substr(0, cursor) + data + buffer.substr(cursor);
-    cursor++;
+    cursor += data.length;
     io.out(data);
   }
 
@@ -218,7 +238,8 @@ export async function input(inFn: () => Promise<string>, outFn: (str: string) =>
     if(ch in handlers) {
       handlers[ch]();
     } else {
-      handleData(ch);
+      let stripped = ch.replace(/[^ -~]+/g, "");
+      if (stripped) handleData(stripped);
     }
   }
   io.out('\n');
