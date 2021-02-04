@@ -1,5 +1,6 @@
 import {IO} from '../proc';
 import * as Ansi from '../Ansi';
+import * as Ascii from '../Ascii';
 
 enum Direction {
   UP,
@@ -12,6 +13,13 @@ type Pair = [number, number];
 
 
 export default async function snake(args: string[], io: IO) {
+
+  let direction = Direction.RIGHT;
+  let body: Pair[] = [[3, 2], [2, 2], [1, 2]];
+  let food: Pair = [0, 0];
+  let cols = parseInt(io.env.get("COLS"));
+  let rows = parseInt(io.env.get("ROWS"));
+  let cancelled = false;
 
   async function placeFood() {
     function random(): Pair {
@@ -46,64 +54,105 @@ export default async function snake(args: string[], io: IO) {
     return false;
   }
 
-  let direction = Direction.RIGHT;
-  let body: Pair[] = [[3, 2], [2, 2], [1, 2]];
-  let food: Pair = [0, 0];
+  function padText(text: any, maxWidth: number, ch = ' ') {
+    let len = text.toString().length;
+    return text + ch.repeat(Math.max(maxWidth - len, 0));
+  }
+
+  async function updateHighscore(score: number) {
+    let data = JSON.parse((io.fs.get('/etc/snake') || '{}') as string);
+    let lastScore = data['highscore'] || score;
+    let highscore = Math.max(parseInt(lastScore), score);
+    io.fs.put('/etc/snake', JSON.stringify({
+      highscore: highscore
+    }));
+    return highscore;
+  }
+
+  async function printBoundary() {
+    // Top Line
+    io.out(Ansi.cursorTo(0, 0));
+    io.out("▒".repeat(cols - 1));
+
+    // Bottom Line
+    io.out(Ansi.cursorTo(0, rows - 2));
+    io.out("▒".repeat(cols - 1 ));
+
+    // Left & Right Lines
+    for (let y = 0; y < rows - 1; y++) {
+      io.out(Ansi.cursorTo(0, y));
+      io.out("▒");
+      io.out(Ansi.cursorTo(cols - 1, y));
+      io.out("▒");
+    }
+  }
+
+  async function addKeyHandlers() {
+    let up = () => {if (direction !== Direction.DOWN) direction = Direction.UP};
+    let down = () => {if (direction !== Direction.UP) direction = Direction.DOWN};
+    let left = () => {if (direction !== Direction.RIGHT) direction = Direction.LEFT};
+    let right = () => {if (direction !== Direction.LEFT) direction = Direction.RIGHT}
+    let exit = () => {cancelled = true};
+
+    let handler: {[key: string]: () => void} = {
+      'w': up,
+      [Ansi.CURSOR_UP]: up,
+      's': down,
+      [Ansi.CURSOR_DOWN]: down,
+      'a': left,
+      [Ansi.CURSOR_BACKWARDS]: left,
+      'd': right,
+      [Ansi.CURSOR_FORWARD]: right,
+      [Ascii.ETX]: exit,
+      [Ascii.EOT]: exit,
+      'default': () => {},
+    }
+
+    io.proc.stdin.onWrite((data) => {
+      (handler[data] || handler['default'])();
+    });
+  }
 
 
+  // Setup
   io.out(Ansi.alternateScreen);
   io.out('\u001B[?25l');
-
-  let cols = parseInt(io.env.get("COLS"));
-  let rows = parseInt(io.env.get("ROWS"));
-
-  // Top Line
-  io.out(Ansi.cursorTo(0, 0));
-  io.out("▒".repeat(cols - 1));
-
-  // Bottom Line
-  io.out(Ansi.cursorTo(0, rows - 2));
-  io.out("▒".repeat(cols - 1 ));
-
-  for (let y = 0; y < rows - 1; y++) {
-    io.out(Ansi.cursorTo(0, y));
-    io.out("▒");
-    io.out(Ansi.cursorTo(cols - 1, y));
-    io.out("▒");
-  }
-
+  await printBoundary();
   await placeFood();
+  await addKeyHandlers();
 
-  let up = () => {if (direction !== Direction.DOWN) direction = Direction.UP};
-  let down = () => {if (direction !== Direction.UP) direction = Direction.DOWN};
-  let left = () => {if (direction !== Direction.RIGHT) direction = Direction.LEFT};
-  let right = () => {if (direction !== Direction.LEFT) direction = Direction.RIGHT}
-
-  let handler: {[key: string]: () => void} = {
-    'w': up,
-    [Ansi.CURSOR_UP]: up,
-    's': down,
-    [Ansi.CURSOR_DOWN]: down,
-    'a': left,
-    [Ansi.CURSOR_BACKWARDS]: left,
-    'd': right,
-    [Ansi.CURSOR_FORWARD]: right,
-    'default': () => {},
-  }
-
-  io.proc.stdin.onWrite((data) => {
-    (handler[data] || handler['default'])();
-  });
-
+  // Main Loop
   while (true) {
     let head = await newHead(body[0]);
 
     let hitWall = head[0] > cols - 2 || head[0] < 1 || head[1] > rows - 3 || head[1] < 1;
     let ateYourself = await pairInList(head, body);
-    if (hitWall || ateYourself) {
+    if (hitWall || ateYourself || cancelled) {
+      let score = (body.length - 3) * 16;
+      let highscore = await updateHighscore(score);
+      let causeOfDeath = '';
+      if (hitWall) causeOfDeath = 'Wall';
+      if (ateYourself) causeOfDeath = 'Cannibalism';
+      if (cancelled) causeOfDeath = 'Suicide';
+      let width = Math.max(
+        body.length.toString().length,
+        highscore.toString().length,
+        causeOfDeath.length,
+      ) + 3;
       io.out(Ansi.normalScreen);
-      io.out("You died.\n");
-      io.out(`Score: ${body.length}\n`);
+      io.out(`┌─ You Died! ───────${padText('─', width, '─')}┐\n`);
+      io.out(`│                   ${padText(' ', width)}│\n`);
+      io.out(`│       Your Score: ${padText(score, width)}│\n`);
+      io.out(`│       High Score: ${padText(highscore, width)}│\n`);
+      io.out(`│   Cause of Death: ${padText(causeOfDeath, width)}│\n`);
+      io.out(`│                   ${padText(' ', width)}│\n`);
+      io.out(`└───────────────────${padText('─', width, '─')}┘\n`);
+
+      // io.out(Ansi.italic + Ansi.faint);
+      // io.out(`✨  Even when you make all the right choices,\n     things can still go wrong ✨\n`);
+      // io.out(Ansi.reset);
+
+      io.out(`\n`);
       return 0;
     } else {
       body.unshift(head);
@@ -128,7 +177,7 @@ export default async function snake(args: string[], io: IO) {
 
     io.out('\u001b[37;1m');
     io.out(Ansi.cursorTo(0, rows));
-    io.out(`Score: ${body.length}          `);
+    io.out(`▒  Score: ${(body.length - 3) * 16}          `);
 
     io.out(Ansi.cursorTo(cols, rows));
     io.out(Ansi.cursorHide);

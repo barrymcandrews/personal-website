@@ -41,6 +41,10 @@ export let beep = BEL;
 export let alternateScreen = CSI + '?1049h';
 export let normalScreen = CSI + '?1049l';
 
+export let reset = CSI + '0m';
+export let bold = CSI + '1m';
+export let faint = CSI + '2m';
+export let italic = CSI + '3m';
 
 export function cursorTo(x: any, y: any) {
   if (typeof x !== 'number') {
