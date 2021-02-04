@@ -3,6 +3,7 @@ import history from '../../App/history';
 import {columns, getAbsolutePath, basename, parseArgs} from './helpers';
 import ed from './ed';
 import sh from './sh';
+import snake from './snake';
 import {Executable, IO, listProcesses} from '../proc';
 
 let cwd = '/home/barry'
@@ -329,6 +330,7 @@ export const commands: Executables = {
   'ps': ps,
   'sh': sh,
   '[': test,
+  'snake': snake,
 };
 
 if (process.env.NODE_ENV !== 'production') {
