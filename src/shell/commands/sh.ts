@@ -190,7 +190,7 @@ export default async function sh(args: string[], io: IO): Promise<number> {
         .then((returnCode) => {
         subprocess = undefined;
         io.proc.stdin = stdin;
-        io.env.put('?', (returnCode || "1").toString());
+        io.env.put('?', (returnCode == undefined) ? '1' : returnCode.toString());
         io.out(PREFIX);
       });
     } else if (command.startsWith('exit')) {
