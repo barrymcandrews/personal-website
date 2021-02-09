@@ -11,15 +11,23 @@ enum Direction {
 
 type Pair = [number, number];
 
+const SNAKE_COLOR = '\u001b[32;1m';
+const FOOD_COLOR = '\u001b[31m';
+
 
 export default async function snake(args: string[], io: IO) {
 
   let direction = Direction.RIGHT;
+  let nextDirection = Direction.RIGHT;
   let body: Pair[] = [[3, 2], [2, 2], [1, 2]];
   let food: Pair = [0, 0];
   let cols = parseInt(io.env.get("COLS"));
   let rows = parseInt(io.env.get("ROWS"));
   let cancelled = false;
+
+  function getScore() {
+    return (body.length - 3) * 16;
+  }
 
   async function placeFood() {
     function random(): Pair {
@@ -30,12 +38,13 @@ export default async function snake(args: string[], io: IO) {
     }
     while (await pairInList(food = random(), body));
     io.out(Ansi.cursorTo(food[0], food[1]));
-    io.out('\u001b[31m');
-    io.out('\u001b[1m');
+    io.out(FOOD_COLOR);
+    io.out(Ansi.bold);
     io.out('$');
   }
 
   async function newHead(oldHead: Pair): Promise<Pair> {
+    direction = nextDirection;
     let m: { [key: number]: Pair } = {
       [Direction.UP]: [oldHead[0], oldHead[1] - 1],
       [Direction.DOWN]: [oldHead[0], oldHead[1] + 1],
@@ -59,7 +68,8 @@ export default async function snake(args: string[], io: IO) {
     return text + ch.repeat(Math.max(maxWidth - len, 0));
   }
 
-  async function updateHighscore(score: number) {
+  async function updateHighScore() {
+    let score = getScore();
     let data = JSON.parse((io.fs.get('/etc/snake') || '{}') as string);
     let lastScore = data['highscore'] || score;
     let highscore = Math.max(parseInt(lastScore), score);
@@ -87,11 +97,35 @@ export default async function snake(args: string[], io: IO) {
     }
   }
 
+  async function printScore(causeOfDeath: string) {
+    let highscore = await updateHighScore();
+    let width = Math.max(
+      body.length.toString().length,
+      highscore.toString().length,
+      causeOfDeath.length,
+    ) + 3;
+    io.out(Ansi.normalScreen);
+    io.out(`┌─ You Died! ───────${padText('─', width, '─')}┐\n`);
+    io.out(`│                   ${padText(' ', width)}│\n`);
+    io.out(`│       Your Score: ${padText(getScore(), width)}│\n`);
+    io.out(`│       High Score: ${padText(highscore, width)}│\n`);
+    io.out(`│   Cause of Death: ${padText(causeOfDeath, width)}│\n`);
+    io.out(`│                   ${padText(' ', width)}│\n`);
+    io.out(`└───────────────────${padText('─', width, '─')}┘\n`);
+
+    // io.out(Ansi.italic + Ansi.faint);
+    // io.out(`✨  Even when you make all the right choices,\n     things can still go wrong ✨\n`);
+    // io.out(Ansi.reset);
+
+    io.out(`\n`);
+  }
+
+
   async function addKeyHandlers() {
-    let up = () => {if (direction !== Direction.DOWN) direction = Direction.UP};
-    let down = () => {if (direction !== Direction.UP) direction = Direction.DOWN};
-    let left = () => {if (direction !== Direction.RIGHT) direction = Direction.LEFT};
-    let right = () => {if (direction !== Direction.LEFT) direction = Direction.RIGHT}
+    let up = () => {if (direction !== Direction.DOWN) nextDirection = Direction.UP};
+    let down = () => {if (direction !== Direction.UP) nextDirection = Direction.DOWN};
+    let left = () => {if (direction !== Direction.RIGHT) nextDirection = Direction.LEFT};
+    let right = () => {if (direction !== Direction.LEFT) nextDirection = Direction.RIGHT}
     let exit = () => {cancelled = true};
 
     let handler: {[key: string]: () => void} = {
@@ -116,7 +150,7 @@ export default async function snake(args: string[], io: IO) {
 
   // Setup
   io.out(Ansi.alternateScreen);
-  io.out('\u001B[?25l');
+  io.out(Ansi.cursorHide);
   await printBoundary();
   await placeFood();
   await addKeyHandlers();
@@ -127,36 +161,14 @@ export default async function snake(args: string[], io: IO) {
 
     let hitWall = head[0] > cols - 2 || head[0] < 1 || head[1] > rows - 3 || head[1] < 1;
     let ateYourself = await pairInList(head, body);
+
     if (hitWall || ateYourself || cancelled) {
-      let score = (body.length - 3) * 16;
-      let highscore = await updateHighscore(score);
-      let causeOfDeath = '';
-      if (hitWall) causeOfDeath = 'Wall';
-      if (ateYourself) causeOfDeath = 'Cannibalism';
-      if (cancelled) causeOfDeath = 'Suicide';
-      let width = Math.max(
-        body.length.toString().length,
-        highscore.toString().length,
-        causeOfDeath.length,
-      ) + 3;
-      io.out(Ansi.normalScreen);
-      io.out(`┌─ You Died! ───────${padText('─', width, '─')}┐\n`);
-      io.out(`│                   ${padText(' ', width)}│\n`);
-      io.out(`│       Your Score: ${padText(score, width)}│\n`);
-      io.out(`│       High Score: ${padText(highscore, width)}│\n`);
-      io.out(`│   Cause of Death: ${padText(causeOfDeath, width)}│\n`);
-      io.out(`│                   ${padText(' ', width)}│\n`);
-      io.out(`└───────────────────${padText('─', width, '─')}┘\n`);
-
-      // io.out(Ansi.italic + Ansi.faint);
-      // io.out(`✨  Even when you make all the right choices,\n     things can still go wrong ✨\n`);
-      // io.out(Ansi.reset);
-
-      io.out(`\n`);
+      let causeOfDeath = (hitWall && 'Wall') || (ateYourself && 'Cannibalism') || 'Suicide';
+      await printScore(causeOfDeath);
       return 0;
-    } else {
-      body.unshift(head);
     }
+
+    body.unshift(head);
 
     if (head[0] === food[0] && head[1] === food[1]) {
       await placeFood();
@@ -167,21 +179,21 @@ export default async function snake(args: string[], io: IO) {
     }
 
     io.out(Ansi.cursorHide);
-
-    io.out('\u001b[32;1m');
-    io.out('\u001b[1m');
+    io.out(SNAKE_COLOR);
+    io.out(Ansi.bold);
     io.out(Ansi.cursorTo(head[0], head[1]));
     io.out('@');
     io.out(Ansi.cursorTo(body[1][0], body[1][1]));
     io.out('o');
 
-    io.out('\u001b[37;1m');
     io.out(Ansi.cursorTo(0, rows));
-    io.out(`▒  Score: ${(body.length - 3) * 16}          `);
+    io.out(Ansi.reset);
+    io.out(`▒  `);
+    io.out(Ansi.bold);
+    io.out(`Score: ${getScore()}          `);
 
     io.out(Ansi.cursorTo(cols, rows));
     io.out(Ansi.cursorHide);
-
 
     await new Promise(resolve => setTimeout(resolve, 100));
   }
