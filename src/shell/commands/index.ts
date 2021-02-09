@@ -105,15 +105,41 @@ async function ls(args: string[], io: IO) {
 }
 
 async function mkdir(args: string[], io: IO) {
-  let path = getAbsolutePath(args[1], io.env);
-  if (io.fs.exists(path)) {
-    io.out('mkdir: ' + args[1] + ': File exists\n');
-    return 1;
-  } else {
-    path = path.replace(/\/$/, '');
-    io.fs.put(path + '/__folder__', {})
-    return 0;
+  args.shift();
+  if (args.length < 1) {
+    io.out('Usage: mkdir <directory...>\n');
+    return 64;
   }
+  return args.map(arg => {
+    let path = getAbsolutePath(arg, io.env);
+    if (io.fs.exists(path)) {
+      io.out('mkdir: ' + arg + ': File exists\n');
+      return 1;
+    } else {
+      path = path.replace(/\/$/, '');
+      io.fs.put(path + '/__folder__', {})
+      return 0;
+    }
+  }).reduce((a, b) => a || b);
+}
+
+async function rmdir(args: string[], io: IO) {
+  args.shift();
+  if (args.length < 1) {
+    io.out('Usage: rmdir <directory...>\n');
+    return 1;
+  }
+  return args.map(arg => {
+    let path = getAbsolutePath(arg, io.env);
+    let results = io.fs.scan(path + '/');
+    if (results.length !== 1 || results[0] !== (path + '/__folder__')) {
+      io.out(`rmdir: ${arg}: Directory is not empty\n`);
+      return 1;
+    } else {
+      io.fs.delete(results[0], false);
+      return 0;
+    }
+  }).reduce((a, b) => a || b);
 }
 
 async function cat(args: string[], io: IO) {
@@ -229,15 +255,29 @@ async function cp(args: string[], io: IO) {
 }
 
 async function rm(args: string[], io: IO) {
-  let {positionalArgs} = parseArgs(args);
+  let {flags, positionalArgs} = parseArgs(args);
   for (let item of positionalArgs.splice(1)) {
     let path = getAbsolutePath(item, io.env);
     if (io.fs.isFile(path)) {
-      io.fs.put(basename(path) + '__folder__', {});
       io.fs.delete(path, true);
     } else if (io.fs.isDir(path)) {
-      io.out(`rm: directories can not be removed\n`);
-      return 1;
+      if (path === '/') {
+        io.out(`rm: cannot remove '/': Operation not permitted\n`);
+        io.out(`rm: nice try though\n`);
+        return 1;
+      } else if (!flags.includes('r')) {
+        io.out(`rm: ${item}: is a directory\n`);
+        return 1;
+      } else {
+        let folderPath = path.slice(0, path.lastIndexOf('/')) + '/__folder__';
+        if (!io.fs.exists(folderPath)) {
+          io.fs.put(folderPath, {});
+        }
+        io.fs.scan(path + '/').forEach(result => {
+          io.fs.delete(result, false);
+        });
+        return 0;
+      }
     } else {
       io.out(`rm: ${item}: No such file or directory\n`);
       return 1;
@@ -313,6 +353,7 @@ export const commands: Executables = {
   'cd': cd,
   'ls': ls,
   'mkdir': mkdir,
+  'rmdir': rmdir,
   'cat': cat,
   'echo': echo,
   'clear': clear,

@@ -37,7 +37,7 @@ export interface FS {
   __fs: FileMap
 }
 
-export class FileSystem {
+export class FileSystem implements FS {
   __fs: FileMap = {
     '/home/barry/linkedin.txt': Ansi.link('https://www.linkedin.com/in/barry-mcandrews') + '\n',
     '/home/barry/github.txt': Ansi.link('https://github.com/barrymcandrews') + '\n',
@@ -88,8 +88,8 @@ export class FileSystem {
 
   delete(path: string, keepFolder= false) {
     if (keepFolder) {
-      let folderPath = path.split('/').reverse()[0] + '/__folder__';
-      if (this.__fs.hasOwnProperty(folderPath)) {
+      let folderPath = path.slice(0, path.lastIndexOf('/')) + '/__folder__';
+      if (!this.__fs.hasOwnProperty(folderPath)) {
         this.put(folderPath, {});
       }
     }
