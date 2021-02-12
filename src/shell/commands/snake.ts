@@ -12,7 +12,8 @@ enum Direction {
 type Pair = [number, number];
 
 const SNAKE_COLOR = '\u001b[32;1m';
-const FOOD_COLOR = '\u001b[31m';
+const FOOD_COLOR = '\u001b[1;31m';
+const NUMBER_OF_FOODS = 2;
 
 
 export default async function snake(args: string[], io: IO) {
@@ -20,7 +21,7 @@ export default async function snake(args: string[], io: IO) {
   let direction = Direction.RIGHT;
   let nextDirection = Direction.RIGHT;
   let body: Pair[] = [[3, 2], [2, 2], [1, 2]];
-  let food: Pair = [0, 0];
+  let foods: Pair[] = [];
   let cols = parseInt(io.env.get("COLS"));
   let rows = parseInt(io.env.get("ROWS"));
   let cancelled = false;
@@ -29,14 +30,19 @@ export default async function snake(args: string[], io: IO) {
     return (body.length - 3) * 16;
   }
 
-  async function placeFood() {
+  async function placeFood(replace?: Pair) {
+    replace && (foods = await removeFromList(replace, foods));
+    console.log(foods);
     function random(): Pair {
       return [
         Math.floor(Math.random() * (cols - 2) + 1),
         Math.floor(Math.random() * (rows - 3) + 1)
       ]
     }
-    while (await pairInList(food = random(), body));
+    let illegalPositions = body.concat(foods);
+    let food;
+    while (await pairInList(food = random(), illegalPositions));
+    foods.push(food);
     io.out(Ansi.cursorTo(food[0], food[1]));
     io.out(FOOD_COLOR);
     io.out(Ansi.bold);
@@ -55,12 +61,17 @@ export default async function snake(args: string[], io: IO) {
   }
 
   async function pairInList(pair: Pair, list: Pair[]) {
+    // return list.some(p => p[0] == pair[0] && p[1] == pair[1]);
     for (let p of list) {
       if (p[0] === pair[0] && p[1] === pair[1]) {
         return true;
       }
     }
     return false;
+  }
+
+  async function removeFromList(pair: Pair, list: Pair[]) {
+    return list.filter(p => p[0] !== pair[0] || p[1] !== pair[1]);
   }
 
   function padText(text: any, maxWidth: number, ch = ' ') {
@@ -113,9 +124,10 @@ export default async function snake(args: string[], io: IO) {
     io.out(`│                   ${padText(' ', width)}│\n`);
     io.out(`└───────────────────${padText('─', width, '─')}┘\n`);
 
-    // io.out(Ansi.italic + Ansi.faint);
+    io.out(Ansi.italic + Ansi.faint);
     // io.out(`✨  Even when you make all the right choices,\n     things can still go wrong ✨\n`);
-    // io.out(Ansi.reset);
+    io.out(`✨  The snake is a metaphor for life  ✨\n`);
+    io.out(Ansi.reset);
 
     io.out(`\n`);
   }
@@ -152,8 +164,10 @@ export default async function snake(args: string[], io: IO) {
   io.out(Ansi.alternateScreen);
   io.out(Ansi.cursorHide);
   await printBoundary();
-  await placeFood();
   await addKeyHandlers();
+  for (const item of Array(NUMBER_OF_FOODS)) {
+    await placeFood();
+  }
 
   // Main Loop
   while (true) {
@@ -170,8 +184,8 @@ export default async function snake(args: string[], io: IO) {
 
     body.unshift(head);
 
-    if (head[0] === food[0] && head[1] === food[1]) {
-      await placeFood();
+    if (await pairInList(head, foods)) {
+      await placeFood(head);
     } else {
       let tail = body.pop()!;
       io.out(Ansi.cursorTo(tail[0], tail[1]));
