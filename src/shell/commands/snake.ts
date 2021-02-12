@@ -32,7 +32,6 @@ export default async function snake(args: string[], io: IO) {
 
   async function placeFood(replace?: Pair) {
     replace && (foods = await removeFromList(replace, foods));
-    console.log(foods);
     function random(): Pair {
       return [
         Math.floor(Math.random() * (cols - 2) + 1),
@@ -165,7 +164,9 @@ export default async function snake(args: string[], io: IO) {
   io.out(Ansi.cursorHide);
   await printBoundary();
   await addKeyHandlers();
-  for (const item of Array(NUMBER_OF_FOODS)) {
+
+  // eslint-disable-next-line
+  for (const i of Array(NUMBER_OF_FOODS)) {
     await placeFood();
   }
 
