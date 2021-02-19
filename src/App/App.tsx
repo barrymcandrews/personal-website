@@ -4,11 +4,12 @@ import {
   Switch,
   Route,
 } from 'react-router-dom';
-import Home from '../components/Home/Home';
 import Error from "../components/Error/Error";
 import Footer from '../components/Footer/Footer';
 import history from './history';
 const Blog = React.lazy(() => import('../components/Blog/Blog'));
+const Home = React.lazy(() => import('../components/Home/Home'));
+// import Home from '../components/Home/Home';
 
 function App() {
   return (
@@ -16,8 +17,10 @@ function App() {
       <Router history={history}>
         <Switch>
           <Route exact path="/">
-            <Home/>
-            <Footer/>
+            <Suspense fallback={<div/>}>
+              <Home/>
+              <Footer/>
+            </Suspense>
           </Route>
           <Route exact path="/posts/:postName">
             <Suspense fallback={<div/>}>

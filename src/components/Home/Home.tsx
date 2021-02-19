@@ -4,7 +4,7 @@ import Emoji from "../Emoji";
 import Card from '../Card/Card';
 import classes from './Home.module.scss'
 import barry from './barry.jpg';
-import github from './github.png';
+import github from './github.jpg';
 import linkedin from './linkedin.jpg';
 import awsArchitectAssociate from './aws-certified-solutions-architect-associate.png';
 

@@ -12,6 +12,7 @@
     "@types/js-yaml": "^3.12.5",
     "@types/markdown-to-jsx": "^6.11.2",
     "@types/react-dom": "^17.0.0",
+    "@types/react-lazyload": "^3.1.0",
     "@types/react-router-dom": "^5.1.5",
     "@types/webpack-env": "^1.15.2",
     "events": "^3.2.0",
@@ -35,6 +36,7 @@
     "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -54,5 +56,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "source-map-explorer": "^2.5.2"
   }
 }
