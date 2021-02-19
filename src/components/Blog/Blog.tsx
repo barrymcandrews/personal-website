@@ -46,7 +46,7 @@ export default function Blog() {
   return (
     <>
       {error && <Error/>}
-      {loading && <Navbar/>}
+      {loading && <><Navbar/> <div style={{height: "100vh"}}/></>}
       {post && <div className={classes.Blog}>
         <Navbar/>
         <div className={classes.container}>
