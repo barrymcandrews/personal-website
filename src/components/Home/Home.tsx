@@ -13,7 +13,7 @@ function Home() {
     <div className={classes.Home}>
       <div className={classes.container}>
         <header className={classes.header}>
-          <div><img className={classes.image} src={barry} height={130} width={130} alt="Barry"/></div>
+          <div><img className={classes.image} src={barry} height={130} width={130} alt="Barry McAndrews"/></div>
           <div className={classes.headerText}>
             <h1>Barry</h1><br/>
             <h1>McAndrews</h1><br/>
