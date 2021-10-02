@@ -38,6 +38,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy-test": "react-scripts build && aws s3 sync build s3://aws-website-bmcandrews-test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,5 +55,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass-loader": "^12.1.0"
   }
 }
