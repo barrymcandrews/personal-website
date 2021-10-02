@@ -19,7 +19,6 @@
     "js-yaml": "^3.14.0",
     "levenary": "^1.1.1",
     "markdown-to-jsx": "^7.0.1",
-    "node-sass": "4.14.1",
     "prop-types": "^15.7.2",
     "react": "^17.0.1",
     "react-cookies": "^0.1.1",
@@ -38,6 +37,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
+    "deploy-test": "react-scripts build && aws s3 sync build s3://aws-website-bmcandrews-test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -54,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "sass-loader": "^12.1.0"
   }
 }
