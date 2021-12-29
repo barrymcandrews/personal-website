@@ -6,6 +6,8 @@
     "@babel/helper-regex": "^7.10.5",
     "@baristalabs/craco-raw-loader": "^1.2.0",
     "@craco/craco": "^6.0.0",
+    "@octokit/core": "^3.5.1",
+    "@octokit/types": "^6.34.0",
     "@testing-library/jest-dom": "^5.7.0",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
@@ -14,6 +16,7 @@
     "@types/react-dom": "^17.0.0",
     "@types/react-router-dom": "^5.1.5",
     "@types/webpack-env": "^1.15.2",
+    "change-case": "^4.1.2",
     "events": "^3.2.0",
     "invariant": "^2.2.4",
     "js-yaml": "^3.14.0",
@@ -26,10 +29,10 @@
     "react-dom": "^17.0.1",
     "react-ga": "^3.1.2",
     "react-markdown": "^5.0.3",
+    "react-query": "^3.34.7",
     "react-router-dom": "^5.1.2",
     "react-scripts": "4.0.1",
     "typescript": "^4.1.3",
-    "use-http": "^1.0.13",
     "xterm": "^4.10.0",
     "xterm-addon-fit": "^0.4.0",
     "xterm-addon-web-links": "^0.4.0"
@@ -39,7 +42,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "deploy-test": "react-scripts build && aws s3 sync build s3://aws-website-bmcandrews-test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -57,6 +61,7 @@
     ]
   },
   "devDependencies": {
-    "sass-loader": "^12.1.0"
+    "sass-loader": "^12.1.0",
+    "source-map-explorer": "^2.5.2"
   }
 }

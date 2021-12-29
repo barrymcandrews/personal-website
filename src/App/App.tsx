@@ -9,6 +9,7 @@ import Error from "../components/Error/Error";
 import Footer from '../components/Footer/Footer';
 import history from './history';
 const Blog = React.lazy(() => import('../components/Blog/Blog'));
+const Project = React.lazy(() => import('../components/Project/Project'));
 
 function App() {
   return (
@@ -22,6 +23,12 @@ function App() {
           <Route exact path="/posts/:postName">
             <Suspense fallback={<div/>}>
               <Blog/>
+              <Footer/>
+            </Suspense>
+          </Route>
+          <Route exact path="/projects/:projectName">
+            <Suspense fallback={<div/>}>
+              <Project/>
               <Footer/>
             </Suspense>
           </Route>
