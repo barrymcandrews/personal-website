@@ -88,6 +88,13 @@
     font-weight: bold;
   }
 
+  kbd img {
+    border-radius: 30px;
+    box-shadow: 0 0 10px rgba(0,0,0,.16);
+    transition: box-shadow 0.3s ease-in-out;
+    padding: 10px;
+  }
+
   strong {
     font-weight: 600;
   }

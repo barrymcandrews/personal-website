@@ -19,6 +19,7 @@
     "change-case": "^4.1.2",
     "events": "^3.2.0",
     "invariant": "^2.2.4",
+    "js-base64": "^3.7.2",
     "js-yaml": "^3.14.0",
     "levenary": "^1.1.1",
     "markdown-to-jsx": "^7.0.1",

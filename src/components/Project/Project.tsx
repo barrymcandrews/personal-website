@@ -25,7 +25,7 @@ function ProjectPage() {
   };
 
   const GitHubImage = (props: any) => {
-    return <img src={`${projectData?.html_url}/raw/master/${props.src}`} alt={props?.alt}/>;
+    return <img height={props?.height} src={`${projectData?.html_url}/raw/master/${props.src}`} alt={props?.alt}/>;
   };
 
   return (

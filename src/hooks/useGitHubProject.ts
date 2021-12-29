@@ -4,7 +4,7 @@ import {Endpoints} from '@octokit/types';
 
 type ProjectResponse = Endpoints["GET /repos/{owner}/{repo}"]["response"];
 
-const octokit = new Octokit({ auth: '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'});
+const octokit = new Octokit({ auth: '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'});
 
 const getProject = async (repo: string) => {
   const response: ProjectResponse = await octokit.request('GET /repos/{owner}/{repo}', {
@@ -15,5 +15,10 @@ const getProject = async (repo: string) => {
 };
 
 export default function useGitHubProject(projectName: string) {
-  return useQuery(['projects', projectName], () => getProject(projectName));
+  return useQuery(['projects', projectName], () => getProject(projectName), {
+    retry: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: false,
+    refetchOnReconnect: false
+  });
 }
