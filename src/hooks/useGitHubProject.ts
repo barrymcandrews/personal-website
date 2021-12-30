@@ -1,10 +1,8 @@
 import {useQuery} from 'react-query';
-import {Octokit} from '@octokit/core';
 import {Endpoints} from '@octokit/types';
+import octokit from './octokit';
 
 type ProjectResponse = Endpoints["GET /repos/{owner}/{repo}"]["response"];
-
-const octokit = new Octokit({ auth: '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'});
 
 const getProject = async (repo: string) => {
   const response: ProjectResponse = await octokit.request('GET /repos/{owner}/{repo}', {
