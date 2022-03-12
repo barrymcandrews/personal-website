@@ -1,9 +1,7 @@
 @import "../../index";
-@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:500&display=swap');
-
+@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:500&display=swap");
 
 .Project {
-
   .codeHint {
     font-weight: 700;
     font-size: 12px;
@@ -27,14 +25,19 @@
     max-width: 100%;
   }
 
-  h1, h2, h3, h4, h5 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     margin-top: 24px;
     margin-bottom: 16px;
     font-weight: 600;
     color: black;
   }
 
-  h1, h2 {
+  h1,
+  h2 {
     padding-bottom: 7px;
     //border-bottom: 1px solid $color;
   }
@@ -42,7 +45,7 @@
   pre {
     padding: 16px;
     background: #f3f3f3;
-    color: #2F2F2F;
+    color: #2f2f2f;
     border-radius: 6px;
     //font-size: 85%;
     line-height: 1.45;
@@ -52,7 +55,7 @@
   }
 
   code {
-    color: #2F2F2F;
+    color: #2f2f2f;
     font-size: 85%;
     font-family: $code-font;
     background: #f3f3f3;
@@ -66,7 +69,7 @@
 
   table {
     border-collapse: collapse;
-    color: #2F2F2F;
+    color: #2f2f2f;
   }
 
   th {
@@ -79,7 +82,8 @@
     background: #f3f3f3;
   }
 
-  th, td {
+  th,
+  td {
     border: #e4e4e4 1px solid;
     padding: 6px 13px;
   }
@@ -90,7 +94,7 @@
 
   kbd img {
     border-radius: 30px;
-    box-shadow: 0 0 10px rgba(0,0,0,.16);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.16);
     transition: box-shadow 0.3s ease-in-out;
     padding: 10px;
   }
@@ -100,7 +104,7 @@
   }
 
   .blockquoteWrapper {
-      border-left: 3px solid $color;
+    border-left: 3px solid $color;
   }
 
   .container {
@@ -112,7 +116,6 @@
     margin-right: auto;
     margin-top: 40px;
     max-width: 800px;
-
   }
 
   padding-bottom: 100px;

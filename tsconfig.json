@@ -21,6 +21,8 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "src"
+    "src",
+    ".eslintrc.js",
+    "craco.config.js"
   ]
 }

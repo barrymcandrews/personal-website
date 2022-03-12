@@ -1,40 +1,43 @@
-import {Environment} from './environment';
-import {ExecutableFile, FileSystem, FS} from './system';
+import { Environment } from './environment';
+import { ExecutableFile, FileSystem, FS } from './system';
 import * as Ansi from './Ansi';
 import * as Ascii from './Ascii';
 
 class Notifier {
   e = new EventTarget();
+
   async wait() {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       this.e.addEventListener('notify', resolve);
     });
   }
 
   async notify() {
-   this.e.dispatchEvent(new Event('notify'));
+    this.e.dispatchEvent(new Event('notify'));
   }
 }
 
 export class Pipe {
   buffer = '';
+
   notifier = new Notifier();
+
   handler = (data: string) => {};
 
   read = async () => {
     if (this.buffer.length === 0) {
       await this.notifier.wait();
     }
-    let str = this.buffer;
+    const str = this.buffer;
     this.buffer = '';
     return str;
-  }
+  };
 
-  write = async (str: string)  => {
-     this.buffer += str;
-     this.handler(str);
-     await this.notifier.notify();
-  }
+  write = async (str: string) => {
+    this.buffer += str;
+    this.handler(str);
+    await this.notifier.notify();
+  };
 
   onWrite(fn: (data: string) => void) {
     this.handler = fn;
@@ -47,7 +50,9 @@ export class Pipe {
  */
 export class GroupedPipe extends Pipe {
   groupedBuffer: string[] = [];
+
   notifier = new Notifier();
+
   handler = (data: string) => {};
 
   read = async () => {
@@ -55,19 +60,18 @@ export class GroupedPipe extends Pipe {
       await this.notifier.wait();
     }
     return this.groupedBuffer.pop()!;
-  }
+  };
 
-  write = async (str: string)  => {
+  write = async (str: string) => {
     this.groupedBuffer.unshift(str);
     this.handler(str);
     await this.notifier.notify();
-  }
+  };
 
   onWrite(fn: (data: string) => void) {
     this.handler = fn;
   }
 }
-
 
 export interface IO {
   in: () => Promise<string>;
@@ -93,21 +97,20 @@ export interface Process {
   wait(): Promise<number>;
 }
 
-
-let processes: { [key: number]: Process } = {};
+const processes: { [key: number]: Process } = {};
 let nextPid = 0;
 
 export function init(command: string[]) {
-  let env = new Environment();
-  let fs = new FileSystem();
+  const env = new Environment();
+  const fs = new FileSystem();
   return createProcess(command, env, fs);
 }
 
 export function createProcess(command: string[], env: Environment, fs: FileSystem): Process | null {
   function findExecutable(): Executable | null {
-    for (let dir of env.get('PATH').split(';')) {
-      let path = dir + '/' + command[0];
-      let file = fs.get(path) || {};
+    for (const dir of env.get('PATH').split(';')) {
+      const path = dir + '/' + command[0];
+      const file = fs.get(path) || {};
       if (typeof file === 'object' && file.hasOwnProperty('exec')) {
         return (file as ExecutableFile).exec;
       }
@@ -115,13 +118,13 @@ export function createProcess(command: string[], env: Environment, fs: FileSyste
     return null;
   }
 
-  let exec = findExecutable();
+  const exec = findExecutable();
   if (exec == null) {
     return null;
   }
 
-  let pid = nextPid++;
-  let process = new AsyncProcess(pid, exec, command, env, fs);
+  const pid = nextPid++;
+  const process = new AsyncProcess(pid, exec, command, env, fs);
   processes[pid] = process;
   return process;
 }
@@ -130,16 +133,23 @@ export function listProcesses() {
   return Object.values(processes);
 }
 
-
 class AsyncProcess implements Process {
   pid: number;
+
   exec: Executable;
+
   args: string[];
+
   env: Environment;
+
   fs: FileSystem;
+
   stdin = new Pipe();
+
   stdout = new Pipe();
+
   stderr = new Pipe();
+
   promise?: Promise<number>;
 
   constructor(pid: number, exec: Executable, args: string[], env: Environment, fs: FileSystem) {
@@ -151,14 +161,14 @@ class AsyncProcess implements Process {
   }
 
   start(onError?: (e: any) => void) {
-    let io: IO = {
+    const io: IO = {
       env: this.env,
       fs: this.fs,
-      in: async () => await input(this.stdin.read, this.stdout.write),
-      out: async (str: string) => await this.stdout.write(str),
-      err: async (str: string) => await this.stderr.write(str),
-      proc: this,
-    }
+      in: async () => input(this.stdin.read, this.stdout.write),
+      out: async (str: string) => this.stdout.write(str),
+      err: async (str: string) => this.stderr.write(str),
+      proc: this
+    };
     this.promise = this.exec(this.args, io).catch(onError).then();
 
     this.promise.then(() => {
@@ -167,7 +177,7 @@ class AsyncProcess implements Process {
   }
 
   cancel(): void {
-    throw Error ("Async Processes can not be cancelled.");
+    throw Error('Async Processes can not be cancelled.');
   }
 
   wait(): Promise<number> {
@@ -182,13 +192,16 @@ class AsyncProcess implements Process {
  * @param inFn -- should be set to io.proc.stdin.read
  * @param outFn -- should be set to io.proc.stdin.write
  */
-export async function input(inFn: () => Promise<string>, outFn: (str: string) => void): Promise<string> {
+export async function input(
+  inFn: () => Promise<string>,
+  outFn: (str: string) => void
+): Promise<string> {
   let cursor = 0;
-  let buffer = ''
-  let io = {
+  let buffer = '';
+  const io = {
     in: inFn,
-    out: outFn,
-  }
+    out: outFn
+  };
 
   function cursorForward() {
     if (cursor < buffer.length) {
@@ -224,21 +237,21 @@ export async function input(inFn: () => Promise<string>, outFn: (str: string) =>
     io.out(data);
   }
 
-  let handlers = {
+  const handlers = {
     [Ascii.ACK]: cursorBackwards,
     [Ansi.CURSOR_BACKWARDS]: cursorBackwards,
     [Ascii.STX]: cursorForward,
     [Ansi.CURSOR_FORWARD]: cursorForward,
     [Ascii.DEL]: backspace,
-    [Ascii.BS]: backspace,
-  }
+    [Ascii.BS]: backspace
+  };
 
   let ch: string;
   while ((ch = await io.in()) !== Ascii.CR) {
-    if(ch in handlers) {
+    if (ch in handlers) {
       handlers[ch]();
     } else {
-      let stripped = ch.replace(/[^ -~]+/g, "");
+      const stripped = ch.replace(/[^ -~]+/g, '');
       if (stripped) handleData(stripped);
     }
   }

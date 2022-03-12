@@ -6,14 +6,17 @@ title: How to cut a bagel
 There are many ways to cut yourself. Bagels are tricky. Here is how to cut bagel.
 
 ## Summary
+
 1. Get a bagel
 1. Cut bagel
-1. You have cut bagel  
+1. You have cut bagel
 
 ## Examples
+
 In case it wasn't already clear from the summary, here are some examples of how to cut a bagel.
 
 #### Cut a Bagel in JavaScript
+
 ```javascript
 const bagel = BagelMaker.build();
 bagel.cut();
@@ -21,6 +24,7 @@ console.log(bagel.toString());
 ```
 
 ## Cutting Devices
+
 > Do not cut a bagel with a spoon - Mahatma Gandhi
 
 There are many things you can cut a bagel with. Choosing the right tool is important. Here are some options you have.

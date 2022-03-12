@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export interface EmojiProps {
   label: string;
@@ -8,9 +8,9 @@ export interface EmojiProps {
 export default function Emoji(props: EmojiProps) {
   return (
     <span
-      role="img"
-      aria-label={props.label ? props.label : ""}
-      aria-hidden={props.label ? "false" : "true"}
+      aria-hidden={props.label ? 'false' : 'true'}
+      aria-label={props.label ? props.label : ''}
+      role='img'
     >
       {props.symbol}
     </span>

@@ -1,15 +1,14 @@
-
 interface EnvStore {
-  [key: string]: string
+  [key: string]: string;
 }
 
 export class Environment {
   env: EnvStore = {
-    'PATH': '/usr/bin',
-    'HOME': '/home/barry',
-    'PWD': '/home/barry',
-    'USER': 'barry',
-    'TERM': 'xterm-256color'
+    PATH: '/usr/bin',
+    HOME: '/home/barry',
+    PWD: '/home/barry',
+    USER: 'barry',
+    TERM: 'xterm-256color'
   };
 
   copy(): Environment {
@@ -21,7 +20,7 @@ export class Environment {
   }
 
   get(key: string): string {
-    return (key in this.env) ? this.env[key] : "";
+    return key in this.env ? this.env[key] : '';
   }
 
   getAll(): string[] {
@@ -33,7 +32,7 @@ export class Environment {
       .split(' ')
       .map(word => {
         if (word.startsWith('$')) {
-          let key = word.substring(1);
+          const key = word.substring(1);
           return this.env[key];
         }
         return word;

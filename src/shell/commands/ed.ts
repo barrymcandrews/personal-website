@@ -1,5 +1,5 @@
-import {getAbsolutePath} from './helpers';
-import {IO} from '../proc';
+import { getAbsolutePath } from './helpers';
+import { IO } from '../proc';
 
 export default async function ed(args: string[], io: IO): Promise<number> {
   let buffer = '';
@@ -8,14 +8,14 @@ export default async function ed(args: string[], io: IO): Promise<number> {
   function validateFilename(filename?: string): string | undefined {
     if (!filename) return undefined;
 
-    let target = getAbsolutePath(filename, io.env);
-    let targetFolder = target.substring(0, target.lastIndexOf('/'));
+    const target = getAbsolutePath(filename, io.env);
+    const targetFolder = target.substring(0, target.lastIndexOf('/'));
     if (!io.fs.isDir(targetFolder)) return undefined;
     return target;
   }
 
   async function append() {
-    for (let i; (i = await io.in()) !== '.';) {
+    for (let i; (i = await io.in()) !== '.'; ) {
       if (buffer.length !== 0) {
         buffer += '\n';
       }
@@ -24,7 +24,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
   }
 
   async function printLast() {
-    let lines = buffer.split('\n');
+    const lines = buffer.split('\n');
     io.out((lines[lines.length - 1] || '') + '\n');
   }
 
@@ -33,7 +33,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
   }
 
   async function setFilename(params: string[]): Promise<number> {
-    let target = validateFilename(params[1]);
+    const target = validateFilename(params[1]);
     if (!target) {
       io.out(`?\n`);
       return 1;
@@ -45,9 +45,9 @@ export default async function ed(args: string[], io: IO): Promise<number> {
 
   async function write(params: string[]) {
     if (params[1]) {
-      if (await setFilename(params) !== 0) return;
+      if ((await setFilename(params)) !== 0) return;
     } else if (!file) {
-      io.out("?\n");
+      io.out('?\n');
       return;
     }
     io.fs.put(file!, buffer);
@@ -55,7 +55,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
   }
 
   async function load(params: string[]): Promise<number> {
-    let target = validateFilename(params[1]);
+    const target = validateFilename(params[1]);
     if (!target || !io.fs.isFile(target)) {
       io.out(`?\n`);
       return 1;
@@ -67,26 +67,28 @@ export default async function ed(args: string[], io: IO): Promise<number> {
   }
 
   if (args[1]) {
-    if (await load(args) === 0) {
-      io.out(`${buffer.length}\n`)
+    if ((await load(args)) === 0) {
+      io.out(`${buffer.length}\n`);
     }
   }
 
   let input;
   while ((input = await io.in()).toLowerCase() !== 'q') {
-    let params = input.split(' ');
-    let cmd = params[0];
-    const commands: {[key: string]: (params: string[]) => void} = {
-      'a': append,
-      'p': printLast,
+    const params = input.split(' ');
+    const cmd = params[0];
+    const commands: { [key: string]: (params: string[]) => void } = {
+      a: append,
+      p: printLast,
       ',p': printAll,
-      'f': setFilename,
-      'w': write,
-      'e': load,
+      f: setFilename,
+      w: write,
+      e: load,
       //TODO: add more ed commands
-      'default': async () => {io.out('?\n');}
+      default: async () => {
+        io.out('?\n');
+      }
     };
-    await (commands[cmd] || commands['default'])(params);
+    await (commands[cmd] || commands.default)(params);
   }
   return 0;
 }

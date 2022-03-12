@@ -1,15 +1,15 @@
 import * as Ansi from '../Ansi';
 import * as Ascii from '../Ascii';
-import {createProcess, GroupedPipe, IO, Process} from '../proc';
+import { createProcess, GroupedPipe, IO, Process } from '../proc';
 
 const PREFIX = '$ ';
 
 export default async function sh(args: string[], io: IO): Promise<number> {
   io.proc.stdin = new GroupedPipe();
-  let cursor: number = 0;
-  let history: string[] = [''];
-  let historyIndex: number = 0;
-  let stdin = io.proc.stdin;
+  let cursor = 0;
+  const history: string[] = [''];
+  let historyIndex = 0;
+  const stdin = io.proc.stdin;
   let subprocess: Process | undefined;
   let shouldExit = false;
 
@@ -34,7 +34,7 @@ export default async function sh(args: string[], io: IO): Promise<number> {
           history[0] = history[historyIndex];
           historyIndex = 0;
         }
-        let line = history[0];
+        const line = history[0];
         if (history[0] !== '') {
           history.unshift('');
         }
@@ -157,52 +157,50 @@ export default async function sh(args: string[], io: IO): Promise<number> {
   }
 
   async function interpretLine(line: string) {
-
     // Substitute variables in line
     line = io.env.substitute(line);
 
     // Handle Environment Variables
     if (/^(\w)+=/.test(line)) {
-      let separator = line.indexOf('=');
+      const separator = line.indexOf('=');
       io.env.put(line.substring(0, separator), line.substring(separator + 1));
       io.out(PREFIX);
       return;
     }
 
     // Split by space, ignoring spaces in quotes
-    let args = (line.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [''])
-      .map(v => (/^(".*")|('.*')$/.test(v)) ? v.slice(1, -1) : v);
+    const lineArgs = (line.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || ['']).map(v =>
+      /^(".*")|('.*')$/.test(v) ? v.slice(1, -1) : v
+    );
 
-    let command = args[0];
-    let proc = createProcess(args, io.env, io.fs);
+    const command = lineArgs[0];
+    const proc = createProcess(lineArgs, io.env, io.fs);
     if (proc) {
       proc.stdout.onWrite(io.proc.stdout.write);
       proc.stderr.onWrite(io.proc.stdout.write);
 
       subprocess = proc;
-      proc.start((e) => {
-        io.out("sh: An unknown error occurred\n");
+      proc.start(e => {
+        io.out('sh: An unknown error occurred\n');
         if (process.env.NODE_ENV !== 'production') {
           io.out(`${e}\n`);
         }
       });
-      proc.wait()
-        .then((returnCode) => {
+      proc.wait().then(returnCode => {
         subprocess = undefined;
         io.proc.stdin = stdin;
-        io.env.put('?', (returnCode === undefined) ? '1' : returnCode.toString());
+        io.env.put('?', returnCode === undefined ? '1' : returnCode.toString());
         io.out(PREFIX);
       });
     } else if (command.startsWith('exit')) {
       shouldExit = true;
     } else if (command !== '') {
-      io.out("sh: command not found: " + command + "\r\n");
+      io.out('sh: command not found: ' + command + '\r\n');
       io.env.put('?', '127');
       io.out(PREFIX);
     } else {
       io.out(PREFIX);
     }
-
   }
 
   while (!shouldExit) {
@@ -211,4 +209,3 @@ export default async function sh(args: string[], io: IO): Promise<number> {
 
   return 0;
 }
-
