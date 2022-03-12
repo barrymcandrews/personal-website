@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: Production
-      url: https://www.bmcandrews.com
+      url: www.bmcandrews.com
 
     steps:
       - uses: actions/checkout@v1
