@@ -3,26 +3,23 @@ name: build
 on:
   workflow_dispatch:
   push:
-    branches: ["!master"]
+    branches: ["*", "!master"]
+
+env:
+  CI: true
+  NODE_VERSION: 16.10.0
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x]
 
     steps:
     - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js v${{env.NODE_VERSION}}
       uses: actions/setup-node@v1
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{env.NODE_VERSION}}
     - name: Run yarn install
       run: yarn install
     - name: Run yarn build
       run: yarn build
-      env:
-        CI: true
