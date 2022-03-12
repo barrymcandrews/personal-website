@@ -198,6 +198,7 @@ export default async function snake(args: string[], io: IO) {
     if (await pairInList(head, foods)) {
       await placeFood(head);
     } else {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const tail = body.pop()!;
       io.out(Ansi.cursorTo(tail[0], tail[1]));
       io.out(' ');

@@ -22,6 +22,7 @@ export class Pipe {
 
   notifier = new Notifier();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handler = (data: string) => {};
 
   read = async () => {
@@ -53,12 +54,14 @@ export class GroupedPipe extends Pipe {
 
   notifier = new Notifier();
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   handler = (data: string) => {};
 
   read = async () => {
     if (this.groupedBuffer.length === 0) {
       await this.notifier.wait();
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.groupedBuffer.pop()!;
   };
 
@@ -181,6 +184,7 @@ class AsyncProcess implements Process {
   }
 
   wait(): Promise<number> {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return this.promise!;
   }
 }

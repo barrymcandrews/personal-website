@@ -50,6 +50,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
       io.out('?\n');
       return;
     }
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     io.fs.put(file!, buffer);
     io.out(buffer.length + '\n');
   }
@@ -62,6 +63,7 @@ export default async function ed(args: string[], io: IO): Promise<number> {
     }
 
     file = target;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     buffer = io.fs.get(target)!.toString();
     return 0;
   }

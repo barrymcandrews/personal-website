@@ -100,7 +100,7 @@ export class FileSystem implements FS {
     return Object.keys(this.__fs).filter(x => x.startsWith(prefix));
   }
 
-  list(path: string) {
+  list(path: string): string[] {
     return Array.from(
       new Set(
         Object.keys(this.__fs)
@@ -114,15 +114,15 @@ export class FileSystem implements FS {
     );
   }
 
-  isFile(path: string) {
+  isFile(path: string): boolean {
     return path in this.__fs && !path.endsWith('__folder__');
   }
 
-  isDir(path: string) {
+  isDir(path: string): boolean {
     return path === '/' || Object.keys(this.__fs).some(s => s.startsWith(path + '/'));
   }
 
-  exists(path: string) {
+  exists(path: string): boolean {
     return this.isFile(path) || this.isDir(path);
   }
 }

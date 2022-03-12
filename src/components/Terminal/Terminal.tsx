@@ -54,6 +54,7 @@ export default class Terminal extends Component {
   }
 
   private async connectShell(sendCopyrightCommand = true) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const shell = init(['sh', '--login', '-i'])!;
 
     shell.env.put('ROWS', this.term.rows.toString());

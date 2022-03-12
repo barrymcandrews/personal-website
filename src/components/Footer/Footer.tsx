@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import classes from './Footer.module.scss';
 const Terminal = React.lazy(() => import('../Terminal/Terminal'));
 
-export default function Footer(props: any) {
+export default function Footer() {
   return (
     <section className={classes.bgDark}>
       <div className={classes.container}>

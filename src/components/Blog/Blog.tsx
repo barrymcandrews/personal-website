@@ -61,7 +61,7 @@ export default function Blog() {
           <Navbar />
           <div className={classes.container}>
             <div className='m-20'>
-              <h1>{metadata!.title}</h1>
+              {metadata && <h1>{metadata.title}</h1>}
               <Markdown
                 options={{
                   overrides: {
