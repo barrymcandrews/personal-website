@@ -1,4 +1,4 @@
-name: Deploy Website to Production S3
+name: deploy-prod
 
 on:
   workflow_dispatch:
