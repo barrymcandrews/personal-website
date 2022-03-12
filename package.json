@@ -27,7 +27,7 @@
     "history": "^4.7.11",
     "invariant": "^2.2.4",
     "js-base64": "^3.7.2",
-    "js-yaml": "^3.14.0",
+    "js-yaml": "^4.1.0",
     "levenary": "^1.1.1",
     "markdown-to-jsx": "^7.0.1",
     "prop-types": "^15.7.2",

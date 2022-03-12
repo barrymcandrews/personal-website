@@ -4096,7 +4096,7 @@ __metadata:
     invariant: ^2.2.4
     jest: ^27.5.1
     js-base64: ^3.7.2
-    js-yaml: ^3.14.0
+    js-yaml: ^4.1.0
     levenary: ^1.1.1
     markdown-to-jsx: ^7.0.1
     node-sass: ^7.0.1
@@ -8630,7 +8630,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"js-yaml@npm:^3.13.1, js-yaml@npm:^3.14.0":
+"js-yaml@npm:^3.13.1":
   version: 3.14.1
   resolution: "js-yaml@npm:3.14.1"
   dependencies:

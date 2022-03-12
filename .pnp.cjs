@@ -74,7 +74,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["invariant", "npm:2.2.4"],\
             ["jest", "virtual:d6a8f7144410d0bb49f112c63ef897eaa6f5d2c35b6ea0af78f815366b1a65c3a8d86dbc066fab692e1112603f3fd2ebf2ff032086546419c9aef4d3ac61ab17#npm:27.5.1"],\
             ["js-base64", "npm:3.7.2"],\
-            ["js-yaml", "npm:3.14.1"],\
+            ["js-yaml", "npm:4.1.0"],\
             ["levenary", "npm:1.1.1"],\
             ["markdown-to-jsx", "virtual:d6a8f7144410d0bb49f112c63ef897eaa6f5d2c35b6ea0af78f815366b1a65c3a8d86dbc066fab692e1112603f3fd2ebf2ff032086546419c9aef4d3ac61ab17#npm:7.1.7"],\
             ["node-sass", "npm:7.0.1"],\
@@ -6257,7 +6257,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["invariant", "npm:2.2.4"],\
             ["jest", "virtual:d6a8f7144410d0bb49f112c63ef897eaa6f5d2c35b6ea0af78f815366b1a65c3a8d86dbc066fab692e1112603f3fd2ebf2ff032086546419c9aef4d3ac61ab17#npm:27.5.1"],\
             ["js-base64", "npm:3.7.2"],\
-            ["js-yaml", "npm:3.14.1"],\
+            ["js-yaml", "npm:4.1.0"],\
             ["levenary", "npm:1.1.1"],\
             ["markdown-to-jsx", "virtual:d6a8f7144410d0bb49f112c63ef897eaa6f5d2c35b6ea0af78f815366b1a65c3a8d86dbc066fab692e1112603f3fd2ebf2ff032086546419c9aef4d3ac61ab17#npm:7.1.7"],\
             ["node-sass", "npm:7.0.1"],\
