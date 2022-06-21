@@ -1,11 +1,11 @@
 import React, { Suspense } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
-import Home from '../components/Home/Home';
+import Home from '../pages/Home/Home';
 import Error from '../components/Error/Error';
 import Footer from '../components/Footer/Footer';
 import history from './history';
-const Blog = React.lazy(() => import('../components/Blog/Blog'));
-const Project = React.lazy(() => import('../components/Project/Project'));
+const Blog = React.lazy(() => import('../pages/Blog/Blog'));
+const Project = React.lazy(() => import('../pages/Project/Project'));
 
 function App() {
   return (

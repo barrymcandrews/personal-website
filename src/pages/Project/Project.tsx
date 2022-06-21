@@ -1,8 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Markdown from 'markdown-to-jsx';
-import Error from '../Error/Error';
-import { Navbar } from '../Navbar/Navbar';
+import Error from '../../components/Error/Error';
+import { Navbar } from '../../components/Navbar/Navbar';
 import classes from './Project.module.scss';
 import useGitHubProject from '../../hooks/useGitHubProject';
 import useGitHubReadme from '../../hooks/useGitHubReadme';
