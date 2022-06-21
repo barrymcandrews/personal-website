@@ -1,5 +1,4 @@
 import React from 'react';
-import { AnchorButton } from '../../components/Button/Button';
 import classes from './Home.module.scss';
 import barry from './barry.jpg';
 import AboutMeSection from '../../sections/AboutMeSection';

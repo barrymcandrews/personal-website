@@ -18,7 +18,7 @@ export default function Card(props: CardProps) {
         <img alt='LinkedIn Logo' height={100} src={props.image} width={100} />
       </div>
       <div className={classes.content}>
-        <code>{props.code}</code>
+        <code className='text-gray-600'>{props.code}</code>
         <h4>{props.title}</h4>
         <div className={classes.cardText}>{props.body}</div>
         {props.button && (

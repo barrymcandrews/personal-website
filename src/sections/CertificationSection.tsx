@@ -6,8 +6,8 @@ import awsArchitectAssociate from '../pages/Home/aws-certified-solutions-archite
 export default function CertificationSection() {
   return (
     <section className='text-center m-20'>
-      <code>$ aws iam get-user</code>
-      <h3>AWS Certified.</h3>
+      <code className='text-gray-600'>$ aws iam get-user</code>
+      <h3 className='text-slate-900 font-title font-bold text-md'>AWS Certified.</h3>
       <p className={classes.awsParagraph}>
         The cloud opens up a world of new and exciting possibilities!
         <br />
