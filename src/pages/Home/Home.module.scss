@@ -136,32 +136,6 @@ $screen-width: 800px;
     }
   }
 
-  .awsBadge {
-    margin: 5px;
-  }
-
-  .awsParagraph {
-    // This with is fitted for the aws paragraph content
-    display: block;
-    max-width: 511px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .bioParagraph {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    max-width: 650px;
-    @media only screen and (max-width: 650px) {
-      text-align: justify;
-    }
-  }
-
-  .aboutTitle {
-    font-size: 25px;
-  }
-
   .section {
     margin-top: 20vh;
   }

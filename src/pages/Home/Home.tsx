@@ -1,9 +1,8 @@
 import React from 'react';
-import { AnchorButton } from '../../components/Button/Button';
 import classes from './Home.module.scss';
 import barry from './barry.jpg';
-import AboutMeSection from '../../sections/AboutMeSection';
-import CertificationSection from '../../sections/CertificationSection';
+import AboutMeSection from '../../sections/AboutMeSection/AboutMeSection';
+import CertificationSection from '../../sections/CertificationSection/CertificationSection';
 import MailSection from '../../sections/MailSection';
 import LinksSection from '../../sections/LinksSection';
 import ResumeSection from '../../sections/ResumeSection';
@@ -36,6 +35,8 @@ function Home() {
         <LinksSection />
 
         <AboutMeSection />
+
+        {/*<ProjectsSection />*/}
 
         <CertificationSection />
 
