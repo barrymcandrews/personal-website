@@ -1,6 +1,6 @@
 import React from 'react';
 import classes from './Card.module.scss';
-import { AnchorButton, ButtonProps } from '../Button/Button';
+import { ButtonProps } from '../Button/Button';
 import { Link } from 'react-router-dom';
 
 export interface CardProps {
