@@ -43,6 +43,17 @@
 
   }
 
+  .bioHeader {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .bioBody {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
   .bioParagraph {
     display: block;
     margin-left: auto;
@@ -58,6 +69,5 @@
 
   .aboutTitle {
     font-size: 25px;
-    margin-bottom: 20px;
   }
 }
