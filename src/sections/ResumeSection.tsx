@@ -8,7 +8,7 @@ export default function ResumeSection() {
       <p>I&apos;m a software engineer with a passion for technology.</p>
       <AnchorButton
         text='Download Resume'
-        to={process.env.PUBLIC_URL + '/Barry_McAndrews_8-19-20.pdf'}
+        to={process.env.PUBLIC_URL + '/Barry_McAndrews_8-11-2022.pdf'}
       />
     </section>
   );
