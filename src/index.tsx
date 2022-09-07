@@ -11,8 +11,9 @@ ReactDOM.render(<App />, document.getElementById('root'));
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 
+const params = new URL(document.location.toString()).searchParams;
 async function setupAnalytics() {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !params.has('canary')) {
     const ReactGA = await import('react-ga');
     ReactGA.initialize('UA-73066517-1');
     ReactGA.pageview(window.location.pathname + window.location.search);
