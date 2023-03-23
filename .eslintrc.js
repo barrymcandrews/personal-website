@@ -4,8 +4,7 @@ module.exports = {
     es2021: true
   },
   extends: [
-    'airbnb-typescript',
-    'airbnb/hooks',
+    'next/core-web-vitals',
     'plugin:@typescript-eslint/recommended',
     'plugin:jest/recommended',
     'plugin:prettier/recommended',

@@ -17,12 +17,18 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "noFallthroughCasesInSwitch": true
+    "jsx": "preserve",
+    "noFallthroughCasesInSwitch": true,
+    "incremental": true
   },
   "include": [
+    "next-env.d.ts",
     "src",
     ".eslintrc.js",
-    "craco.config.js"
+    "craco.config.js",
+    "next.config.js"
+  ],
+  "exclude": [
+    "node_modules"
   ]
 }

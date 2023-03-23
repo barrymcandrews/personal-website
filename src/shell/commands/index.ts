@@ -1,5 +1,5 @@
 import * as Ansi from '../Ansi';
-import history from '../../App/history';
+import Router from 'next/router';
 import { columns, getAbsolutePath, basename, parseArgs } from './helpers';
 import ed from './ed';
 import sh from './sh';
@@ -197,7 +197,7 @@ async function goto(args: string[], io: IO) {
     io.out('Usage: goto <page>\n');
     return 1;
   }
-  history.push(args[1]);
+  await Router.push(args[1]);
   return 0;
 }
 
