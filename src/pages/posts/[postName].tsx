@@ -1,45 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Markdown from 'markdown-to-jsx';
 import Error from '../../components/elements/Error/Error';
-import { safeLoad } from 'js-yaml';
 import { Navbar } from '../../components/elements/Navbar/Navbar';
 import classes from '../posts/Blog.module.scss';
 import { useRouter } from 'next/router';
-
-interface Metadata {
-  title: string;
-  date?: string;
-}
+import { QueryClient, QueryClientProvider } from 'react-query';
+import usePost from '../../hooks/usePost';
 
 interface BlogParams extends Record<string, string> {
   postName: string;
 }
 
-export default function Blog() {
+const queryClient = new QueryClient();
+
+function BlogPage() {
   const router = useRouter();
   const { postName } = router.query as BlogParams;
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<boolean>(false);
-  const [metadata, setMetadata] = useState<Metadata>();
-  const [post, setPost] = useState<string>();
-
-  useEffect(() => {
-    import('/public/posts/' + postName + '.md')
-      .then(postResponse => {
-        fetch(postResponse.default).then(resp => {
-          resp.text().then(postString => {
-            const [, metaString, mdString] = postString.split('---', 3);
-            setMetadata(safeLoad(metaString) as Metadata);
-            setPost(mdString);
-            setLoading(false);
-          });
-        });
-      })
-      .catch(() => {
-        setError(true);
-        setLoading(false);
-      });
-  }, [postName]);
+  const { isLoading, error, data: post } = usePost(postName);
+  const { metadata, content } = post || {};
 
   const Blockquote = (props: any) => {
     return (
@@ -52,12 +30,12 @@ export default function Blog() {
   return (
     <>
       {error && <Error />}
-      {loading && (
+      {isLoading && (
         <>
           <Navbar /> <div style={{ height: '100vh' }} />
         </>
       )}
-      {post && (
+      {content && (
         <div className={classes.Blog}>
           <Navbar />
           <div className={classes.container}>
@@ -72,12 +50,21 @@ export default function Blog() {
                   }
                 }}
               >
-                {post}
+                {content}
               </Markdown>
             </div>
           </div>
         </div>
       )}
     </>
+  );
+}
+
+export default function Blog() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      {' '}
+      <BlogPage />
+    </QueryClientProvider>
   );
 }

@@ -1,1 +1,0 @@
-self.__REACT_LOADABLE_MANIFEST={"../components/elements/Footer/Footer.tsx -> ../Terminal/Terminal":{"id":"../components/elements/Footer/Footer.tsx -> ../Terminal/Terminal","files":["static/chunks/src_components_elements_Terminal_Terminal_tsx.js"]}}

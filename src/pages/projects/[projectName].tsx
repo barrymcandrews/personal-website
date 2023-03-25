@@ -6,7 +6,6 @@ import classes from './Project.module.scss';
 import useGitHubProject from '../../hooks/useGitHubProject';
 import useGitHubReadme from '../../hooks/useGitHubReadme';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import Image from 'next/image';
 import { useRouter } from 'next/router';
 
 interface ProjectParams extends Record<string, string> {
@@ -34,7 +33,11 @@ function ProjectPage() {
       <img
         alt={props?.alt}
         height={props?.height}
-        src={`${projectData?.html_url}/raw/master/${props.src}`}
+        src={
+          props.src?.startsWith('http')
+            ? props.src
+            : `${projectData?.html_url}/raw/master/${props.src}`
+        }
       />
     );
   };
