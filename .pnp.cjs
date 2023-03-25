@@ -8026,10 +8026,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["loader-utils", [\
-        ["npm:2.0.2", {\
-          "packageLocation": "./.yarn/cache/loader-utils-npm-2.0.2-c693411911-9078d1ed47.zip/node_modules/loader-utils/",\
+        ["npm:2.0.4", {\
+          "packageLocation": "./.yarn/cache/loader-utils-npm-2.0.4-ba3800585b-a5281f5fff.zip/node_modules/loader-utils/",\
           "packageDependencies": [\
-            ["loader-utils", "npm:2.0.2"],\
+            ["loader-utils", "npm:2.0.4"],\
             ["big.js", "npm:5.2.2"],\
             ["emojis-list", "npm:3.0.0"],\
             ["json5", "npm:2.2.0"]\
@@ -9941,7 +9941,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["raw-loader", "virtual:cd1956acff41ec8ffafba0ec423bfd222ac97983d071296de2723acc07b4de39012b9e74388ea7c7a1e600eca29177a067993803a24fae0f26e10bb485de07bc#npm:4.0.2"],\
             ["@types/webpack", null],\
-            ["loader-utils", "npm:2.0.2"],\
+            ["loader-utils", "npm:2.0.4"],\
             ["schema-utils", "npm:3.1.1"],\
             ["webpack", null]\
           ],\
