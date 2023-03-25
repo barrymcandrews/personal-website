@@ -63,7 +63,8 @@
     "export": "next export",
     "deploy-test": "react-scripts build && aws s3 sync build s3://aws-website-bmcandrews-test",
     "eject": "react-scripts eject",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "lint": "eslint --ext .js,.jsx,.ts,.tsx ."
   },
   "browserslist": {
     "production": [

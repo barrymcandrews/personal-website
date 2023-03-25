@@ -5,7 +5,6 @@ import GoogleAnalytics from '../components/GoogleAnalytics';
 import { Open_Sans, Montserrat, Source_Code_Pro } from 'next/font/google';
 import Head from 'next/head';
 import Footer from '../components/elements/Footer/Footer';
-import { useRouter } from 'next/router';
 
 const montserrat = Montserrat({
   weight: ['700', '500', '300'],
@@ -24,8 +23,6 @@ const sourceCodePro = Source_Code_Pro({
   subsets: ['latin'],
   variable: '--font-source-code-pro'
 });
-
-export const router = undefined;
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

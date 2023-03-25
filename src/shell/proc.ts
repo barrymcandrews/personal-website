@@ -22,7 +22,7 @@ export class Pipe {
 
   notifier = new Notifier();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
   handler = (data: string) => {};
 
   read = async () => {
@@ -54,7 +54,7 @@ export class GroupedPipe extends Pipe {
 
   notifier = new Notifier();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars,@typescript-eslint/no-empty-function
   handler = (data: string) => {};
 
   read = async () => {

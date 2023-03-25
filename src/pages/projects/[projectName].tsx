@@ -7,6 +7,7 @@ import useGitHubProject from '../../hooks/useGitHubProject';
 import useGitHubReadme from '../../hooks/useGitHubReadme';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useRouter } from 'next/router';
+import Image from 'next/image';
 
 interface ProjectParams extends Record<string, string> {
   projectName: string;
@@ -30,6 +31,7 @@ function ProjectPage() {
 
   const GitHubImage = (props: any) => {
     return (
+      // eslint-disable-next-line @next/next/no-img-element
       <img
         alt={props?.alt}
         height={props?.height}
