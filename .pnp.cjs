@@ -3018,10 +3018,10 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["async", [\
-        ["npm:0.9.2", {\
-          "packageLocation": "./.yarn/cache/async-npm-0.9.2-d8cafe6cc3-87dbf12929.zip/node_modules/async/",\
+        ["npm:3.2.4", {\
+          "packageLocation": "./.yarn/cache/async-npm-3.2.4-aba13508f9-43d07459a4.zip/node_modules/async/",\
           "packageDependencies": [\
-            ["async", "npm:0.9.2"]\
+            ["async", "npm:3.2.4"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -4448,11 +4448,11 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["ejs", [\
-        ["npm:3.1.6", {\
-          "packageLocation": "./.yarn/cache/ejs-npm-3.1.6-03db39fd15-81a9cdea0b.zip/node_modules/ejs/",\
+        ["npm:3.1.9", {\
+          "packageLocation": "./.yarn/cache/ejs-npm-3.1.9-e201b2088c-af6f10eb81.zip/node_modules/ejs/",\
           "packageDependencies": [\
-            ["ejs", "npm:3.1.6"],\
-            ["jake", "npm:10.8.2"]\
+            ["ejs", "npm:3.1.9"],\
+            ["jake", "npm:10.8.5"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -7198,12 +7198,12 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
         }]\
       ]],\
       ["jake", [\
-        ["npm:10.8.2", {\
-          "packageLocation": "./.yarn/cache/jake-npm-10.8.2-e211473cb9-b604c51863.zip/node_modules/jake/",\
+        ["npm:10.8.5", {\
+          "packageLocation": "./.yarn/cache/jake-npm-10.8.5-6a5e87e533-56c913ecf5.zip/node_modules/jake/",\
           "packageDependencies": [\
-            ["jake", "npm:10.8.2"],\
-            ["async", "npm:0.9.2"],\
-            ["chalk", "npm:2.4.2"],\
+            ["jake", "npm:10.8.5"],\
+            ["async", "npm:3.2.4"],\
+            ["chalk", "npm:4.1.2"],\
             ["filelist", "npm:1.0.2"],\
             ["minimatch", "npm:3.1.2"]\
           ],\
@@ -10717,7 +10717,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["btoa", "npm:1.2.1"],\
             ["chalk", "npm:4.1.2"],\
             ["convert-source-map", "npm:1.8.0"],\
-            ["ejs", "npm:3.1.6"],\
+            ["ejs", "npm:3.1.9"],\
             ["escape-html", "npm:1.0.3"],\
             ["glob", "npm:7.2.0"],\
             ["gzip-size", "npm:6.0.0"],\
