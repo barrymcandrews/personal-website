@@ -24,6 +24,7 @@ jobs:
         node-version-file: '.nvmrc'
     - run: yarn install
     - run: yarn build
+    - run: yarn export
     - name: Deploy to S3
       uses: jakejarvis/s3-sync-action@master
       with:
