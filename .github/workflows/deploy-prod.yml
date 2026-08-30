@@ -8,7 +8,6 @@ on:
 
 env:
   CI: true
-  NODE_VERSION: 16.10.0
 
 jobs:
   deploy-prod:
@@ -19,10 +18,10 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Setup Node v${{env.NODE_VERSION}}
-      uses: actions/setup-node@v1
+    - name: Setup Node from .nvmrc
+      uses: actions/setup-node@v6
       with:
-        node-version: ${{env.NODE_VERSION}}
+        node-version-file: '.nvmrc'
     - run: yarn install
     - run: yarn build
     - name: Deploy to S3
@@ -43,4 +42,3 @@ jobs:
         AWS_REGION: 'us-east-1'
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-

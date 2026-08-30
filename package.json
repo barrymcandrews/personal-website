@@ -2,6 +2,9 @@
   "name": "bmcandrews-personal-website",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "16.16.0"
+  },
   "dependencies": {
     "@babel/helper-regex": "^7.10.5",
     "@baristalabs/craco-raw-loader": "^1.2.0",
