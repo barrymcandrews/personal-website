@@ -4,6 +4,10 @@ const withMDX = require('@next/mdx')();
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',
+  images: {
+    unoptimized: true
+  },
   sassOptions: {
     includePaths: [path.join(__dirname, 'styles')]
   }

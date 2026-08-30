@@ -22,21 +22,28 @@ export default function AboutMeSection() {
         </div>
         <div className={classes.bioBody}>
           <p className={classes.bioParagraph}>
-            My name is Barry McAndrews, and I&apos;m an accomplished Software Engineer with a
-            passion for the cloud and home automation. Through my work at Vanguard, I&apos;ve gained
-            first-hand experience with cutting edge cloud technologies. This experience opened my
-            eyes to just how powerful the cloud can be, and it inspired me to achieve my first AWS
-            certification.
+            I&apos;m Barry, a software engineer and photographer. At DICK&apos;S Sporting Goods, I
+            build the behind-the-scenes tools that help customer service teams get people the
+            answers they need. That includes our in-house CRM, chat experiences, and an AI assistant
+            for the folks doing the work every day.
           </p>
           <p className={classes.bioParagraph}>
-            As an engineer, I&apos;m always looking for ways to solve problems, and often find
-            myself putting my software (and occasionally hardware) skills to use in home automation
-            projects. I find the challenge of making a better product than one you could buy in a
-            store almost irresistible.
+            I like taking problems and figuring out the best way to solve them. Sometimes that means
+            building a big data pipeline. Other times, it can mean simply moving a button around. A
+            lot of times, no code change is needed at all.
           </p>
           <p className={classes.bioParagraph}>
-            When I&apos;m not working, you can find me taking a walk, working out, or skiing down a
-            mountain.
+            I like getting to the root of a problem, questioning assumptions, and finding the
+            simplest thing that actually works. I’m much more interested in building the right thing
+            than building the most impressive thing.{' '}
+          </p>
+          <p className={classes.bioParagraph}>
+            <b>As an engineer, my job is to solve problems and, when necessary, write code.</b>
+          </p>
+          <p className={classes.bioParagraph}>
+            Away from the keyboard, I&apos;m usually out with a camera. In this era of AI, film
+            photography feels very authentic to me. I love being able to capture the world around me
+            in a way that feels real and meaningful.
           </p>
           {/*<p>*/}
           {/*  <Emoji label='cloud' symbol='☁️' />*/}

@@ -19,22 +19,14 @@ export const parrot =
   "  ';........................................;l' ";
 
 export const bio =
-  'Barry McAndrews is an accomplished ' +
-  'Software Engineer with a passion for the cloud and ' +
-  'home automation. Through his work at Vanguard, Barry ' +
-  'has gained first-hand experience with cutting edge cloud ' +
-  'technologies. This experience opened his eyes to the ' +
-  'world of possibilities that the cloud makes possible, ' +
-  'and it inspired him to achieve his first AWS certification. ' +
-  'As an engineer, Barry is always looking for ways to solve ' +
-  'problems, and often finds himself putting his software (and ' +
-  'occasionally hardware) skills to use in home automation projects. ' +
-  'He finds the challenge of making a better product than one you ' +
-  'could buy in a store almost irresistible. When he’s not working, ' +
-  'you can find Barry taking a walk, working out, or skiing down a mountain. ';
+  'Barry is a software engineer based around Philadelphia. At DICK’S Sporting Goods, ' +
+  'he builds the CRM, chat experiences, AI tools, and data systems that help customer ' +
+  'service teams do their jobs. He likes turning complicated problems into useful things. ' +
+  'Away from the keyboard, you can find him taking photos, walking, working out, skiing, ' +
+  'or tinkering with something at home. ';
 
 export const honestBio =
-  'When he’s not working, you can ' + 'find Barry drinking gin and watching drag race.';
+  'When he’s not working, you can find Barry taking photos, drinking gin, and watching Drag Race.';
 
 export const plan = `
 Plan:

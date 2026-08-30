@@ -2,7 +2,6 @@ import React from 'react';
 import classes from './Home.module.scss';
 import barry from '../../public/images/barry.jpg';
 import AboutMeSection from '../components/sections/AboutMeSection/AboutMeSection';
-import CertificationSection from '../components/sections/CertificationSection/CertificationSection';
 import MailSection from '../components/sections/MailSection';
 import LinksSection from '../components/sections/LinksSection';
 import ResumeSection from '../components/sections/ResumeSection';
@@ -39,7 +38,7 @@ function Home() {
 
         {/*<ProjectsSection />*/}
 
-        <CertificationSection />
+        {/*<CertificationSection />*/}
 
         <MailSection />
       </div>
