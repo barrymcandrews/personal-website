@@ -6,7 +6,7 @@ import github from '../../../public/images/github.png';
 
 export default function LinksSection() {
   return (
-    <>
+    <section aria-label='Social links' className={classes.section}>
       <Card
         body='For more information about me check out my
                     LinkedIn page. There you can find my most
@@ -16,7 +16,6 @@ export default function LinksSection() {
           text: 'Go to LinkedIn',
           to: 'https://www.linkedin.com/in/barry-mcandrews/'
         }}
-        className={classes.section}
         code='$ open https://www.linkedin.com/in/barry-mcandrews/'
         image={linkedin}
         title='LinkedIn'
@@ -38,6 +37,6 @@ export default function LinksSection() {
         image={github}
         title='GitHub'
       />
-    </>
+    </section>
   );
 }
