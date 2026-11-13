@@ -7,19 +7,25 @@ on:
 
 env:
   CI: true
-  NODE_VERSION: 16.10.0
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js v${{env.NODE_VERSION}}
-      uses: actions/setup-node@v1
+    - uses: actions/checkout@v6
+    - name: Setup Node from .nvmrc
+      uses: actions/setup-node@v6
       with:
-        node-version: ${{env.NODE_VERSION}}
+        node-version-file: '.nvmrc'
     - name: Run yarn install
-      run: yarn install
+      run: yarn install --immutable
     - name: Run yarn build
       run: yarn build
+    - name: Verify static export
+      run: yarn export
