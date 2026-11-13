@@ -64,7 +64,7 @@ export default function Afterframe() {
             />
           </div>
           <figcaption>
-            <div aria-label='App screenshots' className={classes.screenshotControls}>
+            <div aria-label='App screenshots' className={classes.screenshotControls} role='group'>
               {screenshots.map((screenshot, index) => (
                 <button
                   key={screenshot.src}
