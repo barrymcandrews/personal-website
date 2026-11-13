@@ -17,7 +17,7 @@ export default function AfterframeLayout({ children, page, title, description }:
       <Head>
         <title>{title}</title>
         <meta key='description' content={description} name='description' />
-        <meta content='noindex, nofollow' name='robots' />
+        {page === 'overview' && <meta content='noindex, nofollow' name='robots' />}
       </Head>
       <a className={classes.skipLink} href='#afterframe-content'>
         Skip to content
