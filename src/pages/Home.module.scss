@@ -139,4 +139,32 @@ $screen-width: 800px;
   .section {
     margin-top: 20vh;
   }
+
+  .appsSection {
+    margin: 20vh 20px 0;
+
+    h3 {
+      font-size: 30px;
+    }
+  }
+
+  .appsHeading {
+    text-align: center;
+    margin-bottom: 30px;
+
+    h3 {
+      font-size: 24px;
+      margin: 0;
+    }
+  }
+
+  .sectionLink {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+
+    a {
+      text-underline-offset: 3px;
+    }
+  }
 }

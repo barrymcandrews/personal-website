@@ -30,8 +30,9 @@ export default function App({ Component, pageProps }: AppProps) {
       <Head>
         <meta charSet='utf-8' />
         <meta content='width=device-width, initial-scale=1' name='viewport' />
-        <meta content='#ffffff' name='theme-color' />
+        <meta key='theme-color' content='#ffffff' name='theme-color' />
         <meta
+          key='description'
           content='Barry McAndrews is an accomplished Software Engineer with a passion for the cloud and home automation. Through his work at Vanguard, Barry has gained first-hand experience with cutting edge cloud technologies.'
           name='description'
         />

@@ -1,5 +1,6 @@
-@import "../../variables.module";
-@import url("https://fonts.googleapis.com/css?family=Source+Code+Pro:500&display=swap");
+@import '../../variables.module';
+@import '../../components/elements/reading';
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:500&display=swap');
 
 .Project {
   .codeHint {
@@ -8,6 +9,8 @@
     color: $code-color;
     font-family: $code-font;
     display: block;
+    margin-bottom: 12px;
+    line-height: 1.6;
   }
 
   .title {
@@ -108,14 +111,15 @@
   }
 
   .container {
+    @include content;
     @media only screen and (max-width: 800px) {
       width: 100%;
     }
 
     margin-left: auto;
     margin-right: auto;
-    margin-top: 40px;
-    max-width: 800px;
+    margin-top: 64px;
+    max-width: 760px;
   }
 
   padding-bottom: 100px;

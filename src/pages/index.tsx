@@ -6,6 +6,7 @@ import MailSection from '../components/sections/MailSection';
 import LinksSection from '../components/sections/LinksSection';
 import ResumeSection from '../components/sections/ResumeSection';
 import Image from 'next/image';
+// import AppsSection from '../components/sections/AppsSection';
 
 function Home() {
   return (
@@ -36,7 +37,8 @@ function Home() {
 
         <AboutMeSection />
 
-        {/*<ProjectsSection />*/}
+        {/* Hidden until launch; app and support pages remain accessible directly. */}
+        {/* <AppsSection /> */}
 
         {/*<CertificationSection />*/}
 
