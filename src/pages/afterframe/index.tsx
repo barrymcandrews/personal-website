@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Image from 'next/image';
+import ResponsiveImage from '../../components/elements/ResponsiveImage';
 import Link from 'next/link';
 import AfterframeLayout from '../../components/afterframe/AfterframeLayout';
 import classes from '../../components/afterframe/Afterframe.module.scss';
@@ -8,12 +8,12 @@ export default function Afterframe() {
   const screenshots = [
     {
       label: 'Photos',
-      src: '/images/afterframe-photos.png',
+      src: 'afterframe-photos' as const,
       alt: 'Afterframe Photos showing film photos organized into rolls.'
     },
     {
       label: 'Search or Ask',
-      src: '/images/afterframe-search.png',
+      src: 'afterframe-search' as const,
       alt: 'Afterframe Search or Ask showing beach photo search results.'
     }
   ];
@@ -27,11 +27,12 @@ export default function Afterframe() {
       <div className={classes.overview}>
         <div className={classes.productCopy}>
           <div className={classes.productHeading}>
-            <Image
+            <ResponsiveImage
               alt='Afterframe app icon'
               className={classes.icon}
               height={112}
-              src='/images/afterframe.png'
+              image='afterframe'
+              sizes='(max-width: 600px) 80px, 112px'
               width={112}
             />
             <div>
@@ -53,13 +54,14 @@ export default function Afterframe() {
         </div>
         <figure className={classes.screenshot}>
           <div className={classes.phoneFrame}>
-            <Image
+            <ResponsiveImage
               priority
               alt={screenshots[selected].alt}
               className={classes.phoneScreen}
               height={2622}
               id='app-screenshot'
-              src={screenshots[selected].src}
+              image={screenshots[selected].src}
+              sizes='(max-width: 800px) 222px, 262px'
               width={1206}
             />
           </div>

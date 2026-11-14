@@ -1,12 +1,10 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:700,500,300|Open+Sans:500,700|Source+Code+Pro:700");
-
 $color: #666666;
 $title-color: #121216;
 $code-color: #7a7d81;
 
-$font: "Open Sans", sans-serif;
-$title-font: "Montserrat", Arial, sans-serif;
-$code-font: "Source Code Pro", Consolas, Menlo, "Courier New", monospace;
+$font: var(--font-open-sans), sans-serif;
+$title-font: var(--font-montserrat), Arial, sans-serif;
+$code-font: var(--font-source-code-pro), Consolas, Menlo, "Courier New", monospace;
 
 html {
   width: 100%;
@@ -45,10 +43,15 @@ h4 {
 }
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: $font;
   color: $color;
   margin: 0;
   width: 100%;
+}
+
+// Font variables are scoped to the application wrapper.
+#__next > div {
+  font-family: $font;
 }
 
 header,

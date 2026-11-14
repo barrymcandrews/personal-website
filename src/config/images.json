@@ -1,0 +1,8 @@
+{
+  "barry": { "source": "barry.jpg", "widths": [36, 72, 108, 130, 260, 390] },
+  "bio-1": { "source": "bio-1.jpg", "widths": [200, 400, 600] },
+  "bio-3": { "source": "bio-3.jpg", "widths": [200, 400, 600] },
+  "afterframe": { "source": "afterframe.png", "widths": [80, 100, 112, 160, 200, 224, 240, 300, 336] },
+  "afterframe-photos": { "source": "afterframe-photos.png", "widths": [240, 280, 480, 560, 720, 840] },
+  "afterframe-search": { "source": "afterframe-search.png", "widths": [240, 280, 480, 560, 720, 840] }
+}

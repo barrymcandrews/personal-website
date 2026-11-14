@@ -2,9 +2,11 @@
   background: #212121;
 }
 
-.m20 {
+.terminalSlot {
   margin-left: 20px;
   margin-right: 20px;
+  // 24 rows with Source Code Pro's 16px cell height, plus vertical padding.
+  min-height: 444px;
 }
 
 .container {
