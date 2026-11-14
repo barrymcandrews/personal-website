@@ -15,7 +15,7 @@ export default class Terminal extends Component {
 
   term = new XTerm({
     cursorBlink: true,
-    fontFamily: `"Source Code Pro", monospace`,
+    fontFamily: 'monospace',
     fontWeight: '500',
     convertEol: true,
     fontSize: 12,
@@ -32,6 +32,9 @@ export default class Terminal extends Component {
   componentDidMount() {
     // eslint-disable-next-line react/no-find-dom-node
     const terminalContainer = findDOMNode(this) as HTMLElement;
+    this.term.options.fontFamily =
+      getComputedStyle(terminalContainer).getPropertyValue('--font-source-code-pro').trim() +
+      ', monospace';
     this.term.loadAddon(this.fitAddon);
     this.term.loadAddon(this.webLinksAddon);
     this.term.open(terminalContainer);
@@ -45,9 +48,14 @@ export default class Terminal extends Component {
   }
 
   componentWillUnmount() {
+    this.disposed = true;
     this.term.dispose();
-    window.removeEventListener('resize', () => this.fitAddon.fit());
+    if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
   }
+
+  private disposed = false;
+
+  private resizeHandler?: () => void;
 
   render() {
     return <div className={styles.terminalContainer} id='terminal-container' />;
@@ -64,11 +72,13 @@ export default class Terminal extends Component {
     this.term.onData(d => shell.stdin.write(d));
     shell.stdout.onWrite(d => this.term.write(d));
 
-    window.addEventListener('resize', () => {
+    if (this.resizeHandler) window.removeEventListener('resize', this.resizeHandler);
+    this.resizeHandler = () => {
       this.fitAddon.fit();
       shell.env.put('ROWS', this.term.rows.toString());
       shell.env.put('COLS', this.term.cols.toString());
-    });
+    };
+    window.addEventListener('resize', this.resizeHandler);
     shell.start();
     if (sendCopyrightCommand) {
       const command = 'cat copyright.txt' + Ascii.CR;
@@ -76,6 +86,6 @@ export default class Terminal extends Component {
     }
 
     await shell.wait();
-    await this.connectShell(false);
+    if (!this.disposed) await this.connectShell(false);
   }
 }

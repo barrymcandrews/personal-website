@@ -55,8 +55,10 @@
     "xterm-addon-web-links": "^0.4.0"
   },
   "scripts": {
-    "dev": "NEXT_SKIP_SSG=true next dev",
-    "build": "next build",
+    "images:optimize": "node scripts/optimize-images.cjs",
+    "images:verify": "node scripts/verify-images.cjs",
+    "dev": "yarn images:optimize && NEXT_SKIP_SSG=true next dev",
+    "build": "yarn images:optimize && next build",
     "build:dev": "NEXT_PUBLIC_STAGE=dev yarn run build",
     "build:dev:quick": "NEXT_PUBLIC_STAGE=dev NEXT_SKIP_SSG=true yarn run build",
     "build:prod": "NEXT_PUBLIC_STAGE=prod yarn run build",
@@ -101,6 +103,7 @@
     "jest": "^27.5.1",
     "prettier": "^2.5.1",
     "sass-loader": "^12.1.0",
+    "sharp": "0.32.6",
     "source-map-explorer": "^2.5.2"
   },
   "packageManager": "yarn@3.2.0"

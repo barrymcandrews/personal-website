@@ -8,18 +8,21 @@ import Footer from '../components/elements/Footer/Footer';
 
 const montserrat = Montserrat({
   weight: ['700', '500', '300'],
+  display: 'swap',
   subsets: ['latin'],
   variable: '--font-montserrat'
 });
 
 const openSans = Open_Sans({
   weight: ['500', '700'],
+  display: 'swap',
   subsets: ['latin'],
   variable: '--font-open-sans'
 });
 
 const sourceCodePro = Source_Code_Pro({
-  weight: '700',
+  weight: ['500', '700'],
+  display: 'swap',
   subsets: ['latin'],
   variable: '--font-source-code-pro'
 });
@@ -43,9 +46,11 @@ export default function App({ Component, pageProps }: AppProps) {
         <meta content='Barry McAndrews' name='author' />
         <title>Barry McAndrews - Software Engineer</title>
       </Head>
-      <Component {...pageProps} />
-      <Footer />
-      <GoogleAnalytics />
+      <div className={`${montserrat.variable} ${openSans.variable} ${sourceCodePro.variable}`}>
+        <Component {...pageProps} />
+        <Footer />
+        <GoogleAnalytics />
+      </div>
     </>
   );
 }

@@ -1,18 +1,16 @@
 import React from 'react';
 import classes from './AboutMe.module.scss';
-import bioPic1 from '../../../../public/images/bio-1.jpg';
-import bioPic3 from '../../../../public/images/bio-3.jpg';
-import Image from 'next/image';
+import ResponsiveImage from '../../elements/ResponsiveImage';
 
 export default function AboutMeSection() {
   return (
     <section className={classes.aboutMeSection}>
       <div className={classes.imgColumn}>
         <div className={classes.imgCard}>
-          <Image alt='Picture of Barry' height={200} src={bioPic1} width={200} />
+          <ResponsiveImage alt='Picture of Barry' height={200} image='bio-1' width={200} />
         </div>
         <div className={classes.imgCard}>
-          <Image alt='Picture of Barry' height={250} src={bioPic3} width={200} />
+          <ResponsiveImage alt='Picture of Barry' height={250} image='bio-3' width={200} />
         </div>
       </div>
       <div className={classes.bioCard}>

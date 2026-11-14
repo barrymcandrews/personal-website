@@ -1,11 +1,10 @@
 import React from 'react';
 import classes from './Home.module.scss';
-import barry from '../../public/images/barry.jpg';
 import AboutMeSection from '../components/sections/AboutMeSection/AboutMeSection';
 import MailSection from '../components/sections/MailSection';
 import LinksSection from '../components/sections/LinksSection';
 import ResumeSection from '../components/sections/ResumeSection';
-import Image from 'next/image';
+import ResponsiveImage from '../components/elements/ResponsiveImage';
 // import AppsSection from '../components/sections/AppsSection';
 
 function Home() {
@@ -14,11 +13,12 @@ function Home() {
       <div className={classes.container}>
         <header className={classes.header}>
           <div>
-            <Image
+            <ResponsiveImage
+              priority
               alt='Barry McAndrews'
               className={classes.image}
               height={130}
-              src={barry}
+              image='barry'
               width={130}
             />
           </div>
